@@ -5,7 +5,7 @@ namespace PetroPay.DataAccess.Entities
 {
     public class RefreshToken
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
 
         public string UniqueId { get; set; }
 

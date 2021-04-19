@@ -561,10 +561,6 @@ namespace PetroPay.DataAccess.Contexts
                     .IsRowVersion()
                     .IsConcurrencyToken()
                     .HasColumnName("SSMA_TimeStamp");
-                
-                entity.Property(e => e.UniqueGuid)
-                    .IsUnicode()
-                    .HasColumnName("UniqueGuid");
             });
 
             modelBuilder.Entity<Image>(entity =>

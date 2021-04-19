@@ -16,6 +16,5 @@ namespace PetroPay.DataAccess.Entities
         public string EmplyeeStatus { get; set; }
         public byte[] EmplyeePhoto { get; set; }
         public byte[] SsmaTimeStamp { get; set; }
-        public Guid UniqueGuid { get; set; }
     }
 }
