@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetroPay.Web", "PetroPay.Web\PetroPay.Web.csproj", "{003B09FD-6B9D-49F2-8A89-AB3F11559A62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetroPay.Core", "PetroPay.Core\PetroPay.Core.csproj", "{C2FB5E52-A734-4908-AFB4-9D7629E2DC6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetroPay.DataAccess", "PetroPay.DataAccess\PetroPay.DataAccess.csproj", "{FC5662F6-8C1B-4756-A2E4-E193F2589C8C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{003B09FD-6B9D-49F2-8A89-AB3F11559A62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{003B09FD-6B9D-49F2-8A89-AB3F11559A62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{003B09FD-6B9D-49F2-8A89-AB3F11559A62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{003B09FD-6B9D-49F2-8A89-AB3F11559A62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2FB5E52-A734-4908-AFB4-9D7629E2DC6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2FB5E52-A734-4908-AFB4-9D7629E2DC6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2FB5E52-A734-4908-AFB4-9D7629E2DC6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2FB5E52-A734-4908-AFB4-9D7629E2DC6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC5662F6-8C1B-4756-A2E4-E193F2589C8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC5662F6-8C1B-4756-A2E4-E193F2589C8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC5662F6-8C1B-4756-A2E4-E193F2589C8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC5662F6-8C1B-4756-A2E4-E193F2589C8C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
