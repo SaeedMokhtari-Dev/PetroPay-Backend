@@ -40,11 +40,11 @@ namespace PetroPay.Web.Controllers.Companies.Edit
                 return ActionResult.Error(ApiMessages.Company.EmailIsDuplicate);
             }*/
 
-            await EditAuditingCompanyCompanyCompany(editCompany, request);
+            await EditCompany(editCompany, request);
             return ActionResult.Ok(ApiMessages.CompanyMessage.EditedSuccessfully);
         }
 
-        private async Task EditAuditingCompanyCompanyCompany(Company editCompany, CompanyEditRequest request)
+        private async Task EditCompany(Company editCompany, CompanyEditRequest request)
         {
             _mapper.Map(request, editCompany);
 
