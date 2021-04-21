@@ -45,6 +45,7 @@ namespace PetroPay.Core.Constants
         }
         public static class BranchMessage
         {
+            public const string CompanyIdRequired = "Api.Branch.CompanyId.Required";
             public const string IdRequired = "Api.Branch.Id.Required";
             public const string NameRequired = "Api.Branch.Name.Required";
             public const string EmailRequired = "Api.Branch.Email.Required";

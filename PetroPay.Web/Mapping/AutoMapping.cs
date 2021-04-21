@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Controllers.Branches.Add;
+using PetroPay.Web.Controllers.Branches.Detail;
+using PetroPay.Web.Controllers.Branches.Edit;
+using PetroPay.Web.Controllers.Branches.Get;
 using PetroPay.Web.Controllers.Bundles.Add;
 using PetroPay.Web.Controllers.Bundles.Detail;
 using PetroPay.Web.Controllers.Bundles.Edit;
@@ -27,6 +31,16 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.CompanyId, opt => opt.Ignore());
             CreateMap<CompanyAddRequest, Company>()
                 .ForMember(w => w.CompanyCommercialPhoto, opt => opt.Ignore());
+            
+            #endregion
+            #region Branch
+            
+            CreateMap<CompanyBranch, BranchGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CompanyBranchId));
+            CreateMap<CompanyBranch, BranchDetailResponse>();
+            CreateMap<BranchEditRequest, CompanyBranch>()
+                .ForMember(w => w.CompanyBranchId, opt => opt.Ignore());
+            CreateMap<BranchAddRequest, CompanyBranch>();
             
             #endregion
             #region Bundle
