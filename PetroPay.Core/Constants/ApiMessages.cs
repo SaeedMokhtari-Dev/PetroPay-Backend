@@ -61,6 +61,42 @@ namespace PetroPay.Core.Constants
             public const string ArchiveEntityEditNotAllowed = "Api.Branch.ArchivedEntityEdit.NotAllowed";
             
         }
+        public static class PetroStationMessage
+        {
+            public const string CompanyIdRequired = "Api.PetroStation.CompanyId.Required";
+            public const string IdRequired = "Api.PetroStation.Id.Required";
+            public const string NameRequired = "Api.PetroStation.Name.Required";
+            public const string EmailRequired = "Api.PetroStation.Email.Required";
+            public const string LogoRequired = "Api.PetroStation.Logo.Required";
+            public const string EmailIsDuplicate = "Api.PetroStation.Email.Duplicate";
+            public const string EmailIsWrong = "Api.PetroStation.Email.IsWrong";
+            
+            public const string AddedSuccessfully = "Api.PetroStation.Add.Successful";
+            public const string EditedSuccessfully = "Api.PetroStation.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.PetroStation.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.PetroStation.Deleted.Successful";
+            
+            public const string ArchiveEntityEditNotAllowed = "Api.PetroStation.ArchivedEntityEdit.NotAllowed";
+            
+        }
+        public static class StationUserMessage
+        {
+            public const string StationIdRequired = "Api.StationUser.StationId.Required";
+            public const string IdRequired = "Api.StationUser.Id.Required";
+            public const string NameRequired = "Api.StationUser.Name.Required";
+            public const string EmailRequired = "Api.StationUser.Email.Required";
+            public const string LogoRequired = "Api.StationUser.Logo.Required";
+            public const string EmailIsDuplicate = "Api.StationUser.Email.Duplicate";
+            public const string EmailIsWrong = "Api.StationUser.Email.IsWrong";
+            
+            public const string AddedSuccessfully = "Api.StationUser.Add.Successful";
+            public const string EditedSuccessfully = "Api.StationUser.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.StationUser.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.StationUser.Deleted.Successful";
+            
+            public const string ArchiveEntityEditNotAllowed = "Api.StationUser.ArchivedEntityEdit.NotAllowed";
+            
+        }
         public static class BundleMessage
         {
             public const string IdRequired = "Api.Bundle.Id.Required";

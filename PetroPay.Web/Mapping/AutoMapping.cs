@@ -13,6 +13,14 @@ using PetroPay.Web.Controllers.Companies.Add;
 using PetroPay.Web.Controllers.Companies.Detail;
 using PetroPay.Web.Controllers.Companies.Edit;
 using PetroPay.Web.Controllers.Companies.Get;
+using PetroPay.Web.Controllers.PetroStations.Add;
+using PetroPay.Web.Controllers.PetroStations.Detail;
+using PetroPay.Web.Controllers.PetroStations.Edit;
+using PetroPay.Web.Controllers.PetroStations.Get;
+using PetroPay.Web.Controllers.StationUsers.Add;
+using PetroPay.Web.Controllers.StationUsers.Detail;
+using PetroPay.Web.Controllers.StationUsers.Edit;
+using PetroPay.Web.Controllers.StationUsers.Get;
 
 namespace PetroPay.Web.Mapping
 {
@@ -41,6 +49,26 @@ namespace PetroPay.Web.Mapping
             CreateMap<BranchEditRequest, CompanyBranch>()
                 .ForMember(w => w.CompanyBranchId, opt => opt.Ignore());
             CreateMap<BranchAddRequest, CompanyBranch>();
+            
+            #endregion
+            #region PetroStation
+            
+            CreateMap<PetroStation, PetroStationGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.StationId));
+            CreateMap<PetroStation, PetroStationDetailResponse>();
+            CreateMap<PetroStationEditRequest, PetroStation>()
+                .ForMember(w => w.StationId, opt => opt.Ignore());
+            CreateMap<PetroStationAddRequest, PetroStation>();
+            
+            #endregion
+            #region StationUser
+            
+            CreateMap<StationUser, StationUserGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.StationWorkerId));
+            CreateMap<StationUser, StationUserDetailResponse>();
+            CreateMap<StationUserEditRequest, StationUser>()
+                .ForMember(w => w.StationWorkerId, opt => opt.Ignore());
+            CreateMap<StationUserAddRequest, StationUser>();
             
             #endregion
             #region Bundle

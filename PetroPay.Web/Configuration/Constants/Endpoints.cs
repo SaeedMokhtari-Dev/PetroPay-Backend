@@ -33,6 +33,20 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiBundleDetail = "/api/bundle/detail";
         public const string ApiBundleDelete = "/api/bundle/delete";
         
+        /*PetroStation APIs*/
+        public const string ApiPetroStationAdd = "/api/petro-station/add";
+        public const string ApiPetroStationEdit = "/api/petro-station/edit";
+        public const string ApiPetroStationGet = "/api/petro-station/get";
+        public const string ApiPetroStationDetail = "/api/petro-station/detail";
+        public const string ApiPetroStationDelete = "/api/petro-station/delete";
+        
+        /*StationUser APIs*/
+        public const string ApiStationUserAdd = "/api/station-user/add";
+        public const string ApiStationUserEdit = "/api/station-user/edit";
+        public const string ApiStationUserGet = "/api/station-user/get";
+        public const string ApiStationUserDetail = "/api/station-user/detail";
+        public const string ApiStationUserDelete = "/api/station-user/delete";
+        
         /*admin APIs*/
         public const string ApiUserGet = "/api/user/get";
         public const string ApiUserAdd = "/api/user/add";
