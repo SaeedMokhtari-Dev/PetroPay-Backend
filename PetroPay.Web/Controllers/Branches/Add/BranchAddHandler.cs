@@ -24,6 +24,13 @@ namespace PetroPay.Web.Controllers.Branches.Add
 
         protected override async Task<ActionResult> Execute(BranchAddRequest request)
         {
+            var isUsernameDuplicate =
+                _context.CompanyBranches.Any(w => w.CompanyBranchAdminUserName.Trim().ToUpper() == request.CompanyBranchAdminUserName.Trim().ToUpper());
+            if (isUsernameDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateUserName);
+            }
+            
             CompanyBranch branch = await AddBranch(request);
             
             return ActionResult.Ok(ApiMessages.BranchMessage.AddedSuccessfully);

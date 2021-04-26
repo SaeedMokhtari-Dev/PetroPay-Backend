@@ -1,5 +1,6 @@
 using FluentValidation;
 using PetroPay.Core.Constants;
+using PetroPay.Web.Configuration.Constants;
 
 namespace PetroPay.Web.Controllers.Branches.Add
 {
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.Branches.Add
         public BranchAddValidator()
         {
             RuleFor(x => x.CompanyId).NotEmpty().WithMessage(ApiMessages.BranchMessage.CompanyIdRequired);
+            RuleFor(x => x.CompanyBranchAdminUserPassword).MinimumLength(IdentitySettings.MinPasswordLength).WithMessage(ApiMessages.MinPasswordLengthError);
             /*RuleFor(x => x.AuditingBranchId).NotEmpty().WithMessage(ApiMessages.BranchMessage.AuditingBranchIdRequired);
             RuleFor(x => x.FirstName).NotEmpty().WithMessage(ApiMessages.BranchMessage.FirstNameRequired);
             RuleFor(x => x.LastName).NotEmpty().WithMessage(ApiMessages.BranchMessage.FirstNameRequired);

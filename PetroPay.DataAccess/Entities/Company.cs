@@ -10,6 +10,7 @@ namespace PetroPay.DataAccess.Entities
         {
             CompanyBranches = new HashSet<CompanyBranch>();
             Subscriptions = new HashSet<Subscription>();
+            RechargeBalances = new HashSet<RechargeBalance>();
         }
 
         public int CompanyId { get; set; }
@@ -33,5 +34,6 @@ namespace PetroPay.DataAccess.Entities
         public virtual AccountMaster Account { get; set; }
         public virtual ICollection<CompanyBranch> CompanyBranches { get; set; }
         public virtual ICollection<Subscription> Subscriptions { get; set; }
+        public virtual ICollection<RechargeBalance> RechargeBalances { get; set; }
     }
 }

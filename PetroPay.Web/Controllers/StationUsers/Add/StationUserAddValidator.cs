@@ -1,5 +1,6 @@
 using FluentValidation;
 using PetroPay.Core.Constants;
+using PetroPay.Web.Configuration.Constants;
 
 namespace PetroPay.Web.Controllers.StationUsers.Add
 {
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.StationUsers.Add
         public StationUserAddValidator()
         {
             RuleFor(x => x.StationId).NotEmpty().WithMessage(ApiMessages.StationUserMessage.StationIdRequired);
+            RuleFor(x => x.StationUserPassword).MinimumLength(IdentitySettings.MinPasswordLength).WithMessage(ApiMessages.MinPasswordLengthError);
             /*RuleFor(x => x.AuditingStationUserId).NotEmpty().WithMessage(ApiMessages.StationUserMessage.AuditingStationUserIdRequired);
             RuleFor(x => x.FirstName).NotEmpty().WithMessage(ApiMessages.StationUserMessage.FirstNameRequired);
             RuleFor(x => x.LastName).NotEmpty().WithMessage(ApiMessages.StationUserMessage.FirstNameRequired);

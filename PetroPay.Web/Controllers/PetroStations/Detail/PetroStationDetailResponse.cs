@@ -16,5 +16,6 @@ namespace PetroPay.Web.Controllers.PetroStations.Detail
         public string StationNameAr { get; set; }
         public bool? StationDiesel { get; set; }
         public decimal? StationBalance { get; set; }
+        public string StationEmail { get; set; }
     }
 }

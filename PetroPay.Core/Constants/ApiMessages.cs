@@ -8,9 +8,12 @@ namespace PetroPay.Core.Constants
         public const string Forbidden = "Api.Forbidden";
         public const string PageSize = "Api.PageSize";
         public const string PageIndex = "Api.PageIndex";
+        public const string DuplicateUserName = "Api.Username.Duplicate";
+        public const string MinPasswordLengthError = "Api.MinPasswordLengthError";
 
         public static class Auth
         {
+            public const string EmailRequired = "Api.Auth.Email.Required";
             public const string UsernameRequired = "Api.Auth.Username.Required";
             public const string PasswordRequired = "Api.Auth.Password.Required";
             public const string RoleTypeRequired = "Api.Auth.RoleType.Required";
@@ -32,7 +35,6 @@ namespace PetroPay.Core.Constants
             public const string NameRequired = "Api.Company.Name.Required";
             public const string EmailRequired = "Api.Company.Email.Required";
             public const string LogoRequired = "Api.Company.Logo.Required";
-            public const string EmailIsDuplicate = "Api.Company.Email.Duplicate";
             public const string EmailIsWrong = "Api.Company.Email.IsWrong";
             
             public const string AddedSuccessfully = "Api.Company.Add.Successful";
@@ -59,6 +61,24 @@ namespace PetroPay.Core.Constants
             public const string DeletedSuccessfully = "Api.Branch.Deleted.Successful";
             
             public const string ArchiveEntityEditNotAllowed = "Api.Branch.ArchivedEntityEdit.NotAllowed";
+            
+        }
+        public static class CarMessage
+        {
+            public const string CompanyBranchIdRequired = "Api.Car.CompanyBranchId.Required";
+            public const string IdRequired = "Api.Car.Id.Required";
+            public const string NameRequired = "Api.Car.Name.Required";
+            public const string EmailRequired = "Api.Car.Email.Required";
+            public const string LogoRequired = "Api.Car.Logo.Required";
+            public const string EmailIsDuplicate = "Api.Car.Email.Duplicate";
+            public const string EmailIsWrong = "Api.Car.Email.IsWrong";
+            
+            public const string AddedSuccessfully = "Api.Car.Add.Successful";
+            public const string EditedSuccessfully = "Api.Car.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.Car.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.Car.Deleted.Successful";
+            
+            public const string ArchiveEntityEditNotAllowed = "Api.Car.ArchivedEntityEdit.NotAllowed";
             
         }
         public static class PetroStationMessage

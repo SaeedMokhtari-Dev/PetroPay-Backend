@@ -32,13 +32,14 @@ namespace PetroPay.Web.Controllers.Branches.Edit
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            /*var isEmailDuplicate =
-                _context.Branchs.Any(w => w.Email.Trim().ToUpper() == request.Email.Trim().ToUpper()
-                                       && w.Id != request.BranchId);
-            if (isEmailDuplicate)
+            
+            var isUsernameDuplicate =
+                _context.CompanyBranches.Any(w => w.CompanyBranchAdminUserName.Trim().ToUpper() == request.CompanyBranchAdminUserName.Trim().ToUpper()
+                                            && w.CompanyBranchId != request.CompanyBranchId);
+            if (isUsernameDuplicate)
             {
-                return ActionResult.Error(ApiMessages.Branch.EmailIsDuplicate);
-            }*/
+                return ActionResult.Error(ApiMessages.DuplicateUserName);
+            }
 
             await EditBranch(editBranch, request);
             return ActionResult.Ok(ApiMessages.BranchMessage.EditedSuccessfully);

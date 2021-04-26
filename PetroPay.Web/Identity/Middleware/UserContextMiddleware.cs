@@ -78,6 +78,7 @@ namespace PetroPay.Web.Identity.Middleware
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
                     httpContext.Response.StatusCode = 401;
                 }
             }

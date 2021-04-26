@@ -26,12 +26,12 @@ namespace PetroPay.Web.Controllers.Companies.Add
 
         protected override async Task<ActionResult> Execute(CompanyAddRequest request)
         {
-            /*var isEmailDuplicate =
-                _context.Companies.Any(w => w.Email.Trim().ToUpper() == request.Email.Trim().ToUpper());
-            if (isEmailDuplicate)
+            var isUsernameDuplicate =
+                _context.Companies.Any(w => w.CompanyAdminUserName.Trim().ToUpper() == request.CompanyAdminUserName.Trim().ToUpper());
+            if (isUsernameDuplicate)
             {
-                return ActionResult.Error(ApiMessages.Company.EmailIsDuplicate);
-            }*/
+                return ActionResult.Error(ApiMessages.DuplicateUserName);
+            }
 
             Company company = await AddCompany(request);
             

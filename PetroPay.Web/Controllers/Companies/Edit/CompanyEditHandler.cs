@@ -32,13 +32,13 @@ namespace PetroPay.Web.Controllers.Companies.Edit
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            /*var isEmailDuplicate =
-                _context.Companys.Any(w => w.Email.Trim().ToUpper() == request.Email.Trim().ToUpper()
-                                       && w.Id != request.CompanyId);
-            if (isEmailDuplicate)
+            var isUsernameDuplicate =
+                _context.Companies.Any(w => w.CompanyAdminUserName.Trim().ToUpper() == request.CompanyAdminUserName.Trim().ToUpper()
+                                       && w.CompanyId != request.CompanyId);
+            if (isUsernameDuplicate)
             {
-                return ActionResult.Error(ApiMessages.Company.EmailIsDuplicate);
-            }*/
+                return ActionResult.Error(ApiMessages.DuplicateUserName);
+            }
 
             await EditCompany(editCompany, request);
             return ActionResult.Ok(ApiMessages.CompanyMessage.EditedSuccessfully);

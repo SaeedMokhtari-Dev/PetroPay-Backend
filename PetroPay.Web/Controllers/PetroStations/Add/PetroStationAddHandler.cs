@@ -23,6 +23,13 @@ namespace PetroPay.Web.Controllers.PetroStations.Add
 
         protected override async Task<ActionResult> Execute(PetroStationAddRequest request)
         {
+            var isUsernameDuplicate =
+                _context.PetroStations.Any(w => w.StationUserName.Trim().ToUpper() == request.StationUserName.Trim().ToUpper());
+            if (isUsernameDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateUserName);
+            }
+            
             PetroStation petroStation = await AddPetroStation(request);
             
             return ActionResult.Ok(ApiMessages.PetroStationMessage.AddedSuccessfully);

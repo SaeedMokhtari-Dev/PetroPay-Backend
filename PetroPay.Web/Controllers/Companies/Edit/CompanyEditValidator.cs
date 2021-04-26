@@ -1,5 +1,6 @@
 using FluentValidation;
 using PetroPay.Core.Constants;
+using PetroPay.Web.Configuration.Constants;
 
 namespace PetroPay.Web.Controllers.Companies.Edit
 {
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.Companies.Edit
         public CompanyEditValidator()
         {
             RuleFor(x => x.CompanyId).NotEmpty().WithMessage(ApiMessages.CompanyMessage.IdRequired);
+            RuleFor(x => x.CompanyAdminUserPassword).MinimumLength(IdentitySettings.MinPasswordLength).WithMessage(ApiMessages.MinPasswordLengthError);
         }
     }
 }

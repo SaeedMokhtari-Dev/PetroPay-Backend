@@ -9,6 +9,10 @@ using PetroPay.Web.Controllers.Bundles.Add;
 using PetroPay.Web.Controllers.Bundles.Detail;
 using PetroPay.Web.Controllers.Bundles.Edit;
 using PetroPay.Web.Controllers.Bundles.Get;
+using PetroPay.Web.Controllers.Cars.Add;
+using PetroPay.Web.Controllers.Cars.Detail;
+using PetroPay.Web.Controllers.Cars.Edit;
+using PetroPay.Web.Controllers.Cars.Get;
 using PetroPay.Web.Controllers.Companies.Add;
 using PetroPay.Web.Controllers.Companies.Detail;
 using PetroPay.Web.Controllers.Companies.Edit;
@@ -49,6 +53,17 @@ namespace PetroPay.Web.Mapping
             CreateMap<BranchEditRequest, CompanyBranch>()
                 .ForMember(w => w.CompanyBranchId, opt => opt.Ignore());
             CreateMap<BranchAddRequest, CompanyBranch>();
+            
+            #endregion
+            #region Car
+            
+            CreateMap<Car, CarGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId));
+            CreateMap<Car, CarDetailResponse>();
+            CreateMap<CarEditRequest, Car>()
+                .ForMember(w => w.CarId, opt => opt.Ignore())
+                .ForMember(w => w.CompanyBarnchId, opt => opt.Ignore());
+            CreateMap<CarAddRequest, Car>();
             
             #endregion
             #region PetroStation

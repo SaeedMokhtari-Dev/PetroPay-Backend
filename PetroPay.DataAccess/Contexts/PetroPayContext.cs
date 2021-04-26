@@ -39,6 +39,8 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<TransAccount> TransAccounts { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+        public virtual DbSet<RechargeBalance> RechargeBalances { get; set; }
+        public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
         public async Task ExecuteTransactionAsync(Func<Task> action)
         {
@@ -794,6 +796,10 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(255)
                     .HasColumnName("station_user_name");
 
+                entity.Property(e => e.StationEmail)
+                    .HasMaxLength(50)
+                    .HasColumnName("station_email");
+
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.PetroStations)
                     .HasForeignKey(d => d.AccountId)
@@ -948,13 +954,59 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.ToTable("RefreshToken");
 
-                entity.Property(e => e.UniqueId).HasColumnName("UniqueId");
+                entity.Property(e => e.Token)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Token).HasColumnName("Token");
+                entity.Property(e => e.UniqueId)
+                    .IsRequired()
+                    .HasMaxLength(50);
                 entity.Property(e => e.IsActive).HasColumnName("IsActive");
-                entity.Property(e => e.CreatedAt).HasColumnName("CreatedAt");
-                entity.Property(e => e.ExpiresAt).HasColumnName("ExpiresAt");
+                
+                entity.Property(e => e.CreatedAt).HasColumnType("datetime");
 
+                entity.Property(e => e.ExpiresAt).HasColumnType("datetime");
+
+            });
+            modelBuilder.Entity<RechargeBalance>(entity =>
+            {
+                entity.HasKey(e => e.RechargeId);
+
+                entity.ToTable("RechargeBalance");
+
+                entity.Property(e => e.RechargeId).HasColumnName("Recharge_id");
+
+                entity.Property(e => e.BankName).HasMaxLength(50);
+
+                entity.Property(e => e.BankTransactionDate).HasColumnType("datetime");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.RechageDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Rechage_Date");
+
+                entity.Property(e => e.RechargeAmount).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.RechargePaymentMethod).HasMaxLength(50);
+
+                entity.Property(e => e.TransactionPersonName).HasMaxLength(50);
+
+                entity.HasOne(d => d.Company)
+                    .WithMany(p => p.RechargeBalances)
+                    .HasForeignKey(d => d.CompanyId)
+                    .HasConstraintName("FK_RechargeBalance_Company");
+            });
+            modelBuilder.Entity<PasswordResetToken>(entity =>
+            {
+                entity.ToTable("PasswordResetToken");
+
+                entity.Property(e => e.ResetRequestDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UniqueId)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
             OnModelCreatingPartial(modelBuilder);
         }

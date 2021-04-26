@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PetroPay.Core.Api.Handlers;
@@ -30,13 +31,14 @@ namespace PetroPay.Web.Controllers.StationUsers.Edit
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            /*var isEmailDuplicate =
-                _context.StationUsers.Any(w => w.Email.Trim().ToUpper() == request.Email.Trim().ToUpper()
-                                       && w.Id != request.StationUserId);
-            if (isEmailDuplicate)
+            
+            var isUsernameDuplicate =
+                _context.StationUsers.Any(w => w.StationUserName.Trim().ToUpper() == request.StationUserName.Trim().ToUpper()
+                                            && w.StationWorkerId != request.StationWorkerId);
+            if (isUsernameDuplicate)
             {
-                return ActionResult.Error(ApiMessages.StationUser.EmailIsDuplicate);
-            }*/
+                return ActionResult.Error(ApiMessages.DuplicateUserName);
+            }
 
             await EditStationUser(editStationUser, request);
             return ActionResult.Ok(ApiMessages.StationUserMessage.EditedSuccessfully);

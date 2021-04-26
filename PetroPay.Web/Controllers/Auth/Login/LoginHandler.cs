@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -30,7 +31,7 @@ namespace PetroPay.Web.Controllers.Auth.Login
         {
             if (request.RoleType == RoleType.Customer)
             {
-                var customer = _context.Companies.FirstOrDefault(x =>
+                var customer = await _context.Companies.FirstOrDefaultAsync(x =>
                     x.CompanyAdminUserName.ToLower() == request.Username.ToLower()
                     && x.CompanyAdminUserPassword.ToLower() == request.Password.ToLower());
              
@@ -43,7 +44,7 @@ namespace PetroPay.Web.Controllers.Auth.Login
             }
             else if(request.RoleType == RoleType.Supplier)
             {
-                var supplier = _context.PetroStations.FirstOrDefault(x =>
+                var supplier = await _context.PetroStations.FirstOrDefaultAsync(x =>
                     x.StationUserName.ToLower() == request.Username.ToLower()
                     && x.StationPassword.ToLower() == request.Password.ToLower());
              
@@ -56,7 +57,7 @@ namespace PetroPay.Web.Controllers.Auth.Login
             }
             else if(request.RoleType == RoleType.Admin)
             {
-                var admin = _context.Emplyees.FirstOrDefault(x =>
+                var admin = await _context.Emplyees.FirstOrDefaultAsync(x =>
                     x.EmplyeeUserName.ToLower() == request.Username.ToLower()
                     && x.EmplyeePassword.ToLower() == request.Password.ToLower());
              

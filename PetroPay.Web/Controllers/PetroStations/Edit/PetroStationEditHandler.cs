@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PetroPay.Core.Api.Handlers;
@@ -28,6 +29,15 @@ namespace PetroPay.Web.Controllers.PetroStations.Edit
             if (editPetroStation == null)
             {
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
+            }
+            
+            
+            var isUsernameDuplicate =
+                _context.PetroStations.Any(w => w.StationUserName.Trim().ToUpper() == request.StationUserName.Trim().ToUpper()
+                                            && w.StationId != request.StationId);
+            if (isUsernameDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
 
             await EditPetroStation(editPetroStation, request);
