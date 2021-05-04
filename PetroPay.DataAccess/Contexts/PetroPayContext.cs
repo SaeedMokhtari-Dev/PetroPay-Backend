@@ -867,7 +867,6 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.SubscriptionId).HasColumnName("subscription_id");
 
                 entity.Property(e => e.BundlesId)
-                    .HasMaxLength(255)
                     .HasColumnName("bundles_id");
 
                 entity.Property(e => e.CompanyId)

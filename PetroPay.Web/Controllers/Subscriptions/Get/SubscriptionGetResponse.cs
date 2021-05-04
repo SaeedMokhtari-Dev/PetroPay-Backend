@@ -1,25 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-#nullable disable
-
-namespace PetroPay.DataAccess.Entities
+namespace PetroPay.Web.Controllers.Subscriptions.Get
 {
-    public partial class Subscription
+    public class SubscriptionGetResponse
     {
-        public Subscription()
-        {
-            CarSubscriptions = new HashSet<CarSubscription>();
-        }
-
+        public int TotalCount { get; set; }
+        public List<SubscriptionGetResponseItem> Items { get; set; }
+    }
+    public class SubscriptionGetResponseItem
+    {
+        public int Key { get; set; }
         public int SubscriptionId { get; set; }
         public int? CompanyId { get; set; }
+        public string CompanyName { get; set; }
         public int? BundlesId { get; set; }
         public int? SubscriptionCarNumbers { get; set; }
         public string SubscriptionPaymentMethod { get; set; }
-        /// <summary>
-        /// monthly yearly quartly
-        /// </summary>
         public string SubscriptionType { get; set; }
         public DateTime? SubscriptionStartDate { get; set; }
         public DateTime? SubscriptionEndDate { get; set; }
@@ -27,8 +24,5 @@ namespace PetroPay.DataAccess.Entities
         public bool? SubscriptionActive { get; set; }
         public string PaymentReferenceNumber { get; set; }
         public DateTime? SubscriptionDate { get; set; }
-
-        public virtual Company Company { get; set; }
-        public virtual ICollection<CarSubscription> CarSubscriptions { get; set; }
     }
 }

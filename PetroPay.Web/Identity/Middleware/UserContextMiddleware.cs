@@ -42,6 +42,7 @@ namespace PetroPay.Web.Identity.Middleware
                                     userContext.Role = RoleType.Customer;
                                     userContext.IsActive = true;
                                     userContext.IsAuthenticated = true;
+                                    userContext.Balance = customer.CompanyBalnce ?? 0;
                                 }
 
                                 break;
@@ -56,6 +57,7 @@ namespace PetroPay.Web.Identity.Middleware
                                     userContext.Role = RoleType.Supplier;
                                     userContext.IsActive = true;
                                     userContext.IsAuthenticated = true;
+                                    userContext.Balance = supplier.StationBalance ?? 0;
                                 }
 
                                 break;
@@ -70,6 +72,7 @@ namespace PetroPay.Web.Identity.Middleware
                                     userContext.Role = RoleType.Admin;
                                     userContext.IsActive = true;
                                     userContext.IsAuthenticated = true;
+                                    userContext.Balance = 0;
                                 }
 
                                 break;

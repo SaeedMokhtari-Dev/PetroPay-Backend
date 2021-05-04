@@ -9,6 +9,7 @@ namespace PetroPay.Core.Constants
         public const string PageSize = "Api.PageSize";
         public const string PageIndex = "Api.PageIndex";
         public const string DuplicateUserName = "Api.Username.Duplicate";
+        public const string NotEnoughBalance = "Api.NotEnoughBalance";
         public const string MinPasswordLengthError = "Api.MinPasswordLengthError";
 
         public static class Auth
@@ -83,7 +84,6 @@ namespace PetroPay.Core.Constants
         }
         public static class PetroStationMessage
         {
-            public const string CompanyIdRequired = "Api.PetroStation.CompanyId.Required";
             public const string IdRequired = "Api.PetroStation.Id.Required";
             public const string NameRequired = "Api.PetroStation.Name.Required";
             public const string EmailRequired = "Api.PetroStation.Email.Required";
@@ -132,6 +132,36 @@ namespace PetroPay.Core.Constants
             public const string DeletedSuccessfully = "Api.Bundle.Deleted.Successful";
             
             public const string ArchiveEntityEditNotAllowed = "Api.Bundle.ArchivedEntityEdit.NotAllowed";
+            
+        }
+        public static class SubscriptionMessage
+        {
+            public const string CompanyIdRequired = "Api.Subscription.CompanyId.Required";
+            public const string BundleIdRequired = "Api.Subscription.BundleId.Required";
+            public const string IdRequired = "Api.Subscription.Id.Required";
+            
+            public const string AddedSuccessfully = "Api.Subscription.Add.Successful";
+            public const string EditedSuccessfully = "Api.Subscription.Edit.Successful";
+            public const string ActivatedSuccessfully = "Api.Subscription.Activated.Successful";
+            public const string DeletedSuccessfully = "Api.Subscription.Deleted.Successful";
+            
+        }
+        public static class RechargeBalanceMessage
+        {
+            public const string CompanyIdRequired = "Api.RechargeBalance.CompanyId.Required";
+            public const string IdRequired = "Api.RechargeBalance.Id.Required";
+            public const string NameRequired = "Api.RechargeBalance.Name.Required";
+            public const string EmailRequired = "Api.RechargeBalance.Email.Required";
+            public const string LogoRequired = "Api.RechargeBalance.Logo.Required";
+            public const string EmailIsDuplicate = "Api.RechargeBalance.Email.Duplicate";
+            public const string EmailIsWrong = "Api.RechargeBalance.Email.IsWrong";
+            
+            public const string AddedSuccessfully = "Api.RechargeBalance.Add.Successful";
+            public const string EditedSuccessfully = "Api.RechargeBalance.Edit.Successful";
+            public const string ConfirmedSuccessfully = "Api.RechargeBalance.Confirmed.Successful";
+            public const string DeletedSuccessfully = "Api.RechargeBalance.Deleted.Successful";
+            
+            public const string ConfirmedEntityEditNotAllowed = "Api.RechargeBalance.ConfirmedEntityEdit.NotAllowed";
             
         }
         public static class User

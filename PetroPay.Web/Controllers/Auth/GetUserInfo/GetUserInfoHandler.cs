@@ -30,18 +30,19 @@ namespace PetroPay.Web.Controllers.Auth.GetUserInfo
                         {
                             Id = customer.CompanyId,
                             Name = customer.CompanyName,
-                            Role = RoleType.Customer
+                            Role = RoleType.Customer,
+                            Balance =  customer.CompanyBalnce ?? 0
                         });
                     break;
                 case RoleType.Supplier:
                     var supplier = await _context.PetroStations.FindAsync(_userContext.Id);
                     if(supplier != null)
-                        return ActionResult.Ok(new GetUserInfoResponse(supplier.StationId, RoleType.Supplier, supplier.StationName));
+                        return ActionResult.Ok(new GetUserInfoResponse(supplier.StationId, RoleType.Supplier, supplier.StationName, supplier.StationBalance ?? 0));
                     break;
                 case RoleType.Admin:
                     var admin = await _context.Emplyees.FindAsync(_userContext.Id);
                     if(admin != null)
-                        return ActionResult.Ok(new GetUserInfoResponse(admin.EmplyeeId, RoleType.Admin, admin.EmplyeeName));
+                        return ActionResult.Ok(new GetUserInfoResponse(admin.EmplyeeId, RoleType.Admin, admin.EmplyeeName, 0));
                     break;
             }
             return ActionResult.Error(ApiMessages.ResourceNotFound);

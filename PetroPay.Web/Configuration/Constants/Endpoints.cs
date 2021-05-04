@@ -53,6 +53,23 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiCarGet = "/api/car/get";
         public const string ApiCarDetail = "/api/car/detail";
         public const string ApiCarDelete = "/api/car/delete";
+        public const string ApiCarList = "/api/car/list";
+        
+        /*Subscription APIs*/
+        public const string ApiSubscriptionAdd = "/api/subscription/add";
+        public const string ApiSubscriptionEdit = "/api/subscription/edit";
+        public const string ApiSubscriptionGet = "/api/subscription/get";
+        public const string ApiSubscriptionDetail = "/api/subscription/detail";
+        public const string ApiSubscriptionDelete = "/api/subscription/delete";
+        public const string ApiSubscriptionActive = "/api/subscription/active";
+        
+        /*RechargeBalance APIs*/
+        public const string ApiRechargeBalanceAdd = "/api/recharge-balance/add";
+        public const string ApiRechargeBalanceEdit = "/api/recharge-balance/edit";
+        public const string ApiRechargeBalanceGet = "/api/recharge-balance/get";
+        public const string ApiRechargeBalanceDetail = "/api/recharge-balance/detail";
+        public const string ApiRechargeBalanceDelete = "/api/recharge-balance/delete";
+        public const string ApiRechargeBalanceConfirm = "/api/recharge-balance/confirm";
         
         /*admin APIs*/
         public const string ApiUserGet = "/api/user/get";

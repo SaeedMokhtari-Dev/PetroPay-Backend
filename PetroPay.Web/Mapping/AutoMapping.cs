@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Controllers.Branches.Add;
@@ -21,10 +22,18 @@ using PetroPay.Web.Controllers.PetroStations.Add;
 using PetroPay.Web.Controllers.PetroStations.Detail;
 using PetroPay.Web.Controllers.PetroStations.Edit;
 using PetroPay.Web.Controllers.PetroStations.Get;
+using PetroPay.Web.Controllers.RechargeBalances.Add;
+using PetroPay.Web.Controllers.RechargeBalances.Detail;
+using PetroPay.Web.Controllers.RechargeBalances.Edit;
+using PetroPay.Web.Controllers.RechargeBalances.Get;
 using PetroPay.Web.Controllers.StationUsers.Add;
 using PetroPay.Web.Controllers.StationUsers.Detail;
 using PetroPay.Web.Controllers.StationUsers.Edit;
 using PetroPay.Web.Controllers.StationUsers.Get;
+using PetroPay.Web.Controllers.Subscriptions.Add;
+using PetroPay.Web.Controllers.Subscriptions.Detail;
+using PetroPay.Web.Controllers.Subscriptions.Edit;
+using PetroPay.Web.Controllers.Subscriptions.Get;
 
 namespace PetroPay.Web.Mapping
 {
@@ -64,6 +73,36 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.CarId, opt => opt.Ignore())
                 .ForMember(w => w.CompanyBarnchId, opt => opt.Ignore());
             CreateMap<CarAddRequest, Car>();
+            
+            #endregion
+            #region Subscription
+
+            CreateMap<Subscription, SubscriptionGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.SubscriptionId))
+                .ForMember(w => w.CompanyName, opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+            CreateMap<Subscription, SubscriptionDetailResponse>()
+                .ForMember(w => w.CompanyName, opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+            CreateMap<SubscriptionEditRequest, Subscription>()
+                .ForMember(w => w.SubscriptionId, opt => opt.Ignore())
+                .ForMember(w => w.CompanyId, opt => opt.Ignore());
+            CreateMap<SubscriptionAddRequest, Subscription>()
+                .ForMember(w => w.SubscriptionDate, opt => opt.MapFrom(src => DateTime.Now));
+            
+            #endregion
+            #region RechargeBalance
+
+            CreateMap<RechargeBalance, RechargeBalanceGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.RechargeId))
+                .ForMember(w => w.CompanyName,
+                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+            CreateMap<RechargeBalance, RechargeBalanceDetailResponse>()
+                .ForMember(w => w.CompanyName,
+                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+            CreateMap<RechargeBalanceEditRequest, RechargeBalance>()
+                .ForMember(w => w.RechargeId, opt => opt.Ignore())
+                .ForMember(w => w.CompanyId, opt => opt.Ignore());
+            CreateMap<RechargeBalanceAddRequest, RechargeBalance>()
+                .ForMember(w => w.RechageDate, opt => opt.MapFrom(src => DateTime.Now));
             
             #endregion
             #region PetroStation

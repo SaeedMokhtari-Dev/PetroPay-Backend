@@ -13,6 +13,8 @@ namespace PetroPay.Web.Identity.Contexts
 
         public RoleType Role { get; set; }
 
+        public decimal Balance { get; set; }
+
         public bool IsActive { get; set; }
     }
 }
