@@ -2,6 +2,7 @@ namespace PetroPay.Web.Configuration.Constants
 {
     public static class Endpoints
     {
+        #region Auth
         /*Auth APIs*/
         public const string ApiAuthLogin = "/api/auth/login";
         public const string ApiAuthResetPassword = "/api/auth/reset-password";
@@ -12,6 +13,16 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiAuthRefreshAccessToken = "/api/auth/refresh-access-token";
         public const string ApiUserInfo = "/api/user/info";
         
+        /*admin APIs*/
+        public const string ApiUserGet = "/api/user/get";
+        public const string ApiUserAdd = "/api/user/add";
+        public const string ApiUserEdit = "/api/user/edit";
+        public const string ApiUserDetail = "/api/user/detail";
+        
+        #endregion
+
+        #region Entities
+
         /*Company APIs*/
         public const string ApiCompanyAdd = "/api/company/add";
         public const string ApiCompanyEdit = "/api/company/edit";
@@ -25,6 +36,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiBranchGet = "/api/branch/get";
         public const string ApiBranchDetail = "/api/branch/detail";
         public const string ApiBranchDelete = "/api/branch/delete";
+        public const string ApiBranchActive = "/api/branch/active";
         
         /*Bundle APIs*/
         public const string ApiBundleAdd = "/api/bundle/add";
@@ -32,6 +44,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiBundleGet = "/api/bundle/get";
         public const string ApiBundleDetail = "/api/bundle/detail";
         public const string ApiBundleDelete = "/api/bundle/delete";
+        
         
         /*PetroStation APIs*/
         public const string ApiPetroStationAdd = "/api/petro-station/add";
@@ -54,6 +67,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiCarDetail = "/api/car/detail";
         public const string ApiCarDelete = "/api/car/delete";
         public const string ApiCarList = "/api/car/list";
+        public const string ApiCarActive = "/api/car/active";
         
         /*Subscription APIs*/
         public const string ApiSubscriptionAdd = "/api/subscription/add";
@@ -62,6 +76,8 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiSubscriptionDetail = "/api/subscription/detail";
         public const string ApiSubscriptionDelete = "/api/subscription/delete";
         public const string ApiSubscriptionActive = "/api/subscription/active";
+        public const string ApiSubscriptionCalculate = "/api/subscription/calculate";
+        public const string ApiSubscriptionCarAdd = "/api/subscription/car-add";
         
         /*RechargeBalance APIs*/
         public const string ApiRechargeBalanceAdd = "/api/recharge-balance/add";
@@ -71,13 +87,16 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiRechargeBalanceDelete = "/api/recharge-balance/delete";
         public const string ApiRechargeBalanceConfirm = "/api/recharge-balance/confirm";
         
-        /*admin APIs*/
-        public const string ApiUserGet = "/api/user/get";
-        public const string ApiUserAdd = "/api/user/add";
-        public const string ApiUserEdit = "/api/user/edit";
-        public const string ApiUserDetail = "/api/user/detail";
-        
+        #endregion
 
+        #region Reports
+
+        /*AccountBalance APIs*/
+        public const string ApiAccountBalanceGet = "/api/account-balance/get";
+        public const string ApiAccountBalanceDetail = "/api/account-balance/detail";
+
+        #endregion
+        
         public const string ApiLog = "/api/log";
         public const string Swagger = "/swagger/v1/swagger.json";
     }

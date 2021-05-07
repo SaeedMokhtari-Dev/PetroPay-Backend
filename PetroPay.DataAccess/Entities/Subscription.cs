@@ -28,6 +28,7 @@ namespace PetroPay.DataAccess.Entities
         public string PaymentReferenceNumber { get; set; }
         public DateTime? SubscriptionDate { get; set; }
 
+        public virtual Bundle Bundles { get; set; }
         public virtual Company Company { get; set; }
         public virtual ICollection<CarSubscription> CarSubscriptions { get; set; }
     }

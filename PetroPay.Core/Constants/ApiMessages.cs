@@ -11,6 +11,7 @@ namespace PetroPay.Core.Constants
         public const string DuplicateUserName = "Api.Username.Duplicate";
         public const string NotEnoughBalance = "Api.NotEnoughBalance";
         public const string MinPasswordLengthError = "Api.MinPasswordLengthError";
+        public const string IdRequired = "Api.Validate.IdRequired";
 
         public static class Auth
         {
@@ -60,6 +61,7 @@ namespace PetroPay.Core.Constants
             public const string EditedSuccessfully = "Api.Branch.Edit.Successful";
             public const string ArchivedSuccessfully = "Api.Branch.Archived.Successful";
             public const string DeletedSuccessfully = "Api.Branch.Deleted.Successful";
+            public const string ActivatedSuccessfully = "Api.Branch.Activated.Successful";
             
             public const string ArchiveEntityEditNotAllowed = "Api.Branch.ArchivedEntityEdit.NotAllowed";
             
@@ -68,6 +70,7 @@ namespace PetroPay.Core.Constants
         {
             public const string CompanyBranchIdRequired = "Api.Car.CompanyBranchId.Required";
             public const string IdRequired = "Api.Car.Id.Required";
+            public const string CarNfcCodeRequired = "Api.Car.CarNfcCode.Required";
             public const string NameRequired = "Api.Car.Name.Required";
             public const string EmailRequired = "Api.Car.Email.Required";
             public const string LogoRequired = "Api.Car.Logo.Required";
@@ -78,8 +81,11 @@ namespace PetroPay.Core.Constants
             public const string EditedSuccessfully = "Api.Car.Edit.Successful";
             public const string ArchivedSuccessfully = "Api.Car.Archived.Successful";
             public const string DeletedSuccessfully = "Api.Car.Deleted.Successful";
+            public const string ActivatedSuccessfully = "Api.Car.Activated.Successful";
             
             public const string ArchiveEntityEditNotAllowed = "Api.Car.ArchivedEntityEdit.NotAllowed";
+            public const string AddMoreThanMaxNotAllowed = "Api.Car.AddMoreThanMax.NotAllowed";
+            public const string AddMoreThanSubscriptionsNotAllowed = "Api.Car.AddMoreThanSubscriptions.NotAllowed";
             
         }
         public static class PetroStationMessage
@@ -139,11 +145,23 @@ namespace PetroPay.Core.Constants
             public const string CompanyIdRequired = "Api.Subscription.CompanyId.Required";
             public const string BundleIdRequired = "Api.Subscription.BundleId.Required";
             public const string IdRequired = "Api.Subscription.Id.Required";
+            public const string SubscriptionCarIdsRequired = "Api.Subscription.SubscriptionCarIds.Required";
+            public const string SubscriptionCostRequired = "Api.Subscription.SubscriptionCost.Required";
+            public const string SubscriptionCarNumberRequired = "Api.Subscription.SubscriptionCarNumbers.Required";
+            public const string SubscriptionStartDateRequired = "Api.Subscription.SubscriptionStartDate.Required";
+            public const string SubscriptionEndDateRequired = "Api.Subscription.SubscriptionEndDate.Required";
+            public const string SubscriptionPaymentMethodRequired = "Api.Subscription.SubscriptionPaymentMethod.Required";
             
             public const string AddedSuccessfully = "Api.Subscription.Add.Successful";
             public const string EditedSuccessfully = "Api.Subscription.Edit.Successful";
             public const string ActivatedSuccessfully = "Api.Subscription.Activated.Successful";
             public const string DeletedSuccessfully = "Api.Subscription.Deleted.Successful";
+            public const string CarsAddedSuccessfully = "Api.Subscription.CarsAdded.Successful";
+            
+            public const string ActiveEntityEditNotAllowed = "Api.Subscription.ActiveEntityEdit.NotAllowed";
+            public const string ActiveEntityDeleteNotAllowed = "Api.Subscription.ActiveEntityDelete.NotAllowed";
+            public const string SubscriptionCarAddNotAllowed = "Api.Subscription.SubscriptionCarAdd.NotAllowed";
+            public const string CarAddMoreNotAllowed = "Api.Subscription.CarAddMore.NotAllowed";
             
         }
         public static class RechargeBalanceMessage
