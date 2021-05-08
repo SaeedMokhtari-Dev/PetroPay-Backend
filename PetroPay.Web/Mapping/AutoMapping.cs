@@ -34,6 +34,7 @@ using PetroPay.Web.Controllers.Entities.Subscriptions.Add;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Detail;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Edit;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Get;
+using PetroPay.Web.Controllers.Reports.CarBalances.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceSummary.Get;
 
@@ -148,6 +149,8 @@ namespace PetroPay.Web.Mapping
 
             CreateMap<ViewInvoicesSummary, InvoiceSummaryGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.InvoiceId));
+            CreateMap<ViewCarBalance, CarBalanceGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId));
             CreateMap<ViewInvoiceDetail, InvoiceDetailGetResponse>();
                         
             #endregion

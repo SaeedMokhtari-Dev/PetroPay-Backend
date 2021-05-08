@@ -1,11 +1,18 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 
-#nullable disable
-
-namespace PetroPay.DataAccess.Entities
+namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
 {
-    public partial class ViewCarBalance
+    public class CarBalanceGetResponse
     {
+        public int TotalCount { get; set; }
+        
+        public decimal SumCarBalance { get; set; }
+        public List<CarBalanceGetResponseItem> Items { get; set; }
+    }
+    public class CarBalanceGetResponseItem
+    {
+        public int Key { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public int CompanyBranchId { get; set; }

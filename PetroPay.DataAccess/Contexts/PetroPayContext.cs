@@ -1118,6 +1118,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("consumption_value");
 
                 entity.Property(e => e.SubscriptionEndDate).HasColumnName("subscription_end_date");
+                entity.Property(e => e.SubscriptionStartDate).HasColumnName("subscription_start_date");
             });
 
             modelBuilder.Entity<ViewCarTransaction>(entity =>

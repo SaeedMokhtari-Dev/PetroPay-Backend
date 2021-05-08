@@ -99,6 +99,8 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiInvoiceSummaryGet = "/api/invoice-summary/get";
         /*InvoiceDetails APIs*/
         public const string ApiInvoiceDetailGet = "/api/invoice-detail/get";
+        /*CarBalances APIs*/
+        public const string ApiCarBalanceGet = "/api/car-balance/get";
 
         #endregion
         
