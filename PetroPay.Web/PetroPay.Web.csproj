@@ -35,6 +35,7 @@
 
     <ItemGroup>
       <Folder Include="Controllers\Entities" />
+      <Folder Include="Controllers\Reports\InvoiceDetails" />
       <Folder Include="Database" />
     </ItemGroup>
 

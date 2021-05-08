@@ -94,6 +94,11 @@ namespace PetroPay.Web.Configuration.Constants
         /*AccountBalance APIs*/
         public const string ApiAccountBalanceGet = "/api/account-balance/get";
         public const string ApiAccountBalanceDetail = "/api/account-balance/detail";
+        
+        /*InvoiceSummary APIs*/
+        public const string ApiInvoiceSummaryGet = "/api/invoice-summary/get";
+        /*InvoiceDetails APIs*/
+        public const string ApiInvoiceDetailGet = "/api/invoice-detail/get";
 
         #endregion
         

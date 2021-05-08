@@ -34,6 +34,8 @@ using PetroPay.Web.Controllers.Entities.Subscriptions.Add;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Detail;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Edit;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Get;
+using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
+using PetroPay.Web.Controllers.Reports.InvoiceSummary.Get;
 
 namespace PetroPay.Web.Mapping
 {
@@ -41,6 +43,8 @@ namespace PetroPay.Web.Mapping
     {
         public AutoMapping()
         {
+            #region Entities
+
             #region Company
             
             CreateMap<Company, CompanyGetResponseItem>()
@@ -135,12 +139,20 @@ namespace PetroPay.Web.Mapping
             CreateMap<BundleAddRequest, Bundle>();
             
             #endregion
-            
 
-            /*CreateMap<UserAddRequest, ApiMessages.User>()
-                .ForMember(w => w.Password, opt => opt.Ignore());
-            
-            CreateMap<ApiMessages.User, UserDetailResponse>();*/
+            #endregion
+
+            #region Reports
+
+            #region InvoiceSummary
+
+            CreateMap<ViewInvoicesSummary, InvoiceSummaryGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.InvoiceId));
+            CreateMap<ViewInvoiceDetail, InvoiceDetailGetResponse>();
+                        
+            #endregion
+
+            #endregion
         }
     }
 }

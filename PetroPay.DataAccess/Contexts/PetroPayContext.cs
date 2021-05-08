@@ -1236,6 +1236,12 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(50)
                     .HasColumnName("car_id_number");
 
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.CompanyName)
+                    .HasMaxLength(255)
+                    .HasColumnName("Company_name");
+                
                 entity.Property(e => e.CompanyBranchId).HasColumnName("company_branch_id");
 
                 entity.Property(e => e.CompanyBranchName)
