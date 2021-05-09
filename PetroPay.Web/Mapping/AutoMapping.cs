@@ -39,6 +39,7 @@ using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceSummary.Get;
 using PetroPay.Web.Controllers.Reports.StationReports.Get;
+using PetroPay.Web.Controllers.Reports.StationSales.Get;
 
 namespace PetroPay.Web.Mapping
 {
@@ -157,6 +158,8 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.InvoiceId));
             CreateMap<ViewCarTransaction, CarTransactionGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId));
+            CreateMap<ViewStationSale, StationSaleGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.StationWorkerId));
             CreateMap<ViewInvoiceDetail, InvoiceDetailGetResponse>();
                         
             #endregion

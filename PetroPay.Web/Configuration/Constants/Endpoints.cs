@@ -105,6 +105,8 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiCarTransactionGet = "/api/car-transaction/get";
         /*StationReports APIs*/
         public const string ApiStationReportGet = "/api/station-report/get";
+        /*StationSales APIs*/
+        public const string ApiStationSaleGet = "/api/station-sale/get";
 
         #endregion
         
