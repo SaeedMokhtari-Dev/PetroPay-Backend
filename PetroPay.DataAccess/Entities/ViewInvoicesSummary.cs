@@ -6,8 +6,6 @@ namespace PetroPay.DataAccess.Entities
 {
     public partial class ViewInvoicesSummary
     {
-        public int CompanyId { get; set; }
-        public string CompanyName { get; set; }
         public int CompanyBranchId { get; set; }
         public string CompanyBranchName { get; set; }
         public DateTime? InvoiceDataTime { get; set; }
@@ -18,5 +16,7 @@ namespace PetroPay.DataAccess.Entities
         public double? InvoiceFuelConsumptionLiter { get; set; }
         public double? InvoiceAmount { get; set; }
         public string PaymentMethodName { get; set; }
+        public int CompanyId { get; set; }
+        public string CompanyName { get; set; }
     }
 }

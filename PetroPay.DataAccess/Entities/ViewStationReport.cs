@@ -15,5 +15,6 @@ namespace PetroPay.DataAccess.Entities
         public double? InvoiceAmount { get; set; }
         public string PaymentMethodName { get; set; }
         public DateTime? InvoiceDataTime { get; set; }
+        public int StationId { get; set; }
     }
 }

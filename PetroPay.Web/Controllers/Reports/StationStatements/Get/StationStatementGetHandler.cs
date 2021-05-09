@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Itenso.TimePeriod;
 using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
@@ -10,17 +12,18 @@ using PetroPay.Core.Constants;
 using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 
-namespace PetroPay.Web.Controllers.Reports.StationReports.Get
+namespace PetroPay.Web.Controllers.Reports.StationStatements.Get
 {
-    public class StationReportGetHandler : ApiRequestHandler<StationReportGetRequest>
+    public class StationStatementGetHandler : ApiRequestHandler<StationStatementGetRequest>
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
         private readonly UserContext _userContext;
 
-        public StationReportGetHandler(
+        public StationStatementGetHandler(
             PetroPayContext context, IMapper mapper, UserContext userContext)
         {
             _context = context;
@@ -28,48 +31,47 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
             _userContext = userContext;
         }
 
-        protected override async Task<ActionResult> Execute(StationReportGetRequest request)
+        protected override async Task<ActionResult> Execute(StationStatementGetRequest request)
         {
-            if(_userContext.Role == RoleType.Supplier && request.StationWorkerId == null)
+            if(_userContext.Role == RoleType.Supplier && request.StationId == null)
                 return ActionResult.Error(ApiMessages.PetroStationMessage.IdRequired);
             
-            var query = _context.ViewStationReports.OrderByDescending(w => w.InvoiceDataTime)
+            var query = _context.ViewStationStatements.OrderByDescending(w => w.InvoiceDataTime)
                 .AsQueryable();
             
             query = createQuery(query, request);
             
-            StationReportGetResponse response = new StationReportGetResponse();
+            StationStatementGetResponse response = new StationStatementGetResponse();
             response.TotalCount = await query.CountAsync();
 
             query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
             var result = await query.ToListAsync();
 
-            var mappedResult = _mapper.Map<List<StationReportGetResponseItem>>(result);
+            var mappedResult = _mapper.Map<List<StationStatementGetResponseItem>>(result);
             response.Items = mappedResult;
             return ActionResult.Ok(response);
         }
 
-        private IQueryable<ViewStationReport> createQuery(IQueryable<ViewStationReport> query, StationReportGetRequest request)
+        private IQueryable<ViewStationStatement> createQuery(IQueryable<ViewStationStatement> query, StationStatementGetRequest request)
         {
             
-            if (request.StationWorkerId.HasValue)
+            if (request.StationId.HasValue)
             {
-                query = query.Where(w => w.StationId == request.StationWorkerId);
+                query = query.Where(w => w.StationId == request.StationId);
             }
-            if (!string.IsNullOrEmpty(request.StationWorkerFname))
+            if (!string.IsNullOrEmpty(request.StationName))
             {
-                query = query.Where(w => w.StationWorkerFname.Contains(request.StationWorkerFname));
+                query = query.Where(w => EF.Functions.Like(w.StationName, $"%{request.StationName}%"));
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeFrom))
             {
-                DateTime dateTimeFrom = Convert.ToDateTime(request.InvoiceDataTimeFrom);
-                query = query.Where(w => w.InvoiceDataTime >= dateTimeFrom);
+                query = query.Where(w => String.Compare(w.InvoiceDataTime, request.InvoiceDataTimeFrom.ReverseDate()) >= 0);
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeTo))
             {
-                DateTime dateTimeTo = Convert.ToDateTime(request.InvoiceDataTimeTo);
-                query = query.Where(w => w.InvoiceDataTime <= dateTimeTo);
+                query = query.Where(w => String.Compare(w.InvoiceDataTime, request.InvoiceDataTimeTo.ReverseDate()) <= 0);
             }
+            
             return query;
 
         }

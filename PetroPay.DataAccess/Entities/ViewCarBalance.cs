@@ -15,7 +15,7 @@ namespace PetroPay.DataAccess.Entities
         public decimal? ConsumptionValue { get; set; }
         public decimal? CarBalnce { get; set; }
         public int CarId { get; set; }
-        public DateTime? SubscriptionStartDate { get; set; }
         public DateTime? SubscriptionEndDate { get; set; }
+        public DateTime? SubscriptionStartDate { get; set; }
     }
 }

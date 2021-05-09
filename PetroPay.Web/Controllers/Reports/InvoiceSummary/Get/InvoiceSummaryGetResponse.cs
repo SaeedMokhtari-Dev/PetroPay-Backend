@@ -21,5 +21,7 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
         public double? InvoiceFuelConsumptionLiter { get; set; }
         public double? InvoiceAmount { get; set; }
         public string PaymentMethodName { get; set; }
+        public int CompanyId { get; set; }
+        public string CompanyName { get; set; }
     }
 }

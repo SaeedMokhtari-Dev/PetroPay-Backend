@@ -56,7 +56,7 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
             
             if (request.StationWorkerId.HasValue)
             {
-                query = query.Where(w => w.StationWorkerId == request.StationWorkerId);
+                query = query.Where(w => w.StationId == request.StationWorkerId);
             }
             if (!string.IsNullOrEmpty(request.StationWorkerFname))
             {
@@ -68,18 +68,11 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeFrom))
             {
-                //DateTime dateTime = Convert.ToDateTime(request.InvoiceDataTimeFrom);
-                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeFrom) > 0);
-                /*DbFunctions dfunc = null;
-                query = query.Where(w => SqlServerDbFunctionsExtensions.SmallDateTimeFromParts(
-                    dfunc,
-                    Convert.ToInt32(w.SumInvoiceDataTime.Split("//").GetValue(2)),
-                    Convert.ToInt32(w.SumInvoiceDataTime.Split("//")[1]),
-                    Convert.ToInt32(w.SumInvoiceDataTime.Split("//")[0]), 0 , 0) <= dateTime);*/
+                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeFrom) >= 0);
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeTo))
             {
-                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeTo) < 0);
+                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeTo) <= 0);
             }
             
             return query;
