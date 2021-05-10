@@ -24,8 +24,10 @@ namespace PetroPay.Web.Controllers.Reports.AccountBalances.Get
         protected override async Task<ActionResult> Execute(AccountBalanceGetRequest request)
         {
             var query = _context.ViewAccountBalances.OrderBy(w => w.AccountId)
-                .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();
+            
+            if(!request.ExportToFile)
+                query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
 
             var result = await query.ToListAsync();
 

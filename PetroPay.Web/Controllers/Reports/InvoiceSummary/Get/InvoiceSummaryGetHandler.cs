@@ -41,7 +41,9 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
             InvoiceSummaryGetResponse response = new InvoiceSummaryGetResponse();
             response.TotalCount = await query.CountAsync();
 
-            query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            if(!request.ExportToFile)
+                query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<InvoiceSummaryGetResponseItem>>(result);

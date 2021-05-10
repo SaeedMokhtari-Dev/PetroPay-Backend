@@ -42,7 +42,9 @@ namespace PetroPay.Web.Controllers.Reports.CarTransactions.Get
             response.TotalCount = await query.CountAsync();
             //response.SumCarTransaction = await query.SumAsync(w => w.TransAmount ?? 0);
 
-            query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            if(!request.ExportToFile)
+                query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<CarTransactionGetResponseItem>>(result);

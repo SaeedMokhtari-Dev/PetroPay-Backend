@@ -42,7 +42,8 @@ namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
             response.TotalCount = await query.CountAsync();
             response.SumCarBalance = await query.SumAsync(w => w.CarBalnce ?? 0);
 
-            query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            if(!request.ExportToFile)
+                query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<CarBalanceGetResponseItem>>(result);

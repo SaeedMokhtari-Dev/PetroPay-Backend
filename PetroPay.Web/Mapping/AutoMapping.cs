@@ -188,7 +188,17 @@ namespace PetroPay.Web.Mapping
             CreateMap<ViewInvoicesSummary, InvoiceSummaryGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.InvoiceId));
             CreateMap<ViewCarBalance, CarBalanceGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId))
+                .ForMember(w => w.SubscriptionStartDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionStartDate.HasValue
+                            ? e.SubscriptionStartDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty))
+                .ForMember(w => w.SubscriptionEndDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionEndDate.HasValue
+                            ? e.SubscriptionEndDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty));
             CreateMap<ViewStationReport, StationReportGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.InvoiceId));
             CreateMap<ViewCarTransaction, CarTransactionGetResponseItem>()

@@ -22,7 +22,7 @@ namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
         public decimal? ConsumptionValue { get; set; }
         public decimal? CarBalnce { get; set; }
         public int CarId { get; set; }
-        public DateTime? SubscriptionStartDate { get; set; }
-        public DateTime? SubscriptionEndDate { get; set; }
+        public string SubscriptionStartDate { get; set; }
+        public string SubscriptionEndDate { get; set; }
     }
 }

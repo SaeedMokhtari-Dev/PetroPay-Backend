@@ -1,3 +1,5 @@
+using System;
+
 namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
 {
     public class CarBalanceGetRequest
@@ -7,6 +9,7 @@ namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
         public string InvoiceDataTimeFrom { get; set; }
         public string InvoiceDataTimeTo { get; set; }
         public string ServiceDescription { get; set; }*/
+        public bool ExportToFile { get; set; }
         public int? CompanyId { get; set; }
         public string CompanyName { get; set; }   
         public int PageIndex { get; set; }

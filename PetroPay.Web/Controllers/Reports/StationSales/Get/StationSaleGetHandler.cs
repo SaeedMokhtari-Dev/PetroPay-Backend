@@ -43,7 +43,9 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
             StationSaleGetResponse response = new StationSaleGetResponse();
             response.TotalCount = await query.CountAsync();
 
-            query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            if(!request.ExportToFile)
+                query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<StationSaleGetResponseItem>>(result);
