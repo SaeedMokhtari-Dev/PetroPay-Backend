@@ -68,10 +68,6 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
             {
                 query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));
             }
-            if (!string.IsNullOrEmpty(request.CompanyName))
-            {
-                query = query.Where(w => w.CompanyName.Contains(request.CompanyName));
-            }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeFrom))
             {
                 DateTime dateTimeFrom = Convert.ToDateTime(request.InvoiceDataTimeFrom);

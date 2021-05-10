@@ -36,8 +36,10 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Add
             
             if(branch == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
-            
-            if(branch.Cars.Count >= (branch.CompanyBranchNumberOfcar ?? 0))
+
+            var branchCarCount = await _context.Cars.CountAsync(w =>
+                w.CompanyBarnchId.HasValue && w.CompanyBarnchId == branch.CompanyBranchId); 
+            if(branchCarCount >= (branch.CompanyBranchNumberOfcar ?? 0))
                 return ActionResult.Error(ApiMessages.CarMessage.AddMoreThanMaxNotAllowed);
 
             var sumCarSubscription = await _context.Subscriptions

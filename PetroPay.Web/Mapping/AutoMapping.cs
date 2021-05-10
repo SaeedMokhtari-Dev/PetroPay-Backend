@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using AutoMapper;
+using Itenso.TimePeriod;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Controllers.Entities.Branches.Add;
@@ -89,7 +91,23 @@ namespace PetroPay.Web.Mapping
 
             CreateMap<Subscription, SubscriptionGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.SubscriptionId))
-                .ForMember(w => w.CompanyName, opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+                .ForMember(w => w.CompanyName,
+                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
+                .ForMember(w => w.SubscriptionStartDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionStartDate.HasValue
+                            ? e.SubscriptionStartDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty))
+                .ForMember(w => w.SubscriptionEndDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionEndDate.HasValue
+                            ? e.SubscriptionEndDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty))
+                .ForMember(w => w.SubscriptionDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionDate.HasValue
+                            ? e.SubscriptionDate.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : string.Empty));
             CreateMap<Subscription, SubscriptionDetailResponse>()
                 .ForMember(w => w.CompanyName, opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
             CreateMap<SubscriptionEditRequest, Subscription>()
@@ -104,15 +122,30 @@ namespace PetroPay.Web.Mapping
             CreateMap<RechargeBalance, RechargeBalanceGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.RechargeId))
                 .ForMember(w => w.CompanyName,
-                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
+                .ForMember(w => w.BankTransactionDate,
+                    opt => opt.MapFrom(e => e.BankTransactionDate.HasValue ? 
+                        e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat) : string.Empty));
+            
             CreateMap<RechargeBalance, RechargeBalanceDetailResponse>()
                 .ForMember(w => w.CompanyName,
-                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
+                .ForMember(w => w.BankTransactionDate,
+                    opt => opt.MapFrom(e => e.BankTransactionDate.HasValue ? 
+                        e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat) : string.Empty));
+            
             CreateMap<RechargeBalanceEditRequest, RechargeBalance>()
                 .ForMember(w => w.RechargeId, opt => opt.Ignore())
-                .ForMember(w => w.CompanyId, opt => opt.Ignore());
+                .ForMember(w => w.CompanyId, opt => opt.Ignore())
+                .ForMember(w => w.BankTransactionDate,
+                    opt => opt.MapFrom(src =>
+                        !string.IsNullOrEmpty(src.BankTransactionDate) ? DateTime.ParseExact(src.BankTransactionDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture) : default));
+            
             CreateMap<RechargeBalanceAddRequest, RechargeBalance>()
-                .ForMember(w => w.RechageDate, opt => opt.MapFrom(src => DateTime.Now));
+                .ForMember(w => w.RechageDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(w => w.BankTransactionDate,
+                    opt => opt.MapFrom(src => 
+                        !string.IsNullOrEmpty(src.BankTransactionDate) ? DateTime.ParseExact(src.BankTransactionDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture) : default));
             
             #endregion
             #region PetroStation
@@ -166,6 +199,8 @@ namespace PetroPay.Web.Mapping
             CreateMap<ViewStationStatement, StationStatementGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
                 .ForMember(w => w.InvoiceDataTime, opt => opt.MapFrom(e => e.InvoiceDataTime.ReverseDate()));
+            CreateMap<ViewCarTransaction, CarTransactionGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewInvoiceDetail, InvoiceDetailGetResponse>();
                         
             #endregion

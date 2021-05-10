@@ -40,7 +40,7 @@ namespace PetroPay.Web.Controllers.Reports.CarTransactions.Get
             
             CarTransactionGetResponse response = new CarTransactionGetResponse();
             response.TotalCount = await query.CountAsync();
-            response.SumCarTransaction = await query.SumAsync(w => w.TransAmount ?? 0);
+            //response.SumCarTransaction = await query.SumAsync(w => w.TransAmount ?? 0);
 
             query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
             var result = await query.ToListAsync();
@@ -53,14 +53,32 @@ namespace PetroPay.Web.Controllers.Reports.CarTransactions.Get
         private IQueryable<ViewCarTransaction> createQuery(IQueryable<ViewCarTransaction> query, CarTransactionGetRequest request)
         {
             
-            /*if (request.CompanyId.HasValue)
+            if (request.CompanyId.HasValue)
             {
                 query = query.Where(w => w.CompanyId == request.CompanyId);
             }
             if (!string.IsNullOrEmpty(request.CompanyName))
             {
                 query = query.Where(w => w.CompanyName.Contains(request.CompanyName));
-            }*/
+            }
+            if (!string.IsNullOrEmpty(request.CarIdNumber))
+            {
+                query = query.Where(w => w.CarIdNumber.Contains(request.CarIdNumber));
+            }
+            if (!string.IsNullOrEmpty(request.CompanyBranchName))
+            {
+                query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));
+            }
+            if (!string.IsNullOrEmpty(request.TransDateFrom))
+            {
+                DateTime dateTimeFrom = Convert.ToDateTime(request.TransDateFrom);
+                query = query.Where(w => w.TransDate >= dateTimeFrom);
+            }
+            if (!string.IsNullOrEmpty(request.TransDateTo))
+            {
+                DateTime dateTimeTo = Convert.ToDateTime(request.TransDateTo);
+                query = query.Where(w => w.TransDate <= dateTimeTo);
+            }
             return query;
 
         }
