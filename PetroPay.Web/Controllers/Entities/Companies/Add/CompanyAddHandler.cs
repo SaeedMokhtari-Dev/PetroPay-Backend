@@ -41,9 +41,14 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Add
             Company company = await _context.ExecuteTransactionAsync(async () =>
             {
                 Company newCompany = _mapper.Map<Company>(request);
-                
-                if(!string.IsNullOrEmpty(request.CompanyCommercialPhoto))
-                    newCompany.CompanyCommercialPhoto = request.CompanyCommercialPhoto.ToCharArray().Select(Convert.ToByte).ToArray();
+
+                if (!string.IsNullOrEmpty(request.CompanyCommercialPhoto))
+                {
+                    request.CompanyCommercialPhoto =
+                        request.CompanyCommercialPhoto.Remove(0, request.CompanyCommercialPhoto.IndexOf(',') + 1);
+                    newCompany.CompanyCommercialPhoto =
+                        request.CompanyCommercialPhoto.ToCharArray().Select(Convert.ToByte).ToArray();
+                }
 
                 AccountMaster accountMaster = new AccountMaster();
                 accountMaster.AccountName = request.CompanyName;

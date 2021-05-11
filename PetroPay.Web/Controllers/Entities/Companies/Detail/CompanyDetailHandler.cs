@@ -36,7 +36,7 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Detail
             
             if (company.CompanyCommercialPhoto != null)
             {
-                response.CompanyCommercialPhoto = String.Join("", company.CompanyCommercialPhoto.Select(Convert.ToChar));
+                response.CompanyCommercialPhoto = $"data:image/png;base64,{String.Join("", company.CompanyCommercialPhoto.Select(Convert.ToChar))}";
             }
             
             return ActionResult.Ok(response);

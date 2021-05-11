@@ -20,6 +20,7 @@ namespace PetroPay.Core.Constants
             public const string PasswordRequired = "Api.Auth.Password.Required";
             public const string RoleTypeRequired = "Api.Auth.RoleType.Required";
             public const string TokenRequired = "Api.Auth.Token.Required";
+            public const string CurrentPasswordRequired = "Api.Auth.CurrentPassword.Required";
             public const string InvalidCredentials = "Api.Auth.Invalid.Credentials";
             public const string ResetPasswordResponse = "Api.Auth.ResetPassword.Response";
             
@@ -27,6 +28,7 @@ namespace PetroPay.Core.Constants
             public const string ValidateResetPasswordTokenValidToken = "Api.Auth.ValidateResetPasswordToken.ValidToken";
             
             public const string ChangePasswordNotEqualsPasswords = "Api.Auth.ChangePassword.NotEqualPasswords";
+            public const string ChangePasswordCurrentPasswordIsNotCorrect = "Api.Auth.ChangePassword.CurrentIsNotCorrect";
             public const string ChangePasswordSuccessful = "Api.Auth.ChangePassword.Successful";
 
             public const string MinPasswordLengthError = "Api.Auth.MinPasswordLengthError";

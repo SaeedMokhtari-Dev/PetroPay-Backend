@@ -77,14 +77,17 @@ namespace PetroPay.Web.Mapping
             
             #endregion
             #region Car
-            
+
             CreateMap<Car, CarGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId));
-            CreateMap<Car, CarDetailResponse>();
+            CreateMap<Car, CarDetailResponse>()
+                .ForMember(w => w.CarPlatePhoto, opt => opt.MapFrom(e => $"data:image/png;base64,{e.CarPlatePhoto}"));
             CreateMap<CarEditRequest, Car>()
                 .ForMember(w => w.CarId, opt => opt.Ignore())
-                .ForMember(w => w.CompanyBarnchId, opt => opt.Ignore());
-            CreateMap<CarAddRequest, Car>();
+                .ForMember(w => w.CompanyBarnchId, opt => opt.Ignore())
+                .ForMember(w => w.CarPlatePhoto, opt => opt.MapFrom(e => e.CarPlatePhoto.Remove(0, e.CarPlatePhoto.IndexOf(',') + 1)));
+            CreateMap<CarAddRequest, Car>()
+                .ForMember(w => w.CarPlatePhoto, opt => opt.MapFrom(e => e.CarPlatePhoto.Remove(0, e.CarPlatePhoto.IndexOf(',') + 1)));
             
             #endregion
             #region Subscription
@@ -124,28 +127,36 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.CompanyName,
                     opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
                 .ForMember(w => w.BankTransactionDate,
-                    opt => opt.MapFrom(e => e.BankTransactionDate.HasValue ? 
-                        e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat) : string.Empty));
+                    opt => opt.MapFrom(e =>
+                        e.BankTransactionDate.HasValue
+                            ? e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty));
             
             CreateMap<RechargeBalance, RechargeBalanceDetailResponse>()
                 .ForMember(w => w.CompanyName,
                     opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
                 .ForMember(w => w.BankTransactionDate,
                     opt => opt.MapFrom(e => e.BankTransactionDate.HasValue ? 
-                        e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat) : string.Empty));
+                        e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat) : string.Empty))
+                .ForMember(w => w.RechargeDocumentPhoto, opt => 
+                    opt.MapFrom(e => $"data:image/png;base64,{e.RechargeDocumentPhoto}"));
             
             CreateMap<RechargeBalanceEditRequest, RechargeBalance>()
                 .ForMember(w => w.RechargeId, opt => opt.Ignore())
                 .ForMember(w => w.CompanyId, opt => opt.Ignore())
                 .ForMember(w => w.BankTransactionDate,
                     opt => opt.MapFrom(src =>
-                        !string.IsNullOrEmpty(src.BankTransactionDate) ? DateTime.ParseExact(src.BankTransactionDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture) : default));
+                        !string.IsNullOrEmpty(src.BankTransactionDate) ? DateTime.ParseExact(src.BankTransactionDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture) : default))
+                .ForMember(w => w.RechargeDocumentPhoto, opt => 
+                    opt.MapFrom(e => e.RechargeDocumentPhoto.Remove(0, e.RechargeDocumentPhoto.IndexOf(',') + 1)));
             
             CreateMap<RechargeBalanceAddRequest, RechargeBalance>()
                 .ForMember(w => w.RechageDate, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(w => w.BankTransactionDate,
                     opt => opt.MapFrom(src => 
-                        !string.IsNullOrEmpty(src.BankTransactionDate) ? DateTime.ParseExact(src.BankTransactionDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture) : default));
+                        !string.IsNullOrEmpty(src.BankTransactionDate) ? DateTime.ParseExact(src.BankTransactionDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture) : default))
+                .ForMember(w => w.RechargeDocumentPhoto, opt => 
+                    opt.MapFrom(e => e.RechargeDocumentPhoto.Remove(0, e.RechargeDocumentPhoto.IndexOf(',') + 1)));
             
             #endregion
             #region PetroStation
