@@ -52,7 +52,8 @@ namespace PetroPay.Core.Constants
         public static class BranchMessage
         {
             public const string CompanyIdRequired = "Api.Branch.CompanyId.Required";
-            public const string IdRequired = "Api.Branch.Id.Required";
+            public const string IdRequired = "Api.Branch.IdRequired.Required";
+            public const string IncreaseAmountRequired = "Api.Branch.IncreaseAmount.Required";
             public const string NameRequired = "Api.Branch.Name.Required";
             public const string EmailRequired = "Api.Branch.Email.Required";
             public const string LogoRequired = "Api.Branch.Logo.Required";
@@ -64,8 +65,10 @@ namespace PetroPay.Core.Constants
             public const string ArchivedSuccessfully = "Api.Branch.Archived.Successful";
             public const string DeletedSuccessfully = "Api.Branch.Deleted.Successful";
             public const string ActivatedSuccessfully = "Api.Branch.Activated.Successful";
+            public const string BalanceIncreasedSuccessfully = "Api.Branch.BalanceIncreased.Successful";
             
             public const string ArchiveEntityEditNotAllowed = "Api.Branch.ArchivedEntityEdit.NotAllowed";
+            public const string IncreaseAmountCannotBeMoreThanBalance = "Api.Branch.IncreaseAmountCannotBeMoreThanBalance";
             
         }
         public static class CarMessage

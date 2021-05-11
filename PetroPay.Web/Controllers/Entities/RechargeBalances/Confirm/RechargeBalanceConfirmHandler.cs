@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using PetroPay.Core.Api.Handlers;
@@ -42,11 +43,23 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Confirm
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            company.CompanyBalnce += rechargeBalance.RechargeAmount ?? 0;
+            await _context.ExecuteTransactionAsync(async () =>
+            {
+                company.CompanyBalnce += rechargeBalance.RechargeAmount ?? 0;
 
-            rechargeBalance.RechargeRequstConfirmed = true;
-            await _context.SaveChangesAsync();
-            
+                rechargeBalance.RechargeRequstConfirmed = true;
+                
+                await _context.TransAccounts.AddAsync(new TransAccount()
+                {
+                    AccountId = company.AccountId,
+                    TransAmount = rechargeBalance.RechargeAmount,
+                    TransDocument = "Recharge",
+                    TransDate = DateTime.Now,
+                    TransReference = rechargeBalance.RechargeId.ToString()
+                });
+                
+                await _context.SaveChangesAsync();
+            });
             return ActionResult.Ok(ApiMessages.RechargeBalanceMessage.ConfirmedSuccessfully);
         }
     }

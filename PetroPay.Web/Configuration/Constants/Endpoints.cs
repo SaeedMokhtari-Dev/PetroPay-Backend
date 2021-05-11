@@ -38,6 +38,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiBranchDetail = "/api/branch/detail";
         public const string ApiBranchDelete = "/api/branch/delete";
         public const string ApiBranchActive = "/api/branch/active";
+        public const string ApiBranchChargeBalance = "/api/branch/charge-balance";
         
         /*Bundle APIs*/
         public const string ApiBundleAdd = "/api/bundle/add";
