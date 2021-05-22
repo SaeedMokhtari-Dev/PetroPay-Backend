@@ -28,6 +28,9 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Get
 
         protected override async Task<ActionResult> Execute(RechargeBalanceGetRequest request)
         {
+            if (!request.CompanyId.HasValue && _userContext.Role != RoleType.Admin)
+                request.CompanyId = _userContext.Id;
+            
             var query = _context.RechargeBalances.Include(w => w.Company)
                 .OrderByDescending(w => w.RechageDate)
                 .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)

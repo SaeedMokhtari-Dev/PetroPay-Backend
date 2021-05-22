@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,7 +6,11 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
+using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
+using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
+using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Entities.Cars.Get
 {
@@ -13,30 +18,48 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
+        private readonly UserContext _userContext;
 
         public CarGetHandler(
-            PetroPayContext context, IMapper mapper)
+            PetroPayContext context, IMapper mapper, UserContext userContext)
         {
             _context = context;
             _mapper = mapper;
+            _userContext = userContext;
         }
 
         protected override async Task<ActionResult> Execute(CarGetRequest request)
         {
-            var query = _context.Cars
-                .Where(e => e.CompanyBarnchId.HasValue && e.CompanyBarnchId.Value == request.CompanyBranchId)
-                .OrderBy(w => w.CarId)
-                .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
+            if (!request.CompanyId.HasValue && _userContext.Role != RoleType.Admin)
+                request.CompanyId = _userContext.Id;
+            
+            var query = _context.Cars.Include(w => w.CompanyBarnch)
+                .OrderByDescending(w => w.CarId)
                 .AsQueryable();
 
+            query = createQuery(query, request);
+            CarGetResponse response = new CarGetResponse();
+            response.TotalCount = await query.CountAsync();
+
+            query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<CarGetResponseItem>>(result);
-
-            CarGetResponse response = new CarGetResponse();
-            response.TotalCount = await _context.Cars.CountAsync();
             response.Items = mappedResult;
             return ActionResult.Ok(response);
+        }
+        private IQueryable<Car> createQuery(IQueryable<Car> query, CarGetRequest request)
+        {
+            if (request.CompanyId.HasValue)
+            {
+                query = query.Where(w => w.CompanyBarnch.CompanyId == request.CompanyId.Value);
+            }
+            if (request.CompanyBranchId.HasValue)
+            {
+                query = query.Where(w => w.CompanyBarnchId == request.CompanyBranchId.Value);
+            }
+            return query;
+
         }
     }
 }

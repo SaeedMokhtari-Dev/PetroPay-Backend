@@ -9,15 +9,15 @@ using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.Web.Identity.Contexts;
 
-namespace PetroPay.Web.Controllers.Entities.Branches.Get
+namespace PetroPay.Web.Controllers.Entities.Branches.List
 {
-    public class BranchGetHandler : ApiRequestHandler<BranchGetRequest>
+    public class BranchListHandler : ApiRequestHandler<BranchListRequest>
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
         private readonly UserContext _userContext;
 
-        public BranchGetHandler(
+        public BranchListHandler(
             PetroPayContext context, IMapper mapper, UserContext userContext)
         {
             _context = context;
@@ -25,24 +25,22 @@ namespace PetroPay.Web.Controllers.Entities.Branches.Get
             _userContext = userContext;
         }
 
-        protected override async Task<ActionResult> Execute(BranchGetRequest request)
+        protected override async Task<ActionResult> Execute(BranchListRequest request)
         {
             if (!request.CompanyId.HasValue && _userContext.Role != RoleType.Admin)
                 request.CompanyId = _userContext.Id;
             
             var query = _context.CompanyBranches
-                .Where(e => e.CompanyId.HasValue && e.CompanyId.Value == request.CompanyId)
+                .Where(e => e.CompanyId.HasValue && e.CompanyId.Value == request.CompanyId && e.CompanyBranchActiva.HasValue && e.CompanyBranchActiva.Value)
                 .OrderBy(w => w.CompanyBranchId)
-                .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();
 
-            var result = await query.ToListAsync();
-
-            var mappedResult = _mapper.Map<List<BranchGetResponseItem>>(result);
-
-            BranchGetResponse response = new BranchGetResponse();
-            response.TotalCount = await _context.CompanyBranches.CountAsync();
-            response.Items = mappedResult;
+            var response = await query.Select(w =>
+            new BranchListResponseItem() {
+                Key = w.CompanyBranchId, 
+                Title = w.CompanyBranchName
+            }).ToListAsync();
+            
             return ActionResult.Ok(response);
         }
     }

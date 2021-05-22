@@ -35,6 +35,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiBranchAdd = "/api/branch/add";
         public const string ApiBranchEdit = "/api/branch/edit";
         public const string ApiBranchGet = "/api/branch/get";
+        public const string ApiBranchList = "/api/branch/list";
         public const string ApiBranchDetail = "/api/branch/detail";
         public const string ApiBranchDelete = "/api/branch/delete";
         public const string ApiBranchActive = "/api/branch/active";

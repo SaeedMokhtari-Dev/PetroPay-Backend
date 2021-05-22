@@ -5,7 +5,9 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
+using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
+using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Entities.StationUsers.Get
 {
@@ -13,16 +15,21 @@ namespace PetroPay.Web.Controllers.Entities.StationUsers.Get
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
+        private readonly UserContext _userContext;
 
         public StationUserGetHandler(
-            PetroPayContext context, IMapper mapper)
+            PetroPayContext context, IMapper mapper, UserContext userContext)
         {
             _context = context;
             _mapper = mapper;
+            _userContext = userContext;
         }
 
         protected override async Task<ActionResult> Execute(StationUserGetRequest request)
         {
+            if (!request.StationId.HasValue && _userContext.Role != RoleType.Admin)
+                request.StationId = _userContext.Id;
+            
             var query = _context.StationUsers
                 .Where(e => e.StationId.HasValue && e.StationId.Value == request.StationId)
                 .OrderBy(w => w.StationWorkerId)

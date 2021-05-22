@@ -75,12 +75,10 @@ namespace PetroPay.Web.Identity.Services
 
                     return null;
                 }
-                else
-                {
-                    UpdateTokenExpiration(token);
 
-                    return token;
-                }
+                UpdateTokenExpiration(token);
+
+                return token;
             }
             catch (Exception ex)
             {

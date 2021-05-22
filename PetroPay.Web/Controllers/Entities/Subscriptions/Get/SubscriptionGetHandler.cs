@@ -28,6 +28,9 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Get
 
         protected override async Task<ActionResult> Execute(SubscriptionGetRequest request)
         {
+            if (!request.CompanyId.HasValue && _userContext.Role != RoleType.Admin)
+                request.CompanyId = _userContext.Id;
+            
             var query = _context.Subscriptions.Include(w => w.Company)
                 .OrderByDescending(w => w.SubscriptionDate)
                 .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)

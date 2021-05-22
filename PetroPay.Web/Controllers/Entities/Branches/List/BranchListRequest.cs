@@ -1,6 +1,6 @@
-namespace PetroPay.Web.Controllers.Entities.Branches.Get
+namespace PetroPay.Web.Controllers.Entities.Branches.List
 {
-    public class BranchGetRequest
+    public class BranchListRequest
     {
         public int? CompanyId { get; set; }
         public int PageIndex { get; set; }
