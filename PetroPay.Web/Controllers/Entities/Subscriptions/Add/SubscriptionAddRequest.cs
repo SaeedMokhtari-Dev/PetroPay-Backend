@@ -8,6 +8,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         public int BundlesId { get; set; }
         public int SubscriptionCarNumbers { get; set; }
         public string SubscriptionPaymentMethod { get; set; }
+        public bool PayFromCompanyBalance { get; set; }
+        public int? PetropayAccountId { get; set; }
         public string SubscriptionType { get; set; }
         public DateTime SubscriptionStartDate { get; set; }
         public DateTime SubscriptionEndDate { get; set; }

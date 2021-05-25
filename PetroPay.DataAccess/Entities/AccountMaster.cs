@@ -12,6 +12,7 @@ namespace PetroPay.DataAccess.Entities
             Companies = new HashSet<Company>();
             CompanyBranches = new HashSet<CompanyBranch>();
             PetroStations = new HashSet<PetroStation>();
+            PetropayAccounts = new HashSet<PetropayAccount>();
             TransAccounts = new HashSet<TransAccount>();
         }
 
@@ -24,6 +25,7 @@ namespace PetroPay.DataAccess.Entities
         public virtual ICollection<Company> Companies { get; set; }
         public virtual ICollection<CompanyBranch> CompanyBranches { get; set; }
         public virtual ICollection<PetroStation> PetroStations { get; set; }
+        public virtual ICollection<PetropayAccount> PetropayAccounts { get; set; }
         public virtual ICollection<TransAccount> TransAccounts { get; set; }
     }
 }

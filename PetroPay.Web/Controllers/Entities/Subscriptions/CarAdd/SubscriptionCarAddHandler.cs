@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -19,8 +22,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.CarAdd
 
         protected override async Task<ActionResult> Execute(SubscriptionCarAddRequest request)
         {
-            Subscription editSubscription = await _context.Subscriptions
-                .FindAsync(request.SubscriptionId);
+            Subscription editSubscription = await _context.Subscriptions.Include(w => w.CarSubscriptions)
+                .SingleOrDefaultAsync(w => w.SubscriptionId == request.SubscriptionId);
 
             if (editSubscription == null)
             {
@@ -44,12 +47,25 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.CarAdd
             await _context.ExecuteTransactionAsync(async () =>
             {
                 //_mapper.Map(request, editSubscription);
-                foreach (var w in request.SubscriptionCarIds)
+                List<int> carIds = editSubscription.CarSubscriptions.Select(w => w.CarId).ToList();
+                var shouldRemoveCarIds = carIds.Except(request.SubscriptionCarIds).ToList();
+                foreach (var shouldRemoveCarId in shouldRemoveCarIds)
+                {
+                    var removeEntity = editSubscription.CarSubscriptions.Single(w => w.CarId == shouldRemoveCarId);
+                    if (removeEntity.Invoiced != true)
+                    {
+                        _context.Remove(removeEntity);                        
+                    }
+                }
+                
+                var shouldAdded = request.SubscriptionCarIds.Except(carIds).ToList();
+                foreach (var w in shouldAdded)
                 {
                     editSubscription.CarSubscriptions.Add(new CarSubscription()
                     {
                         CarId = w,
-                        SubscriptionId = editSubscription.SubscriptionId
+                        SubscriptionId = editSubscription.SubscriptionId,
+                        Invoiced = false
                     });
                 }
                 await _context.SaveChangesAsync();

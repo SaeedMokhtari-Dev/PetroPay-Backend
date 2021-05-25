@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -24,8 +25,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
 
         protected override async Task<ActionResult> Execute(SubscriptionDetailRequest request)
         {
-            Subscription subscription = await _context.Subscriptions
-                .FindAsync(request.SubscriptionId);
+            Subscription subscription = await _context.Subscriptions.Include(w => w.CarSubscriptions)
+                .SingleOrDefaultAsync(w => w.SubscriptionId == request.SubscriptionId);
 
             if (subscription == null)
             {
@@ -34,7 +35,11 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
 
             SubscriptionDetailResponse response = _mapper.Map<SubscriptionDetailResponse>(subscription);
 
-            response.SubscriptionCarIds = new List<int>(subscription.CarSubscriptions.Select(w => w.CarId));
+            response.SubscriptionCars = subscription.CarSubscriptions.Select(w => new SubscriptionCar()
+            {
+                Key = w.CarId,
+                Disabled = w.Invoiced ?? false
+            }).ToList();
             
             return ActionResult.Ok(response);
         }

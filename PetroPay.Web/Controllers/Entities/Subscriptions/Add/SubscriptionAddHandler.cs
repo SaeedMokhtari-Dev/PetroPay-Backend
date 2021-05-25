@@ -1,11 +1,15 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Calculate;
+using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
 {
@@ -14,19 +18,21 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
         private readonly SubscriptionCalculator _subscriptionCalculator;
+        private readonly UserContext _userContext;
         
         public SubscriptionAddHandler(
-            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator)
+            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext)
         {
             this._context = context;
             this._mapper = mapper;
             _subscriptionCalculator = subscriptionCalculator;
+            _userContext = userContext;
         }
 
         protected override async Task<ActionResult> Execute(SubscriptionAddRequest request)
         {
             SubscriptionCalculateResponse subscriptionCost =
-                await _subscriptionCalculator.CalculateSubscriptionCost(request.SubscriptionCarNumbers,
+                await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
                     request.SubscriptionType, request.SubscriptionStartDate, request.SubscriptionEndDate);
             
             if(subscriptionCost == null)
@@ -34,6 +40,12 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
             
             if(subscriptionCost.SubscriptionCost != request.SubscriptionCost)
                 return ActionResult.Error(ApiMessages.InvalidRequest);
+
+            if (request.PayFromCompanyBalance && _userContext.Balance < subscriptionCost.SubscriptionCost)
+                return ActionResult.Error(ApiMessages.NotEnoughBalance);
+            
+            if(!request.PayFromCompanyBalance && !request.PetropayAccountId.HasValue)
+                return ActionResult.Error(ApiMessages.SubscriptionMessage.SubscriptionPaymentMethodRequired);
             
             Subscription subscription = await AddSubscription(request);
             
@@ -45,6 +57,48 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
             Subscription subscription = await _context.ExecuteTransactionAsync(async () =>
             {
                 Subscription newSubscription = _mapper.Map<Subscription>(request);
+                if (request.PayFromCompanyBalance)
+                {
+                    newSubscription.SubscriptionActive = true;
+                    newSubscription.SubscriptionPaymentMethod = "CompanyBalance";
+                    Company company = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
+                    company.CompanyBalnce -= request.SubscriptionCost;
+
+                    TransAccount deductFromCompany = new TransAccount()
+                    {
+                        AccountId = company.AccountId,
+                        TransAmount = -1 * (request.SubscriptionCost),
+                        TransDate = DateTime.Now,
+                        TransDocument = "paySubscri",
+                        TransReference = company.AccountId.ToString()
+                    };
+                    deductFromCompany = (await _context.TransAccounts.AddAsync(deductFromCompany)).Entity;
+                    PetropayAccount petropayAccount =
+                        await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccName == "Subscriptions");
+                    if (petropayAccount == null)
+                        throw new Exception("PetropayAccount Subscriptions does not found.");
+                    
+                    petropayAccount.AccBalance += request.SubscriptionCost;
+                    
+                    TransAccount addToSubscriptionAccount = new TransAccount()
+                    {
+                        AccountId = petropayAccount.AccountId,
+                        TransAmount = request.SubscriptionCost,
+                        TransDate = DateTime.Now,
+                        TransDocument = "paySubscri",
+                        TransReference = company.AccountId.ToString()
+                    };
+                    addToSubscriptionAccount = (await _context.TransAccounts.AddAsync(addToSubscriptionAccount)).Entity;
+                }
+                else
+                {
+                    PetropayAccount petropayAccount =
+                        await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccId == request.PetropayAccountId);
+                    if (petropayAccount == null)
+                        throw new Exception("PetropayAccount Subscriptions does not found.");
+
+                    newSubscription.SubscriptionPaymentMethod = petropayAccount.AccName;
+                }
                 
                 newSubscription = (await _context.Subscriptions.AddAsync(newSubscription)).Entity;
                 

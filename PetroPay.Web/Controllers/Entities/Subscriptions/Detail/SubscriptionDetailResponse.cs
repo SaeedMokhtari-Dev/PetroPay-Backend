@@ -18,6 +18,6 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
         public bool? SubscriptionActive { get; set; }
         public string PaymentReferenceNumber { get; set; }
         public DateTime? SubscriptionDate { get; set; }
-        public List<int> SubscriptionCarIds { get; set; }
+        public List<SubscriptionCar> SubscriptionCars { get; set; }
     }
 }

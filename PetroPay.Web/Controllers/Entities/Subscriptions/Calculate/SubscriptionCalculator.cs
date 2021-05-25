@@ -17,38 +17,16 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
         }
         public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(SubscriptionCalculateRequest request)
         {
-            Bundle bundle = await _context.Bundles.SingleOrDefaultAsync(w =>
-                w.BundlesNumberFrom <= request.SubscriptionCarNumbers &&
-                w.BundlesNumberTo >= request.SubscriptionCarNumbers);
-
-            if (bundle == null)
-                return null; 
-
-            SubscriptionCalculateResponse response = new SubscriptionCalculateResponse();
-            response.BundlesId = bundle.BundlesId;
-            
-            DateDiff dateDiff = new DateDiff(request.SubscriptionStartDate, request.SubscriptionEndDate);
-
-            switch (request.SubscriptionType)
-            {
-                case "Monthly":
-                    response.SubscriptionCost = dateDiff.Months * (bundle.BundlesFeesMonthly ?? 1) *
-                                                request.SubscriptionCarNumbers * (bundle.BundlesNfcCost ?? 1);
-                    break;
-                case "Yearly":
-                    response.SubscriptionCost = dateDiff.Years * (bundle.BundlesFeesYearly ?? 1) *
-                                                request.SubscriptionCarNumbers * (bundle.BundlesNfcCost ?? 1);
-                    break;
-            }
-
+            SubscriptionCalculateResponse response = await CalculateSubscriptionCost(request.BundlesId,
+                request.SubscriptionCarNumbers,
+                request.SubscriptionType, request.SubscriptionStartDate, request.SubscriptionEndDate);
             return response;
         }
-        public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(int subscriptionCarNumbers, string subscriptionType,
+        public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(int bundlesId, int subscriptionCarNumbers, string subscriptionType,
             DateTime subscriptionStartDate, DateTime subscriptionEndDate)
         {
             Bundle bundle = await _context.Bundles.SingleOrDefaultAsync(w =>
-                w.BundlesNumberFrom <= subscriptionCarNumbers &&
-                w.BundlesNumberTo >= subscriptionCarNumbers);
+                w.BundlesId == bundlesId);
 
             if (bundle == null)
                 return null; 
@@ -62,11 +40,11 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
             {
                 case "Monthly":
                     response.SubscriptionCost = dateDiff.Months * (bundle.BundlesFeesMonthly ?? 1) *
-                                                subscriptionCarNumbers * (bundle.BundlesNfcCost ?? 1);
+                                                subscriptionCarNumbers;
                     break;
                 case "Yearly":
                     response.SubscriptionCost = dateDiff.Years * (bundle.BundlesFeesYearly ?? 1) *
-                                                subscriptionCarNumbers * (bundle.BundlesNfcCost ?? 1);
+                                                subscriptionCarNumbers;
                     break;
             }
 

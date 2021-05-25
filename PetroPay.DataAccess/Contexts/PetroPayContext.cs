@@ -36,6 +36,7 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
         public virtual DbSet<PetroStation> PetroStations { get; set; }
+        public virtual DbSet<PetropayAccount> PetropayAccounts { get; set; }
         public virtual DbSet<RechargeBalance> RechargeBalances { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<ServiceMaster> ServiceMasters { get; set; }
@@ -48,6 +49,7 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<ViewCustomerBalance> ViewCustomerBalances { get; set; }
         public virtual DbSet<ViewInvoiceDetail> ViewInvoiceDetails { get; set; }
         public virtual DbSet<ViewInvoicesSummary> ViewInvoicesSummaries { get; set; }
+        public virtual DbSet<ViewPetrolStationList> ViewPetrolStationLists { get; set; }
         public virtual DbSet<ViewStationBalance> ViewStationBalances { get; set; }
         public virtual DbSet<ViewStationReport> ViewStationReports { get; set; }
         public virtual DbSet<ViewStationSale> ViewStationSales { get; set; }
@@ -362,6 +364,8 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.SubscriptionId).HasColumnName("subscription_id");
 
                 entity.Property(e => e.CarId).HasColumnName("car_id");
+
+                entity.Property(e => e.Invoiced).HasColumnName("invoiced");
 
                 entity.HasOne(d => d.Car)
                     .WithMany(p => p.CarSubscriptions)
@@ -843,6 +847,43 @@ namespace PetroPay.DataAccess.Contexts
                     .HasConstraintName("FK_Petro_station_AccountMaster");
             });
 
+            modelBuilder.Entity<PetropayAccount>(entity =>
+            {
+                entity.HasKey(e => e.AccId);
+
+                entity.ToTable("PetropayAccount");
+
+                entity.Property(e => e.AccId).HasColumnName("Acc_ID");
+
+                entity.Property(e => e.AccBalance)
+                    .HasColumnType("decimal(18, 2)")
+                    .HasColumnName("Acc_Balance");
+
+                entity.Property(e => e.AccName)
+                    .HasMaxLength(50)
+                    .HasColumnName("Acc_Name");
+
+                entity.Property(e => e.AccNot)
+                    .HasMaxLength(50)
+                    .HasColumnName("Acc_not");
+
+                entity.Property(e => e.AccPaymentMethodShow).HasColumnName("Acc_paymentMethodShow");
+
+                entity.Property(e => e.AccRefer)
+                    .HasMaxLength(20)
+                    .HasColumnName("Acc_refer")
+                    .IsFixedLength();
+
+                entity.Property(e => e.AccSubscriptionRequst).HasColumnName("Acc_SubscriptionRequst");
+
+                entity.Property(e => e.AccountId).HasColumnName("Account_id");
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.PetropayAccounts)
+                    .HasForeignKey(d => d.AccountId)
+                    .HasConstraintName("FK_PetropayAccount_AccountMaster");
+            });
+
             modelBuilder.Entity<RechargeBalance>(entity =>
             {
                 entity.HasKey(e => e.RechargeId);
@@ -1284,6 +1325,31 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.ServiceEnDescription)
                     .HasMaxLength(50)
                     .HasColumnName("Service_En_Description");
+            });
+
+            modelBuilder.Entity<ViewPetrolStationList>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_Petrol_Station_list");
+
+                entity.Property(e => e.StationDiesel).HasColumnName("station_diesel");
+
+                entity.Property(e => e.StationLatitude).HasColumnName("station_latitude");
+
+                entity.Property(e => e.StationLongitude).HasColumnName("station_longitude");
+
+                entity.Property(e => e.StationLucationName)
+                    .HasMaxLength(255)
+                    .HasColumnName("station_lucation_name");
+
+                entity.Property(e => e.StationName)
+                    .HasMaxLength(255)
+                    .HasColumnName("station_name");
+
+                entity.Property(e => e.StationNameAr)
+                    .HasMaxLength(100)
+                    .HasColumnName("station_name_ar");
             });
 
             modelBuilder.Entity<ViewStationBalance>(entity =>

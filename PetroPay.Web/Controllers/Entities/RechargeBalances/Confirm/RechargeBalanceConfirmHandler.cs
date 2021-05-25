@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -42,6 +44,13 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Confirm
             {
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
+            
+            var petroPayAccount = await
+                _context.PetropayAccounts.FirstOrDefaultAsync(w =>
+                    w.AccName == rechargeBalance.RechargePaymentMethod);
+                
+            if(petroPayAccount == null)
+                return ActionResult.Error(ApiMessages.ResourceNotFound);
 
             await _context.ExecuteTransactionAsync(async () =>
             {
@@ -51,11 +60,20 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Confirm
                 
                 await _context.TransAccounts.AddAsync(new TransAccount()
                 {
+                    AccountId = petroPayAccount.AccountId,
+                    TransAmount = -1 * (rechargeBalance.RechargeAmount),
+                    TransDocument = "Recharge",
+                    TransDate = DateTime.Now,
+                    TransReference = (company.AccountId ?? 0).ToString()
+                });
+                
+                await _context.TransAccounts.AddAsync(new TransAccount()
+                {
                     AccountId = company.AccountId,
                     TransAmount = rechargeBalance.RechargeAmount,
                     TransDocument = "Recharge",
                     TransDate = DateTime.Now,
-                    TransReference = rechargeBalance.RechargeId.ToString()
+                    TransReference = (petroPayAccount.AccountId ?? 0).ToString()
                 });
                 
                 await _context.SaveChangesAsync();

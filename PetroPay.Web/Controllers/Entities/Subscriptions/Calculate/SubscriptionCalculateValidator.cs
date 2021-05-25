@@ -8,7 +8,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
     {
         public SubscriptionCalculateValidator()
         {
-            RuleFor(x => x.SubscriptionCarNumbers).GreaterThan(0).WithMessage(ApiMessages.SubscriptionMessage.IdRequired);
+            RuleFor(x => x.BundlesId).GreaterThan(0).WithMessage(ApiMessages.SubscriptionMessage.BundleIdRequired);
+            RuleFor(x => x.SubscriptionCarNumbers).GreaterThan(0).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionCarNumberRequired);
             RuleFor(x => x.SubscriptionStartDate).GreaterThanOrEqualTo(DateTime.Today).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionStartDateRequired);
             RuleFor(x => x.SubscriptionEndDate).GreaterThan(x => x.SubscriptionStartDate).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionEndDateRequired);
         }

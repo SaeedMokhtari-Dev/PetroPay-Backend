@@ -40,6 +40,7 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
             
             InvoiceSummaryGetResponse response = new InvoiceSummaryGetResponse();
             response.TotalCount = await query.CountAsync();
+            response.SumInvoiceAmount = await query.SumAsync(w => w.InvoiceAmount ?? 0);
 
             if(!request.ExportToFile)
                 query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
@@ -65,6 +66,10 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
             if (!string.IsNullOrEmpty(request.CarIdNumber))
             {
                 query = query.Where(w => w.CarIdNumber.Contains(request.CarIdNumber));
+            }
+            if (request.CompanyBranchId.HasValue)
+            {
+                query = query.Where(w => w.CompanyBranchId == request.CompanyBranchId);
             }
             if (!string.IsNullOrEmpty(request.CompanyBranchName))
             {

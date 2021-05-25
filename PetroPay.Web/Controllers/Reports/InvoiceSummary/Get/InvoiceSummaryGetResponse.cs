@@ -6,6 +6,7 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
     public class InvoiceSummaryGetResponse
     {
         public int TotalCount { get; set; }
+        public double SumInvoiceAmount { get; set; }
         public List<InvoiceSummaryGetResponseItem> Items { get; set; }
     }
     public class InvoiceSummaryGetResponseItem

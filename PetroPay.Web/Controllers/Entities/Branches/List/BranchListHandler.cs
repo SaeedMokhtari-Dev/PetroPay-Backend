@@ -31,10 +31,13 @@ namespace PetroPay.Web.Controllers.Entities.Branches.List
                 request.CompanyId = _userContext.Id;
             
             var query = _context.CompanyBranches
-                .Where(e => e.CompanyId.HasValue && e.CompanyId.Value == request.CompanyId && e.CompanyBranchActiva.HasValue && e.CompanyBranchActiva.Value)
+                .Where(e => e.CompanyBranchActiva.HasValue && e.CompanyBranchActiva.Value)
                 .OrderBy(w => w.CompanyBranchId)
                 .AsQueryable();
 
+            if (request.CompanyId.HasValue)
+                query = query.Where(e => e.CompanyId.HasValue && e.CompanyId.Value == request.CompanyId);
+            
             var response = await query.Select(w =>
             new BranchListResponseItem() {
                 Key = w.CompanyBranchId, 
