@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetroPay.Core.Api.Controllers;
 using PetroPay.Core.Api.Handlers;
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Delete
 {
     [Route(Endpoints.ApiCompanyDelete)]
     [ApiExplorerSettings(GroupName = "Company")]
+    [Authorize]
     public class CompanyDeleteController : ApiController<CompanyDeleteRequest>
     {
         public CompanyDeleteController(IApiRequestHandler<CompanyDeleteRequest> handler, IValidator<CompanyDeleteRequest> validator) : base(handler, validator)

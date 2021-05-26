@@ -9,7 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Edit
         public CarEditValidator()
         {
             RuleFor(x => x.CarId).NotEmpty().WithMessage(ApiMessages.CarMessage.IdRequired);
-            RuleFor(x => x.CarDriverPassword).MinimumLength(IdentitySettings.MinPasswordLength).WithMessage(ApiMessages.MinPasswordLengthError);
+            RuleFor(x => x.CarDriverPassword).Matches(PasswordConstants.PasswordRegex).WithMessage(ApiMessages.MinPasswordLengthError);
         }
     }
 }

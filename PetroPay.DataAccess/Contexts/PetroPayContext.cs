@@ -1084,7 +1084,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("trans_date");
 
                 entity.Property(e => e.TransDocument)
-                    .HasMaxLength(10)
+                    .HasMaxLength(50)
                     .HasColumnName("trans_document")
                     .IsFixedLength();
 

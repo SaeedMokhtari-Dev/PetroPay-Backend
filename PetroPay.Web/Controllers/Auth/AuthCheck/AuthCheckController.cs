@@ -9,6 +9,7 @@ namespace PetroPay.Web.Controllers.Auth.AuthCheck
 {
     [Authorize(Policy = nameof(Policies.ActiveUser))]
     [ApiExplorerSettings(GroupName = "Auth")]
+    [Authorize]
     public class AuthCheckController: ControllerBase, IApiController
     {
 

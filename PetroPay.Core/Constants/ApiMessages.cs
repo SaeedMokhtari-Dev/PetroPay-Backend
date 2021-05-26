@@ -187,6 +187,16 @@ namespace PetroPay.Core.Constants
             public const string ConfirmedEntityEditNotAllowed = "Api.RechargeBalance.ConfirmedEntityEdit.NotAllowed";
             
         }
+        public static class TransferBalanceMessage
+        {
+            public const string TransferBalanceTypeRequired = "Api.TransferBalance.TransferBalanceType.Required";
+            public const string AmountRequired = "Api.TransferBalance.Amount.Required";
+            
+            public const string AddedSuccessfully = "Api.TransferBalance.Add.Successful";
+            
+            public const string ConfirmedEntityEditNotAllowed = "Api.TransferBalance.ConfirmedEntityEdit.NotAllowed";
+            
+        }
         public static class User
         {
             public const string UserIdRequired = "Api.User.UserId.Required";

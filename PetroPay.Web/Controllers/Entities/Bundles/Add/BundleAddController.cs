@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetroPay.Core.Api.Controllers;
 using PetroPay.Core.Api.Handlers;
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.Bundles.Add
 {
     [Route(Endpoints.ApiBundleAdd)]
     [ApiExplorerSettings(GroupName = "Bundle")]
+    [Authorize]
     public class BundleAddController : ApiController<BundleAddRequest>
     {
         public BundleAddController(IApiRequestHandler<BundleAddRequest> handler, IValidator<BundleAddRequest> validator) : base(handler, validator)

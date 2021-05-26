@@ -67,6 +67,10 @@ namespace PetroPay.Web.Controllers.Reports.CarTransactions.Get
             {
                 query = query.Where(w => w.CarIdNumber.Contains(request.CarIdNumber));
             }
+            if (request.CompanyBranchId.HasValue)
+            {
+                query = query.Where(w => w.CompanyBranchId == request.CompanyBranchId);
+            }
             if (!string.IsNullOrEmpty(request.CompanyBranchName))
             {
                 query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));

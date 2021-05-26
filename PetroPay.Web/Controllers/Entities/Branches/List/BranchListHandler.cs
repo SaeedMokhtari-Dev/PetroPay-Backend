@@ -41,7 +41,8 @@ namespace PetroPay.Web.Controllers.Entities.Branches.List
             var response = await query.Select(w =>
             new BranchListResponseItem() {
                 Key = w.CompanyBranchId, 
-                Title = w.CompanyBranchName
+                Title = w.CompanyBranchName,
+                Balance = w.CompanyBranchBalnce ?? 0
             }).ToListAsync();
             
             return ActionResult.Ok(response);

@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetroPay.Core.Api.Controllers;
 using PetroPay.Core.Api.Handlers;
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
 {
     [Route(Endpoints.ApiStationSaleGet)]
     [ApiExplorerSettings(GroupName = "StationSale")]
+    [Authorize]
     public class StationSaleGetController : ApiController<StationSaleGetRequest>
     {
         public StationSaleGetController(IApiRequestHandler<StationSaleGetRequest> handler, IValidator<StationSaleGetRequest> validator) : base(handler, validator)

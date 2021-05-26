@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetroPay.Core.Api.Controllers;
 using PetroPay.Core.Api.Handlers;
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.CarAdd
 {
     [Route(Endpoints.ApiSubscriptionCarAdd)]
     [ApiExplorerSettings(GroupName = "Subscription")]
+    [Authorize]
     public class SubscriptionCarAddController : ApiController<SubscriptionCarAddRequest>
     {
         public SubscriptionCarAddController(IApiRequestHandler<SubscriptionCarAddRequest> handler, IValidator<SubscriptionCarAddRequest> validator) : base(handler, validator)

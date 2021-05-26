@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetroPay.Core.Api.Controllers;
 using PetroPay.Core.Api.Handlers;
@@ -8,6 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
 {
     [Route(Endpoints.ApiSubscriptionEdit)]
     [ApiExplorerSettings(GroupName = "Subscription")]
+    [Authorize]
     public class SubscriptionEditController : ApiController<SubscriptionEditRequest>
     {
         public SubscriptionEditController(IApiRequestHandler<SubscriptionEditRequest> handler, IValidator<SubscriptionEditRequest> validator) : base(handler, validator)

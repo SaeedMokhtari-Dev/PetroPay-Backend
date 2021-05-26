@@ -9,7 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Edit
         public CompanyEditValidator()
         {
             RuleFor(x => x.CompanyId).NotEmpty().WithMessage(ApiMessages.CompanyMessage.IdRequired);
-            RuleFor(x => x.CompanyAdminUserPassword).MinimumLength(IdentitySettings.MinPasswordLength).WithMessage(ApiMessages.MinPasswordLengthError);
+            RuleFor(x => x.CompanyAdminUserPassword).Matches(PasswordConstants.PasswordRegex).WithMessage(ApiMessages.MinPasswordLengthError);
         }
     }
 }

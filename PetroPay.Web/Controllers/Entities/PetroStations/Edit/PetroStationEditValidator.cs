@@ -9,7 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Edit
         public PetroStationEditValidator()
         {
             RuleFor(x => x.StationId).NotEmpty().WithMessage(ApiMessages.PetroStationMessage.IdRequired);
-            RuleFor(x => x.StationPassword).MinimumLength(IdentitySettings.MinPasswordLength).WithMessage(ApiMessages.MinPasswordLengthError);
+            RuleFor(x => x.StationPassword).Matches(PasswordConstants.PasswordRegex).WithMessage(ApiMessages.MinPasswordLengthError);
         }
     }
 }

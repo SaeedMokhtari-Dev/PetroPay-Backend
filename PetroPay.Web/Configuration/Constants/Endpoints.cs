@@ -94,6 +94,8 @@ namespace PetroPay.Web.Configuration.Constants
         
         public const string ApiServiceMasterList = "/api/service-master/list";
         
+        public const string ApiTransferBalance = "/api/transfer-balance";
+        
         #endregion
 
         #region Reports
@@ -116,6 +118,8 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiStationSaleGet = "/api/station-sale/get";
         /*StationStatements APIs*/
         public const string ApiStationStatementGet = "/api/station-statement/get";
+        /*PetrolStationLists APIs*/
+        public const string ApiPetrolStationListGet = "/api/petrol-station-list/get";
 
         #endregion
         

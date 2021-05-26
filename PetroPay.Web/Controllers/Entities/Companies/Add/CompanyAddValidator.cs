@@ -8,7 +8,7 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Add
     {
         public CompanyAddValidator()
         {
-            RuleFor(x => x.CompanyAdminUserPassword).MinimumLength(IdentitySettings.MinPasswordLength).WithMessage(ApiMessages.MinPasswordLengthError);
+            RuleFor(x => x.CompanyAdminUserPassword).Matches(PasswordConstants.PasswordRegex).WithMessage(ApiMessages.MinPasswordLengthError);
             /*RuleFor(x => x.AuditingCompanyId).NotEmpty().WithMessage(ApiMessages.CompanyMessage.AuditingCompanyIdRequired);
             RuleFor(x => x.FirstName).NotEmpty().WithMessage(ApiMessages.CompanyMessage.FirstNameRequired);
             RuleFor(x => x.LastName).NotEmpty().WithMessage(ApiMessages.CompanyMessage.FirstNameRequired);

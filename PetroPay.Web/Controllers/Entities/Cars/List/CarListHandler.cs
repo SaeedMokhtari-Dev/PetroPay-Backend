@@ -42,7 +42,8 @@ namespace PetroPay.Web.Controllers.Entities.Cars.List
             {
                 Key = w.CarId,
                 CarNumber = w.CarIdNumber,
-                BranchName = w.CompanyBarnch.CompanyBranchName
+                BranchName = w.CompanyBarnch.CompanyBranchName,
+                Balance = w.CarBalnce ?? 0
             }).ToListAsync();
             
             return ActionResult.Ok(result);
