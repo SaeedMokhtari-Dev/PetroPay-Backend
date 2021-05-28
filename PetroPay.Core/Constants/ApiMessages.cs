@@ -96,7 +96,10 @@ namespace PetroPay.Core.Constants
         public static class PetroStationMessage
         {
             public const string IdRequired = "Api.PetroStation.Id.Required";
-            public const string NameRequired = "Api.PetroStation.Name.Required";
+            
+            public const string PetroPayAccountIdRequired = "Api.PetroStation.PetroPayAccountId.Required";
+            public const string AmountRequired = "Api.PetroStation.Amount.Required";
+            public const string ReferenceRequired = "Api.PetroStation.Reference.Required";
             public const string EmailRequired = "Api.PetroStation.Email.Required";
             public const string LogoRequired = "Api.PetroStation.Logo.Required";
             public const string EmailIsDuplicate = "Api.PetroStation.Email.Duplicate";
@@ -195,6 +198,20 @@ namespace PetroPay.Core.Constants
             public const string AddedSuccessfully = "Api.TransferBalance.Add.Successful";
             
             public const string ConfirmedEntityEditNotAllowed = "Api.TransferBalance.ConfirmedEntityEdit.NotAllowed";
+            
+        }
+        
+        public static class PetropayAccountMessage
+        {
+            public const string FromPetroPayAccountIdRequired = "Api.PetroPayAccount.FromPetroPayAccountId.Required";
+            public const string ToPetroPayAccountIdRequired = "Api.PetroPayAccount.ToPetroPayAccountId.Required";
+            public const string PetroPayAccountsNotEqual = "Api.PetroPayAccount.PetroPayAccounts.NotEqual";
+            public const string AmountRequired = "Api.PetroPayAccount.Amount.Required";
+            public const string ReferenceRequired = "Api.PetroPayAccount.Reference.Required";
+            
+            public const string AddedSuccessfully = "Api.PetroPayAccount.Add.Successful";
+            
+            public const string ConfirmedEntityEditNotAllowed = "Api.PetroPayAccount.ConfirmedEntityEdit.NotAllowed";
             
         }
         public static class User

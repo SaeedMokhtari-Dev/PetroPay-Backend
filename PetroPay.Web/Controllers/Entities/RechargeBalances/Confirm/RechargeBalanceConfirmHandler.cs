@@ -62,7 +62,7 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Confirm
                 {
                     AccountId = petroPayAccount.AccountId,
                     TransAmount = -1 * (rechargeBalance.RechargeAmount),
-                    TransDocument = "Recharge",
+                    TransDocument = "Company Recharge Balance",
                     TransDate = DateTime.Now,
                     TransReference = (company.AccountId ?? 0).ToString()
                 });
@@ -71,7 +71,7 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Confirm
                 {
                     AccountId = company.AccountId,
                     TransAmount = rechargeBalance.RechargeAmount,
-                    TransDocument = "Recharge",
+                    TransDocument = "Company Recharge Balance",
                     TransDate = DateTime.Now,
                     TransReference = (petroPayAccount.AccountId ?? 0).ToString()
                 });

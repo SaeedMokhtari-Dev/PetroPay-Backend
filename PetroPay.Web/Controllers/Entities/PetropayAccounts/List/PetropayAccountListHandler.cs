@@ -29,7 +29,8 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.List
                 .Select(w => new PetropayAccountListResponseItem()
                 {
                     Key = w.AccId,
-                    Title = w.AccName
+                    Title = w.AccName,
+                    Balance = w.AccBalance ?? 0
                 })
                 .ToListAsync();
 

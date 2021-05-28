@@ -55,6 +55,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiPetroStationGet = "/api/petro-station/get";
         public const string ApiPetroStationDetail = "/api/petro-station/detail";
         public const string ApiPetroStationDelete = "/api/petro-station/delete";
+        public const string ApiPetroStationPayment = "/api/petro-station/payment";
         
         /*StationUser APIs*/
         public const string ApiStationUserAdd = "/api/station-user/add";
@@ -91,6 +92,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiRechargeBalanceConfirm = "/api/recharge-balance/confirm";
         
         public const string ApiPetropayAccountList = "/api/petropay-account/list";
+        public const string ApiPetropayAccountPayment = "/api/petropay-account/payment";
         
         public const string ApiServiceMasterList = "/api/service-master/list";
         
@@ -120,6 +122,15 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiStationStatementGet = "/api/station-statement/get";
         /*PetrolStationLists APIs*/
         public const string ApiPetrolStationListGet = "/api/petrol-station-list/get";
+
+        #endregion
+
+        #region Dashboards
+
+        public const string ApiDashboardCustomerGet = "/api/dashboard/customer";
+        public const string ApiDashboardSupplierGet = "/api/dashboard/supplier";
+        public const string ApiDashboardAdminGet = "/api/dashboard/admin";
+        
 
         #endregion
         
