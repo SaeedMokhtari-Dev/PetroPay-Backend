@@ -25,8 +25,12 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.List
 
         protected override async Task<ActionResult> Execute(PetropayAccountListRequest request)
         {
-            var result = await _context.PetropayAccounts.Where(w => w.AccPaymentMethodShow == true)
-                .Select(w => new PetropayAccountListResponseItem()
+            var query = _context.PetropayAccounts.AsQueryable();
+            if (request.JustPaymentMethodShow)
+                query = query.Where(e => e.AccPaymentMethodShow == true);
+
+
+            var result = await query.Select(w => new PetropayAccountListResponseItem()
                 {
                     Key = w.AccId,
                     Title = w.AccName,

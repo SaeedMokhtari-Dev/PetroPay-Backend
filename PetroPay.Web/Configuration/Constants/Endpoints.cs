@@ -30,6 +30,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiCompanyGet = "/api/company/get";
         public const string ApiCompanyDetail = "/api/company/detail";
         public const string ApiCompanyDelete = "/api/company/delete";
+        public const string ApiCompanyList = "/api/company/list";
         
         /*Branch APIs*/
         public const string ApiBranchAdd = "/api/branch/add";

@@ -203,15 +203,15 @@ namespace PetroPay.Core.Constants
         
         public static class PetropayAccountMessage
         {
-            public const string FromPetroPayAccountIdRequired = "Api.PetroPayAccount.FromPetroPayAccountId.Required";
-            public const string ToPetroPayAccountIdRequired = "Api.PetroPayAccount.ToPetroPayAccountId.Required";
-            public const string PetroPayAccountsNotEqual = "Api.PetroPayAccount.PetroPayAccounts.NotEqual";
-            public const string AmountRequired = "Api.PetroPayAccount.Amount.Required";
-            public const string ReferenceRequired = "Api.PetroPayAccount.Reference.Required";
+            public const string FromPetroPayAccountIdRequired = "Api.PetropayAccount.FromPetroPayAccountId.Required";
+            public const string ToPetroPayAccountIdRequired = "Api.PetropayAccount.ToPetroPayAccountId.Required";
+            public const string PetroPayAccountsNotEqual = "Api.PetropayAccount.PetroPayAccounts.NotEqual";
+            public const string AmountRequired = "Api.PetropayAccount.Amount.Required";
+            public const string ReferenceRequired = "Api.PetropayAccount.Reference.Required";
             
-            public const string AddedSuccessfully = "Api.PetroPayAccount.Add.Successful";
+            public const string AddedSuccessfully = "Api.PetropayAccount.Add.Successful";
             
-            public const string ConfirmedEntityEditNotAllowed = "Api.PetroPayAccount.ConfirmedEntityEdit.NotAllowed";
+            public const string ConfirmedEntityEditNotAllowed = "Api.PetropayAccount.ConfirmedEntityEdit.NotAllowed";
             
         }
         public static class User
