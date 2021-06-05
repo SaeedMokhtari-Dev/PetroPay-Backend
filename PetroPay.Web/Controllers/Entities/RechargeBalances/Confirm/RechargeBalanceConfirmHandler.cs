@@ -52,9 +52,13 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Confirm
             if(petroPayAccount == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
 
+            if(petroPayAccount.AccBalance < rechargeBalance.RechargeAmount)
+                return ActionResult.Error(ApiMessages.NotEnoughBalance);
+            
             await _context.ExecuteTransactionAsync(async () =>
             {
                 company.CompanyBalnce += rechargeBalance.RechargeAmount ?? 0;
+                petroPayAccount.AccBalance -= rechargeBalance.RechargeAmount ?? 0;
 
                 rechargeBalance.RechargeRequstConfirmed = true;
                 

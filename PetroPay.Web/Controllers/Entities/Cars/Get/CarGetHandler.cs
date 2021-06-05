@@ -34,6 +34,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
                 request.CompanyId = _userContext.Id;
             
             var query = _context.Cars.Include(w => w.CompanyBarnch)
+                .ThenInclude(w => w.Company)
                 .OrderByDescending(w => w.CarId)
                 .AsQueryable();
 
@@ -41,7 +42,9 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
             CarGetResponse response = new CarGetResponse();
             response.TotalCount = await query.CountAsync();
 
-            query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            if(!request.ExportToFile)
+                query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<CarGetResponseItem>>(result);
@@ -57,6 +60,10 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
             if (request.CompanyBranchId.HasValue)
             {
                 query = query.Where(w => w.CompanyBarnchId == request.CompanyBranchId.Value);
+            }
+            if (request.NeedActivation)
+            {
+                query = query.Where(w => string.IsNullOrEmpty(w.CarNfcCode));
             }
             return query;
 

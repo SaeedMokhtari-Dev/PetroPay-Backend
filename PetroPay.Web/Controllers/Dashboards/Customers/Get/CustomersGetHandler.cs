@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,9 @@ namespace PetroPay.Web.Controllers.Dashboards.Customers.Get
 
             CustomerGetResponse response = new CustomerGetResponse();
             response.TotalCustomerBalance = company.CompanyBalnce ?? 0;
+            response.TotalBranchBalance = await _context.CompanyBranches
+                .Where(w => w.CompanyId.HasValue && w.CompanyId.Value == request.CompanyId)
+                .SumAsync(w => w.CompanyBranchBalnce ?? 0);
             response.TotalCarBalance = await _context.Cars.Include(w => w.CompanyBarnch)
                 .Where(w => w.CompanyBarnch.CompanyId.HasValue && w.CompanyBarnch.CompanyId.Value == request.CompanyId)
                 .SumAsync(w => w.CarBalnce ?? 0);
@@ -51,14 +55,26 @@ namespace PetroPay.Web.Controllers.Dashboards.Customers.Get
                     BranchBalance = w.CompanyBranchBalnce ?? 0
                 }).ToListAsync();
             
-            response.CompanySubscriptionItems = await _context.Subscriptions.Where(w => w.CompanyId == request.CompanyId)
-                .Select(w => new CompanySubscriptionItem()
+            var companySubscriptionItems = await _context.Subscriptions.Where(w => w.CompanyId == request.CompanyId)
+                .Select(w => new 
                 {
                     Key = w.SubscriptionId,
-                    StartDate = (w.SubscriptionStartDate ?? DateTime.Now).ToString(DateTimeConstants.DateFormat),
-                    EndDate = (w.SubscriptionEndDate ?? DateTime.Now).ToString(DateTimeConstants.DateFormat)
+                    StartDate = w.SubscriptionStartDate ?? DateTime.Now,
+                    EndDate = w.SubscriptionEndDate ?? DateTime.Now
                 }).ToListAsync();
-            
+            foreach (var responseCompanySubscriptionItem in companySubscriptionItems)
+            {
+                CompanySubscriptionItem item = new CompanySubscriptionItem();
+                item.Key = responseCompanySubscriptionItem.Key;
+                item.StartDate = responseCompanySubscriptionItem.StartDate.ToString(DateTimeConstants.DateFormat);
+                item.EndDate = responseCompanySubscriptionItem.EndDate.ToString(DateTimeConstants.DateFormat);
+                if (responseCompanySubscriptionItem.EndDate >= DateTime.Now &&
+                    responseCompanySubscriptionItem.EndDate.AddDays(-7) <= DateTime.Now)
+                {
+                    item.Alarm = true;
+                }
+                response.CompanySubscriptionItems.Add(item);
+            }
             
             return ActionResult.Ok(response);
         }

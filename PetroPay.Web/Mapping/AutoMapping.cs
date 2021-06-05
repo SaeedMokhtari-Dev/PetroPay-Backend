@@ -36,6 +36,7 @@ using PetroPay.Web.Controllers.Entities.Subscriptions.Add;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Detail;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Edit;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Get;
+using PetroPay.Web.Controllers.Reports.AccountBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
@@ -80,12 +81,13 @@ namespace PetroPay.Web.Mapping
             #region Car
 
             CreateMap<Car, CarGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId))
+                .ForMember(w => w.CompanyBarnchName, opt => opt.MapFrom(e => e.CompanyBarnchId.HasValue ? e.CompanyBarnch.CompanyBranchName : string.Empty))
+                .ForMember(w => w.CompanyName, opt => opt.MapFrom(e => e.CompanyBarnchId.HasValue ? (e.CompanyBarnch.CompanyId.HasValue ? e.CompanyBarnch.Company.CompanyName : string.Empty) : string.Empty));
             CreateMap<Car, CarDetailResponse>()
                 .ForMember(w => w.CarPlatePhoto, opt => opt.MapFrom(e => $"data:image/png;base64,{e.CarPlatePhoto}"));
             CreateMap<CarEditRequest, Car>()
                 .ForMember(w => w.CarId, opt => opt.Ignore())
-                .ForMember(w => w.CompanyBarnchId, opt => opt.Ignore())
                 .ForMember(w => w.CarPlatePhoto, opt => opt.MapFrom(e => e.CarPlatePhoto.Remove(0, e.CarPlatePhoto.IndexOf(',') + 1)));
             CreateMap<CarAddRequest, Car>()
                 .ForMember(w => w.CarPlatePhoto, opt => opt.MapFrom(e => e.CarPlatePhoto.Remove(0, e.CarPlatePhoto.IndexOf(',') + 1)));
@@ -111,7 +113,10 @@ namespace PetroPay.Web.Mapping
                     opt => opt.MapFrom(e =>
                         e.SubscriptionDate.HasValue
                             ? e.SubscriptionDate.Value.ToString(DateTimeConstants.DateTimeFormat)
-                            : string.Empty));
+                            : string.Empty))
+                .ForMember(w => w.Expired,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionEndDate < DateTime.Now));
             CreateMap<Subscription, SubscriptionDetailResponse>()
                 .ForMember(w => w.CompanyName, opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
             CreateMap<SubscriptionEditRequest, Subscription>()
@@ -225,6 +230,9 @@ namespace PetroPay.Web.Mapping
             
             CreateMap<ViewPetrolStationList, PetrolStationListGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+            
+            CreateMap<ViewAccountBalance, AccountBalanceGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.AccountId));
                         
             
 

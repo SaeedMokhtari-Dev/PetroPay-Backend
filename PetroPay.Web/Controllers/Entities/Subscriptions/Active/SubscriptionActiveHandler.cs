@@ -60,7 +60,10 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
                 await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccName == subscription.SubscriptionPaymentMethod);
             if (selectedPetropayAccount == null)
                 throw new Exception("selected Petropay Account Subscriptions does not found.");
-            
+            if(selectedPetropayAccount.AccBalance < subscription.SubscriptionCost)
+                return ActionResult.Error(ApiMessages.NotEnoughBalance);
+
+            selectedPetropayAccount.AccBalance -= subscription.SubscriptionCost;
             TransAccount deductFromCompany = new TransAccount()
             {
                 AccountId = selectedPetropayAccount.AccountId,

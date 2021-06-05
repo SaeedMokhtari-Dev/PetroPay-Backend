@@ -32,8 +32,8 @@ namespace PetroPay.Web.Controllers.Reports.PetrolStationLists.Get
 
         protected override async Task<ActionResult> Execute(PetrolStationListGetRequest request)
         {
-            if(_userContext.Role != RoleType.Admin)
-                return ActionResult.Error(ApiMessages.Forbidden);
+            /*if(_userContext.Role != RoleType.Admin)
+                return ActionResult.Error(ApiMessages.Forbidden);*/
             
             var query = _context.ViewPetrolStationLists.OrderByDescending(w => w.StationName)
                 .AsQueryable();

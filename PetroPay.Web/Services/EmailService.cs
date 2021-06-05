@@ -50,7 +50,7 @@ namespace PetroPay.Web.Services
         public async Task SendResetPasswordEmail(string email, string fullName, Guid token)
         {
             var clientBaseUrl = _configuration.GetValue<string>("ClientBaseUrl");
-            string htmlBody = $"<a href='{clientBaseUrl}/auth/change-password/{token}'>click here to reset password</a>";
+            string htmlBody = $"<a href='{clientBaseUrl}/auth/password/change/{token}'>click here to reset password</a>";
             await SendMail(email, "Reset Password", htmlBody, $"{fullName}");
         }
         /*public async Task SendUserActivationEmail(ApiMessages.User user)

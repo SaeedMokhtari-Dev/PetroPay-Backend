@@ -19,6 +19,8 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
         public decimal? ConsumptionValue { get; set; }
         public string ConsumptionMethod { get; set; }
         public int? CompanyBarnchId { get; set; }
+        public string CompanyBarnchName { get; set; }
+        public string CompanyName { get; set; }
         public decimal? CarBalnce { get; set; }
         public bool? Saturday { get; set; }
         public bool? Sunday { get; set; }

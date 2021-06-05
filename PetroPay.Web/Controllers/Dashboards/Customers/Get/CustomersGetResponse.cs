@@ -13,6 +13,7 @@ namespace PetroPay.Web.Controllers.Dashboards.Customers.Get
         }
 
         public decimal TotalCustomerBalance { get; set; }
+        public decimal TotalBranchBalance { get; set; }
         public decimal TotalCarBalance { get; set; }
         
         public List<CompanyBranchItem> CompanyBranchItems { get; set; }
@@ -29,5 +30,6 @@ namespace PetroPay.Web.Controllers.Dashboards.Customers.Get
         public int Key { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+        public bool Alarm { get; set; }
     }
 }

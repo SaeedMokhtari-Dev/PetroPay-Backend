@@ -3,6 +3,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Edit
     public class CarEditRequest
     {
         public int CarId { get; set; }
+        public int? CompanyBarnchId { get; set; }
         public string CarIdNumber { get; set; }
         public string CarIdText1E { get; set; }
         public string CarIdText1A { get; set; }

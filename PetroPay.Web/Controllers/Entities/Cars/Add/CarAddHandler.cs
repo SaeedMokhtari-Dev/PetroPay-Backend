@@ -42,7 +42,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Add
             if(branchCarCount >= (branch.CompanyBranchNumberOfcar ?? 0))
                 return ActionResult.Error(ApiMessages.CarMessage.AddMoreThanMaxNotAllowed);
 
-            var sumCarSubscription = await _context.Subscriptions
+            /*var sumCarSubscription = await _context.Subscriptions
                 .Where(w => branch.CompanyId.HasValue && w.CompanyId == branch.CompanyId.Value && w.SubscriptionActive == true)
                 .SumAsync(w => w.SubscriptionCarNumbers);
 
@@ -50,7 +50,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Add
                 branch.CompanyId.HasValue && w.CompanyBarnch.CompanyId == branch.CompanyId.Value).CountAsync();
             
             if((!sumCarSubscription.HasValue) || sumCarSubscription.Value <= allCompanyCars)
-                return ActionResult.Error(ApiMessages.CarMessage.AddMoreThanSubscriptionsNotAllowed);
+                return ActionResult.Error(ApiMessages.CarMessage.AddMoreThanSubscriptionsNotAllowed);*/
             
             Car car = await AddCar(request);
             
