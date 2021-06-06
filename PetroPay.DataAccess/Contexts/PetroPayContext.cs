@@ -845,6 +845,9 @@ namespace PetroPay.DataAccess.Contexts
                     .WithMany(p => p.PetroStations)
                     .HasForeignKey(d => d.AccountId)
                     .HasConstraintName("FK_Petro_station_AccountMaster");
+                
+                entity.Property(e => e.StationServiceActive)
+                    .HasColumnName("station_service_active").HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<PetropayAccount>(entity =>

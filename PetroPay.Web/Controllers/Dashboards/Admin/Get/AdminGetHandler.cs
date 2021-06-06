@@ -58,7 +58,7 @@ namespace PetroPay.Web.Controllers.Dashboards.Admin.Get
                 CompanyListItem companyItem = new CompanyListItem();
                 companyItem.Key = company.CompanyId;
                 companyItem.Name = company.CompanyName;
-                companyItem.Balance = company.CompanyBalnce ?? 0;
+                companyItem.Balance = (company.CompanyBalnce ?? 0) + branchesBalance + carsBalance;
                 response.CompanyListItems.Add(companyItem);
             }
             

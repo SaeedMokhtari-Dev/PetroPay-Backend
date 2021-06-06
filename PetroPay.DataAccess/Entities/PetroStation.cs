@@ -29,6 +29,7 @@ namespace PetroPay.DataAccess.Entities
         public bool? StationDiesel { get; set; }
         public decimal? StationBalance { get; set; }
         public string StationEmail { get; set; }
+        public bool? StationServiceActive { get; set; }
 
         public virtual AccountMaster Account { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
