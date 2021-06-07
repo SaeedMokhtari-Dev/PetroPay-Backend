@@ -9,11 +9,11 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         public int SubscriptionCarNumbers { get; set; }
         public string SubscriptionPaymentMethod { get; set; }
         public bool PayFromCompanyBalance { get; set; }
-        public int? PetropayAccountId { get; set; }
         public string SubscriptionType { get; set; }
         public DateTime SubscriptionStartDate { get; set; }
         public DateTime SubscriptionEndDate { get; set; }
         public decimal SubscriptionCost { get; set; }
         public string PaymentReferenceNumber { get; set; }
+        public string SubscriptionPaymentDocPhoto { get; set; }
     }
 }

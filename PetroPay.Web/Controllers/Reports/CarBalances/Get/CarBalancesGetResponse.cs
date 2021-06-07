@@ -12,7 +12,7 @@ namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
     }
     public class CarBalanceGetResponseItem
     {
-        public int Key { get; set; }
+        public Guid Key { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public int CompanyBranchId { get; set; }

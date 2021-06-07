@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace PetroPay.Web.Controllers.Reports.AccountBalances.Get
@@ -9,7 +10,7 @@ namespace PetroPay.Web.Controllers.Reports.AccountBalances.Get
     }
     public class AccountBalanceGetResponseItem
     {
-        public int Key { get; set; }
+        public Guid Key { get; set; }
         public int AccountId { get; set; }
         public string AccountTaype { get; set; }
         public string AccountName { get; set; }

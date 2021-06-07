@@ -1043,6 +1043,8 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.Property(e => e.SubscriptionEndDate).HasColumnName("subscription_end_date");
 
+                entity.Property(e => e.SubscriptionPaymentDocPhoto).HasColumnName("subscription_payment_doc_photo");
+
                 entity.Property(e => e.SubscriptionPaymentMethod)
                     .HasMaxLength(255)
                     .HasColumnName("subscription_payment_method");

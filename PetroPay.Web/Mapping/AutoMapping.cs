@@ -118,7 +118,10 @@ namespace PetroPay.Web.Mapping
                     opt => opt.MapFrom(e =>
                         e.SubscriptionEndDate < DateTime.Now));
             CreateMap<Subscription, SubscriptionDetailResponse>()
-                .ForMember(w => w.CompanyName, opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")));
+                .ForMember(w => w.CompanyName,
+                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
+                .ForMember(w => w.PayFromCompanyBalance,
+                    opt => opt.MapFrom(e => e.SubscriptionPaymentMethod == "CompanyBalance"));
             CreateMap<SubscriptionEditRequest, Subscription>()
                 .ForMember(w => w.SubscriptionId, opt => opt.Ignore())
                 .ForMember(w => w.CompanyId, opt => opt.Ignore());
@@ -201,9 +204,9 @@ namespace PetroPay.Web.Mapping
             #region Reports
 
             CreateMap<ViewInvoicesSummary, InvoiceSummaryGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.InvoiceId));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewCarBalance, CarBalanceGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CarId))
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
                 .ForMember(w => w.SubscriptionStartDate,
                     opt => opt.MapFrom(e =>
                         e.SubscriptionStartDate.HasValue
@@ -215,9 +218,9 @@ namespace PetroPay.Web.Mapping
                             ? e.SubscriptionEndDate.Value.Date.ToString(DateTimeConstants.DateFormat)
                             : string.Empty));
             CreateMap<ViewStationReport, StationReportGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.InvoiceId));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewCarTransaction, CarTransactionGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewStationSale, StationSaleGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
                 .ForMember(w => w.SumInvoiceDataTime, opt => opt.MapFrom(e => e.SumInvoiceDataTime.ReverseDate()));
@@ -232,7 +235,7 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             
             CreateMap<ViewAccountBalance, AccountBalanceGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.AccountId));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
                         
             
 

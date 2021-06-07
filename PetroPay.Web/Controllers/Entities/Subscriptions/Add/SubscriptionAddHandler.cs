@@ -44,7 +44,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
             if (request.PayFromCompanyBalance && _userContext.Balance < subscriptionCost.SubscriptionCost)
                 return ActionResult.Error(ApiMessages.NotEnoughBalance);
             
-            if(!request.PayFromCompanyBalance && !request.PetropayAccountId.HasValue)
+            if(!request.PayFromCompanyBalance && string.IsNullOrEmpty(request.SubscriptionPaymentMethod))
                 return ActionResult.Error(ApiMessages.SubscriptionMessage.SubscriptionPaymentMethodRequired);
             
             Subscription subscription = await AddSubscription(request);
@@ -93,7 +93,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
                 else
                 {
                     PetropayAccount petropayAccount =
-                        await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccId == request.PetropayAccountId);
+                        await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccName == request.SubscriptionPaymentMethod);
                     if (petropayAccount == null)
                         throw new Exception("PetropayAccount Subscriptions does not found.");
 

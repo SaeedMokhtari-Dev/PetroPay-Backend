@@ -10,7 +10,7 @@ namespace PetroPay.Web.Controllers.Reports.CarTransactions.Get
     }
     public class CarTransactionGetResponseItem
     {
-        public string Key { get; set; }
+        public Guid Key { get; set; }
         public int CarId { get; set; }
         public string CarIdNumber { get; set; }
         public int CompanyBranchId { get; set; }

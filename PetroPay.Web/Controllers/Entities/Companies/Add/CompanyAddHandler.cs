@@ -31,6 +31,13 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Add
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
 
+            var isEmailDuplicate =
+                _context.Companies.Any(w => w.CompanyAdminEmail.Trim().ToUpper() == request.CompanyAdminEmail.Trim().ToUpper());
+            if (isEmailDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateEmail);
+            }
+
             Company company = await AddCompany(request);
             
             return ActionResult.Ok(ApiMessages.CompanyMessage.AddedSuccessfully);

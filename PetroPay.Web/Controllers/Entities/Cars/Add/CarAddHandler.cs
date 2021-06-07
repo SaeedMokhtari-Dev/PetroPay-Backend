@@ -31,6 +31,13 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Add
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
 
+            var isEmailDuplicate =
+                _context.Cars.Any(w => w.CarDriverEmail.Trim().ToUpper() == request.CarDriverEmail.Trim().ToUpper());
+            if (isEmailDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateEmail);
+            }
+
             CompanyBranch branch =
                 await _context.CompanyBranches.SingleOrDefaultAsync(w => w.CompanyBranchId == request.CompanyBarnchId);
             

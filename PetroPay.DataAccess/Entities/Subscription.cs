@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 #nullable disable
 
@@ -27,6 +28,8 @@ namespace PetroPay.DataAccess.Entities
         public bool? SubscriptionActive { get; set; }
         public string PaymentReferenceNumber { get; set; }
         public DateTime? SubscriptionDate { get; set; }
+
+        public string SubscriptionPaymentDocPhoto { get; set; }
 
         public virtual Bundle Bundles { get; set; }
         public virtual Company Company { get; set; }

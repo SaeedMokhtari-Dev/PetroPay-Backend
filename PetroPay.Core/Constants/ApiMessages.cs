@@ -9,6 +9,7 @@ namespace PetroPay.Core.Constants
         public const string PageSize = "Api.PageSize";
         public const string PageIndex = "Api.PageIndex";
         public const string DuplicateUserName = "Api.Username.Duplicate";
+        public const string DuplicateEmail = "Api.Email.Duplicate";
         public const string NotEnoughBalance = "Api.NotEnoughBalance";
         public const string MinPasswordLengthError = "Api.MinPasswordLengthError";
         public const string IdRequired = "Api.Validate.IdRequired";

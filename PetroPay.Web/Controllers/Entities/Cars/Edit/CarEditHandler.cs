@@ -40,6 +40,14 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Edit
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
 
+            var isEmailDuplicate =
+                _context.Cars.Any(w => w.CarDriverEmail.Trim().ToUpper() == request.CarDriverEmail.Trim().ToUpper()
+                                            && w.CarId != request.CarId);
+            if (isEmailDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateEmail);
+            }
+
             await EditCar(editCar, request);
             return ActionResult.Ok(ApiMessages.CarMessage.EditedSuccessfully);
         }

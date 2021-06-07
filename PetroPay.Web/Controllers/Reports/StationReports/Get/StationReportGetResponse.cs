@@ -10,7 +10,7 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
     }
     public class StationReportGetResponseItem
     {
-        public int Key { get; set; }
+        public Guid Key { get; set; }
         public int StationWorkerId { get; set; }
         public string StationWorkerFname { get; set; }
         public int InvoiceId { get; set; }

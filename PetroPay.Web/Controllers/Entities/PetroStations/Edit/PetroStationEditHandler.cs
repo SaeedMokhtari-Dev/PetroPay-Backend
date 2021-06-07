@@ -40,6 +40,14 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Edit
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
 
+            var isEmailDuplicate =
+                _context.PetroStations.Any(w => w.StationEmail.Trim().ToUpper() == request.StationEmail.Trim().ToUpper()
+                                            && w.StationId != request.StationId);
+            if (isEmailDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateEmail);
+            }
+
             await EditPetroStation(editPetroStation, request);
             return ActionResult.Ok(ApiMessages.PetroStationMessage.EditedSuccessfully);
         }

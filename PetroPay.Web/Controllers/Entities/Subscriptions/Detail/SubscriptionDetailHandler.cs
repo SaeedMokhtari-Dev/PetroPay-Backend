@@ -35,6 +35,12 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
 
             SubscriptionDetailResponse response = _mapper.Map<SubscriptionDetailResponse>(subscription);
 
+            /*var petropayAccount = await _context.PetropayAccounts.FirstOrDefaultAsync(
+                 w => w.AccName == response.SubscriptionPaymentMethod);
+            if (petropayAccount != null)
+                response.PetropayAccountId = petropayAccount.AccId;*/
+                
+
             response.SubscriptionCars = subscription.CarSubscriptions.Select(w => new SubscriptionCar()
             {
                 Key = w.CarId,

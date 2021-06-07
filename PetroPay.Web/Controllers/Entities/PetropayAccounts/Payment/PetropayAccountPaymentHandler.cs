@@ -42,8 +42,8 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.Payment
             if (toPetropayAccount == null)
                 return new Tuple<bool, string>(false, ApiMessages.ResourceNotFound);
                 
-            if(fromPetroPayAccount.AccBalance < amount)
-                return new Tuple<bool, string>(false, ApiMessages.NotEnoughBalance);
+            /*if(fromPetroPayAccount.AccBalance < amount)
+                return new Tuple<bool, string>(false, ApiMessages.NotEnoughBalance);*/
 
             await _context.ExecuteTransactionAsync(async () =>
             {

@@ -30,6 +30,13 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Add
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
             
+            var isEmailDuplicate =
+                _context.PetroStations.Any(w => w.StationEmail.Trim().ToUpper() == request.StationEmail.Trim().ToUpper());
+            if (isEmailDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateEmail);
+            }
+            
             PetroStation petroStation = await AddPetroStation(request);
             
             return ActionResult.Ok(ApiMessages.PetroStationMessage.AddedSuccessfully);

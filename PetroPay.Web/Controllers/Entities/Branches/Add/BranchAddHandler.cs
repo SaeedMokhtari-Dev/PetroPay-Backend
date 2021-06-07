@@ -34,6 +34,13 @@ namespace PetroPay.Web.Controllers.Entities.Branches.Add
                 return ActionResult.Error(ApiMessages.DuplicateUserName);
             }
             
+            var isEmailDuplicate =
+                _context.CompanyBranches.Any(w => w.CompanyBranchAdminEmail.Trim().ToUpper() == request.CompanyBranchAdminEmail.Trim().ToUpper());
+            if (isEmailDuplicate)
+            {
+                return ActionResult.Error(ApiMessages.DuplicateEmail);
+            }
+            
             CompanyBranch branch = await AddBranch(request);
             
             return ActionResult.Ok(ApiMessages.BranchMessage.AddedSuccessfully);

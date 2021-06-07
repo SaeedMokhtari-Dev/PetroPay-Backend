@@ -11,7 +11,7 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
     }
     public class InvoiceSummaryGetResponseItem
     {
-        public int Key { get; set; }
+        public Guid Key { get; set; }
         public int InvoiceId { get; set; }
         public int CompanyBranchId { get; set; }
         public string CompanyBranchName { get; set; }

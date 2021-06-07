@@ -57,6 +57,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiPetroStationDetail = "/api/petro-station/detail";
         public const string ApiPetroStationDelete = "/api/petro-station/delete";
         public const string ApiPetroStationPayment = "/api/petro-station/payment";
+        public const string ApiPetroStationList = "/api/petro-station/list";
         
         /*StationUser APIs*/
         public const string ApiStationUserAdd = "/api/station-user/add";

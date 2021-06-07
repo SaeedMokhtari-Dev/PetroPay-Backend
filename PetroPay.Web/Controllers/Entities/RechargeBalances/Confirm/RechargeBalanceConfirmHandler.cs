@@ -52,8 +52,8 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Confirm
             if(petroPayAccount == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
 
-            if(petroPayAccount.AccBalance < rechargeBalance.RechargeAmount)
-                return ActionResult.Error(ApiMessages.NotEnoughBalance);
+            /*if(petroPayAccount.AccBalance < rechargeBalance.RechargeAmount)
+                return ActionResult.Error(ApiMessages.NotEnoughBalance);*/
             
             await _context.ExecuteTransactionAsync(async () =>
             {
