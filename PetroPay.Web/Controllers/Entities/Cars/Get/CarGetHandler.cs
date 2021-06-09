@@ -63,7 +63,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
             }
             if (request.NeedActivation)
             {
-                query = query.Where(w => string.IsNullOrEmpty(w.CarNfcCode) || w.CarNfcCode == "0");
+                query = query.Where(w => string.IsNullOrEmpty(w.CarNfcCode.Trim()) || w.CarNfcCode.Trim() == "0");
             }
             return query;
 

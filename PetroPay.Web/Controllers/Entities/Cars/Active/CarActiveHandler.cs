@@ -30,7 +30,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Active
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            car.CarWorkWithApproval = true;
+            /*car.CarWorkWithApproval = true;*/
             car.CarApprovedOneTime = true;
             car.CarNfcCode = request.CarNfcCode;
 
