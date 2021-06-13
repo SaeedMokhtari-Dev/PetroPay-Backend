@@ -20,6 +20,7 @@ using PetroPay.Web.Controllers.Entities.Companies.Add;
 using PetroPay.Web.Controllers.Entities.Companies.Detail;
 using PetroPay.Web.Controllers.Entities.Companies.Edit;
 using PetroPay.Web.Controllers.Entities.Companies.Get;
+using PetroPay.Web.Controllers.Entities.PetropayAccounts.Get;
 using PetroPay.Web.Controllers.Entities.PetroStations.Add;
 using PetroPay.Web.Controllers.Entities.PetroStations.Detail;
 using PetroPay.Web.Controllers.Entities.PetroStations.Edit;
@@ -199,6 +200,10 @@ namespace PetroPay.Web.Mapping
             
             #endregion
 
+            CreateMap<TransAccount, PetropayAccountGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId))
+                .ForMember(w => w.AccountName,
+                    opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""));
             #endregion
 
             #region Reports

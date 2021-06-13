@@ -38,7 +38,7 @@ namespace PetroPay.Web.Controllers.Dashboards.Admin.Get
                 .Where(w => (!w.RechargeRequstConfirmed.HasValue) || w.RechargeRequstConfirmed == false).CountAsync();
 
             response.CarRequests = await _context.Cars
-                .Where(w => (!w.CarWorkWithApproval.HasValue) || w.CarWorkWithApproval == false).CountAsync();
+                .Where(w => string.IsNullOrEmpty(w.CarNfcCode.Trim()) || w.CarNfcCode.Trim() == "0").CountAsync();
             
             response.SubscriptionRequests = await _context.Subscriptions
                 .Where(w => (!w.SubscriptionActive.HasValue) || w.SubscriptionActive == false).CountAsync();

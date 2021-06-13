@@ -93,6 +93,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiRechargeBalanceDelete = "/api/recharge-balance/delete";
         public const string ApiRechargeBalanceConfirm = "/api/recharge-balance/confirm";
         
+        public const string ApiPetropayAccountGet = "/api/petropay-account/get";
         public const string ApiPetropayAccountList = "/api/petropay-account/list";
         public const string ApiPetropayAccountPayment = "/api/petropay-account/payment";
         

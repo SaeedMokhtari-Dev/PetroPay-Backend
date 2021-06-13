@@ -12,6 +12,7 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
         public string InvoiceDataTimeTo { get; set; }
         public string ServiceDescription { get; set; }
         public int? CompanyId { get; set; }
+        public int? InvoiceId { get; set; }
         public string CompanyName { get; set; }   
         public bool ExportToFile { get; set; }
         public int PageIndex { get; set; }

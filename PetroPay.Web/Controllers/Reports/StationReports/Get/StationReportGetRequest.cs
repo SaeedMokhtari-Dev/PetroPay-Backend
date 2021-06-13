@@ -4,6 +4,7 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
     {
         public int? StationWorkerId { get; set; }   
         public string StationWorkerFname { get; set; }
+        public int? InvoiceId { get; set; }
         public string InvoiceDataTimeFrom { get; set; }
         public string InvoiceDataTimeTo { get; set; }
         public bool ExportToFile { get; set; }

@@ -4,7 +4,7 @@ namespace PetroPay.Web.Configuration.Constants
 {
     public static class IdentitySettings
     {
-        public static readonly TimeSpan AccessTokenExpireTime = TimeSpan.FromMinutes(2);
+        public static readonly TimeSpan AccessTokenExpireTime = TimeSpan.FromMinutes(30);
         public static readonly TimeSpan RefreshTokenExpireTime = TimeSpan.FromDays(365);
         public static readonly TimeSpan AccessTokenValidationClockSkew = TimeSpan.FromMinutes(5);
 

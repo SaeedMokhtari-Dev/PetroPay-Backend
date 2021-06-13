@@ -59,6 +59,10 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
             {
                 query = query.Where(w => w.CompanyId == request.CompanyId);
             }
+            if (request.InvoiceId.HasValue)
+            {
+                query = query.Where(w => w.InvoiceId == request.InvoiceId);
+            }
             if (!string.IsNullOrEmpty(request.CompanyName))
             {
                 query = query.Where(w => w.CompanyName.Contains(request.CompanyName));
