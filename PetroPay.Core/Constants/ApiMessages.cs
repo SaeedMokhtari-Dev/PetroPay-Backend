@@ -172,6 +172,10 @@ namespace PetroPay.Core.Constants
             public const string SubscriptionCarAddNotAllowed = "Api.Subscription.SubscriptionCarAdd.NotAllowed";
             public const string CarAddMoreNotAllowed = "Api.Subscription.CarAddMore.NotAllowed";
             
+            public const string MoreThan1Month = "Api.Subscription.MoreThan1Month";
+            public const string MoreThan1Year = "Api.Subscription.MoreThan1Year";
+            
+            
         }
         public static class RechargeBalanceMessage
         {

@@ -50,7 +50,20 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
             if (!request.SubscriptionEndDate.HasValue)
                 request.SubscriptionEndDate = editSubscription.SubscriptionEndDate ?? DateTime.Now;
             
-            
+            DateDiff dateDiff = new DateDiff(request.SubscriptionStartDate.Value, request.SubscriptionEndDate.Value);
+            switch (request.SubscriptionType)
+            {
+                case "Monthly":
+                    if(dateDiff.Months < 1)
+                        return ActionResult.Error(ApiMessages.SubscriptionMessage.MoreThan1Month);
+                    request.SubscriptionEndDate = request.SubscriptionStartDate.Value.AddMonths(dateDiff.Months);    
+                    break;
+                case "Yearly":
+                    if(dateDiff.Years < 1)
+                        return ActionResult.Error(ApiMessages.SubscriptionMessage.MoreThan1Year);
+                    request.SubscriptionEndDate = request.SubscriptionStartDate.Value.AddYears(dateDiff.Years);
+                    break;
+            }
             SubscriptionCalculateResponse subscriptionCost =
                 await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
                     request.SubscriptionType, request.SubscriptionStartDate.Value, request.SubscriptionEndDate.Value);
