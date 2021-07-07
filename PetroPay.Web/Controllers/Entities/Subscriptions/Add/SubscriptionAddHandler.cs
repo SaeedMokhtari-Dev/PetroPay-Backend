@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -31,9 +32,21 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
 
         protected override async Task<ActionResult> Execute(SubscriptionAddRequest request)
         {
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = DateTime.Now;
+            
+            if (!string.IsNullOrEmpty(request.SubscriptionStartDate))
+            {
+                startDate = DateTime.ParseExact(request.SubscriptionStartDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+            }
+            if (!string.IsNullOrEmpty(request.SubscriptionEndDate))
+            {
+                endDate = DateTime.ParseExact(request.SubscriptionEndDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+            }
+            
             SubscriptionCalculateResponse subscriptionCost =
                 await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                    request.SubscriptionType, request.SubscriptionStartDate, request.SubscriptionEndDate);
+                    request.SubscriptionType, startDate, endDate);
             
             if(subscriptionCost == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);

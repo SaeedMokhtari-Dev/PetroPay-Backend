@@ -13,8 +13,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
             RuleFor(x => x.SubscriptionCarNumbers).GreaterThan(0).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionCarNumberRequired);
             RuleFor(x => x.SubscriptionCost).GreaterThan(0).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionCostRequired);
             RuleFor(x => x.SubscriptionPaymentMethod).NotEmpty().WithMessage(ApiMessages.SubscriptionMessage.SubscriptionPaymentMethodRequired);
-            RuleFor(x => x.SubscriptionStartDate).GreaterThanOrEqualTo(DateTime.Today).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionStartDateRequired);
-            RuleFor(x => x.SubscriptionEndDate).GreaterThan(x => x.SubscriptionStartDate).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionEndDateRequired);
+            /*RuleFor(x => x.SubscriptionStartDate).GreaterThanOrEqualTo(DateTime.Today).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionStartDateRequired);
+            RuleFor(x => x.SubscriptionEndDate).GreaterThan(x => x.SubscriptionStartDate).WithMessage(ApiMessages.SubscriptionMessage.SubscriptionEndDateRequired);*/
             
         }
     }

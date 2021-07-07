@@ -15,13 +15,13 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
         {
             _context = context;
         }
-        public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(SubscriptionCalculateRequest request)
+        /*public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(SubscriptionCalculateRequest request)
         {
             SubscriptionCalculateResponse response = await CalculateSubscriptionCost(request.BundlesId,
                 request.SubscriptionCarNumbers,
                 request.SubscriptionType, request.SubscriptionStartDate, request.SubscriptionEndDate);
             return response;
-        }
+        }*/
         public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(int bundlesId, int subscriptionCarNumbers, string subscriptionType,
             DateTime subscriptionStartDate, DateTime subscriptionEndDate)
         {

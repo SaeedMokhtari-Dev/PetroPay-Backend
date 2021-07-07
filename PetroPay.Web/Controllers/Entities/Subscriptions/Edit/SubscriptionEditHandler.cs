@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Itenso.TimePeriod;
@@ -43,30 +44,38 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
             {
                 return ActionResult.Error(ApiMessages.SubscriptionMessage.ActiveEntityDeleteNotAllowed);
             }
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = DateTime.Now;
+            
+            if (!string.IsNullOrEmpty(request.SubscriptionStartDate))
+            {
+                startDate = DateTime.ParseExact(request.SubscriptionStartDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+            }
+            if (!string.IsNullOrEmpty(request.SubscriptionEndDate))
+            {
+                endDate = DateTime.ParseExact(request.SubscriptionEndDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+            }
 
-            if (!request.SubscriptionStartDate.HasValue)
-                request.SubscriptionStartDate = editSubscription.SubscriptionStartDate ?? DateTime.Now;
+            /*if (!request.SubscriptionEndDate.HasValue)
+                request.SubscriptionEndDate = editSubscription.SubscriptionEndDate ?? DateTime.Now;*/
             
-            if (!request.SubscriptionEndDate.HasValue)
-                request.SubscriptionEndDate = editSubscription.SubscriptionEndDate ?? DateTime.Now;
-            
-            DateDiff dateDiff = new DateDiff(request.SubscriptionStartDate.Value, request.SubscriptionEndDate.Value);
+            DateDiff dateDiff = new DateDiff(startDate, endDate);
             switch (request.SubscriptionType)
             {
                 case "Monthly":
                     if(dateDiff.Months < 1)
                         return ActionResult.Error(ApiMessages.SubscriptionMessage.MoreThan1Month);
-                    request.SubscriptionEndDate = request.SubscriptionStartDate.Value.AddMonths(dateDiff.Months);    
+                    endDate = startDate.AddMonths(dateDiff.Months);    
                     break;
                 case "Yearly":
                     if(dateDiff.Years < 1)
                         return ActionResult.Error(ApiMessages.SubscriptionMessage.MoreThan1Year);
-                    request.SubscriptionEndDate = request.SubscriptionStartDate.Value.AddYears(dateDiff.Years);
+                    endDate = startDate.AddYears(dateDiff.Years);
                     break;
             }
             SubscriptionCalculateResponse subscriptionCost =
                 await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                    request.SubscriptionType, request.SubscriptionStartDate.Value, request.SubscriptionEndDate.Value);
+                    request.SubscriptionType, startDate, endDate);
             
             if(subscriptionCost == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);

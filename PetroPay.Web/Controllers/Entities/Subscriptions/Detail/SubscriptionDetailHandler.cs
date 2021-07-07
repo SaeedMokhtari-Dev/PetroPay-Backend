@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Itenso.TimePeriod;
 using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
@@ -26,7 +28,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
         protected override async Task<ActionResult> Execute(SubscriptionDetailRequest request)
         {
             Subscription subscription = await _context.Subscriptions.Include(w => w.CarSubscriptions)
-                .SingleOrDefaultAsync(w => w.SubscriptionId == request.SubscriptionId);
+                .FirstOrDefaultAsync(w => w.SubscriptionId == request.SubscriptionId);
 
             if (subscription == null)
             {
@@ -34,6 +36,17 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
             }
 
             SubscriptionDetailResponse response = _mapper.Map<SubscriptionDetailResponse>(subscription);
+            DateDiff dateDiff = new DateDiff(subscription.SubscriptionStartDate ?? DateTime.Now, subscription.SubscriptionEndDate ?? DateTime.Now);
+            switch (subscription.SubscriptionType)
+            {
+                case "Monthly":
+                    response.NumberOfDateDiff = dateDiff.Months;
+                    break;
+                case "Yearly":
+                    response.NumberOfDateDiff = dateDiff.Years;
+                    break;
+            }
+                        
 
             /*var petropayAccount = await _context.PetropayAccounts.FirstOrDefaultAsync(
                  w => w.AccName == response.SubscriptionPaymentMethod);

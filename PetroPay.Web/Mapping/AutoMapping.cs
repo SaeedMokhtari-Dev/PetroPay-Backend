@@ -122,12 +122,34 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.CompanyName,
                     opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
                 .ForMember(w => w.PayFromCompanyBalance,
-                    opt => opt.MapFrom(e => e.SubscriptionPaymentMethod == "CompanyBalance"));
+                    opt => opt.MapFrom(e => e.SubscriptionPaymentMethod == "CompanyBalance"))
+                .ForMember(w => w.SubscriptionStartDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionStartDate.HasValue
+                            ? e.SubscriptionStartDate.Value.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty))
+                .ForMember(w => w.SubscriptionEndDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionEndDate.HasValue
+                            ? e.SubscriptionEndDate.Value.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty));
             CreateMap<SubscriptionEditRequest, Subscription>()
                 .ForMember(w => w.SubscriptionId, opt => opt.Ignore())
-                .ForMember(w => w.CompanyId, opt => opt.Ignore());
+                .ForMember(w => w.CompanyId, opt => opt.Ignore())
+                .ForMember(w => w.SubscriptionStartDate,
+                    opt => opt.MapFrom(src => DateTime.ParseExact(src.SubscriptionStartDate,
+                        DateTimeConstants.DateFormat, CultureInfo.InvariantCulture)))
+                .ForMember(w => w.SubscriptionEndDate,
+                    opt => opt.MapFrom(src => DateTime.ParseExact(src.SubscriptionEndDate, DateTimeConstants.DateFormat,
+                        CultureInfo.InvariantCulture)));
             CreateMap<SubscriptionAddRequest, Subscription>()
-                .ForMember(w => w.SubscriptionDate, opt => opt.MapFrom(src => DateTime.Now));
+                .ForMember(w => w.SubscriptionDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(w => w.SubscriptionStartDate,
+                    opt => opt.MapFrom(src => DateTime.ParseExact(src.SubscriptionStartDate,
+                        DateTimeConstants.DateFormat, CultureInfo.InvariantCulture)))
+                .ForMember(w => w.SubscriptionEndDate,
+                    opt => opt.MapFrom(src => DateTime.ParseExact(src.SubscriptionEndDate, DateTimeConstants.DateFormat,
+                        CultureInfo.InvariantCulture)));
             
             #endregion
             #region RechargeBalance

@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using AutoMapper;
 using PetroPay.Core.Api.Handlers;
@@ -23,7 +25,20 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
 
         protected override async Task<ActionResult> Execute(SubscriptionCalculateRequest request)
         {
-            SubscriptionCalculateResponse response = await _subscriptionCalculator.CalculateSubscriptionCost(request);
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = DateTime.Now;
+            
+            if (!string.IsNullOrEmpty(request.SubscriptionStartDate))
+            {
+                startDate = DateTime.ParseExact(request.SubscriptionStartDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+            }
+            if (!string.IsNullOrEmpty(request.SubscriptionEndDate))
+            {
+                endDate = DateTime.ParseExact(request.SubscriptionEndDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+            }
+            
+            SubscriptionCalculateResponse response = await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
+                request.SubscriptionType, startDate, endDate);
 
             if (response == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
