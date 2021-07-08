@@ -25,6 +25,10 @@ using PetroPay.Web.Controllers.Entities.PetroStations.Add;
 using PetroPay.Web.Controllers.Entities.PetroStations.Detail;
 using PetroPay.Web.Controllers.Entities.PetroStations.Edit;
 using PetroPay.Web.Controllers.Entities.PetroStations.Get;
+using PetroPay.Web.Controllers.Entities.PromotionCoupons.Add;
+using PetroPay.Web.Controllers.Entities.PromotionCoupons.Detail;
+using PetroPay.Web.Controllers.Entities.PromotionCoupons.Edit;
+using PetroPay.Web.Controllers.Entities.PromotionCoupons.Get;
 using PetroPay.Web.Controllers.Entities.RechargeBalances.Add;
 using PetroPay.Web.Controllers.Entities.RechargeBalances.Detail;
 using PetroPay.Web.Controllers.Entities.RechargeBalances.Edit;
@@ -226,6 +230,17 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId))
                 .ForMember(w => w.AccountName,
                     opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""));
+                
+            #region PromotionCoupon
+            
+            CreateMap<PromotionCoupon, PromotionCouponGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CouponId));
+            CreateMap<PromotionCoupon, PromotionCouponDetailResponse>();
+            CreateMap<PromotionCouponEditRequest, PromotionCoupon>()
+                .ForMember(w => w.CouponId, opt => opt.Ignore());
+            CreateMap<PromotionCouponAddRequest, PromotionCoupon>();
+            
+            #endregion
             #endregion
 
             #region Reports

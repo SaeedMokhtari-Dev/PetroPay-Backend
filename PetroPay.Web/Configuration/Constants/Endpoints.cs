@@ -101,6 +101,14 @@ namespace PetroPay.Web.Configuration.Constants
         
         public const string ApiTransferBalance = "/api/transfer-balance";
         
+        
+        /*PromotionCoupon APIs*/
+        public const string ApiPromotionCouponAdd = "/api/promotion-coupon/add";
+        public const string ApiPromotionCouponEdit = "/api/promotion-coupon/edit";
+        public const string ApiPromotionCouponGet = "/api/promotion-coupon/get";
+        public const string ApiPromotionCouponDetail = "/api/promotion-coupon/detail";
+        public const string ApiPromotionCouponDelete = "/api/promotion-coupon/delete";
+        
         #endregion
 
         #region Reports

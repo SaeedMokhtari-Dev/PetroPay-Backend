@@ -1057,7 +1057,6 @@ namespace PetroPay.DataAccess.Contexts
                 entity.ToTable("promotion_Coupon");
 
                 entity.Property(e => e.CouponId)
-                    .ValueGeneratedNever()
                     .HasColumnName("coupon_id");
 
                 entity.Property(e => e.CouponActive).HasColumnName("coupon_active");
