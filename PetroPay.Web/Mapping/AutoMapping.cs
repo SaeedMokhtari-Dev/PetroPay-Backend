@@ -44,6 +44,7 @@ using PetroPay.Web.Controllers.Entities.Subscriptions.Get;
 using PetroPay.Web.Controllers.Reports.AccountBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get;
+using PetroPay.Web.Controllers.Reports.CarKmConsumptions.Get;
 using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceSummary.Get;
@@ -316,6 +317,8 @@ namespace PetroPay.Web.Mapping
             CreateMap<ViewAccountBalance, AccountBalanceGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewCarConsumptionRate, CarConsumptionRateGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+            CreateMap<ViewCarKmConsumption, CarKmConsumptionGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             
 

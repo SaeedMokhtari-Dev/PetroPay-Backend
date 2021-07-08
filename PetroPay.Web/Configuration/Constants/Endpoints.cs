@@ -135,6 +135,14 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiPetrolStationListGet = "/api/petrol-station-list/get";
         /*CarConsumptionRates APIs*/
         public const string ApiCarConsumptionRateGet = "/api/car-consumption-rate/get";
+        /*CarKmConsumptions APIs*/
+        public const string ApiCarKmConsumptionGet = "/api/car-km-consumption/get";
+        /*CarOdometerMaxes APIs*/
+        public const string ApiCarOdometerMaxGet = "/api/car-odometer-max/get";
+        /*CarOdometerMins APIs*/
+        public const string ApiCarOdometerMinGet = "/api/car-odometer-min/get";
+        /*OdometerBetweenDates APIs*/
+        public const string ApiOdometerBetweenDateGet = "/api/odometer-between-date/get";
 
         #endregion
 
