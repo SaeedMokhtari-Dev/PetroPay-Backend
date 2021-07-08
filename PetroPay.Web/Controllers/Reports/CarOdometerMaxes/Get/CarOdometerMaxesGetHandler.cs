@@ -12,15 +12,15 @@ using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Identity.Contexts;
 
-namespace PetroPay.Web.Controllers.Reports.CarKmConsumptions.Get
+namespace PetroPay.Web.Controllers.Reports.CarOdometerMaxes.Get
 {
-    public class CarKmConsumptionGetHandler : ApiRequestHandler<CarKmConsumptionGetRequest>
+    public class CarOdometerMaxGetHandler : ApiRequestHandler<CarOdometerMaxGetRequest>
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
         private readonly UserContext _userContext;
 
-        public CarKmConsumptionGetHandler(
+        public CarOdometerMaxGetHandler(
             PetroPayContext context, IMapper mapper, UserContext userContext)
         {
             _context = context;
@@ -28,26 +28,26 @@ namespace PetroPay.Web.Controllers.Reports.CarKmConsumptions.Get
             _userContext = userContext;
         }
 
-        protected override async Task<ActionResult> Execute(CarKmConsumptionGetRequest request)
+        protected override async Task<ActionResult> Execute(CarOdometerMaxGetRequest request)
         {
             /*if(_userContext.Role == RoleType.Customer && request.CompanyId == null)
                 return ActionResult.Error(ApiMessages.BranchMessage.CompanyIdRequired);*/
             
-            var query = _context.ViewCarKmConsumptions
+            var query = _context.ViewCarOdometerMaxes
                 .AsQueryable();
             
             query = createQuery(query, request);
             
-            CarKmConsumptionGetResponse response = new CarKmConsumptionGetResponse();
+            CarOdometerMaxGetResponse response = new CarOdometerMaxGetResponse();
             response.TotalCount = await query.CountAsync();
-            //response.SumCarKmConsumption = await query.SumAsync(w => w.TransAmount ?? 0);
+            //response.SumCarOdometerMax = await query.SumAsync(w => w.TransAmount ?? 0);
 
             if(!request.ExportToFile)
                 query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
             
             var result = await query.ToListAsync();
 
-            var mappedResult = _mapper.Map<List<CarKmConsumptionGetResponseItem>>(result);
+            var mappedResult = _mapper.Map<List<CarOdometerMaxGetResponseItem>>(result);
             response.Items = mappedResult;
             var carIds = response.Items.Select(w => w.CarId ?? 0).Distinct().ToList();
             var cars = await _context.Cars.Where(w => carIds.Contains(w.CarId)).Select(w => new
@@ -63,7 +63,7 @@ namespace PetroPay.Web.Controllers.Reports.CarKmConsumptions.Get
             return ActionResult.Ok(response);
         }
 
-        private IQueryable<ViewCarKmConsumption> createQuery(IQueryable<ViewCarKmConsumption> query, CarKmConsumptionGetRequest request)
+        private IQueryable<ViewCarOdometerMax> createQuery(IQueryable<ViewCarOdometerMax> query, CarOdometerMaxGetRequest request)
         {
             if (request.CarId.HasValue)
             {

@@ -12,6 +12,7 @@ namespace PetroPay.Web.Controllers.Reports.CarKmConsumptions.Get
     {
         public Guid Key { get; set; }
         public int? CarId { get; set; }
+        public string CarIdNumber { get; set; }
         public DateTime? DateMin { get; set; }
         public double? OdometerValueMin { get; set; }
         public DateTime? DateMax { get; set; }
