@@ -133,6 +133,8 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiStationStatementGet = "/api/station-statement/get";
         /*PetrolStationLists APIs*/
         public const string ApiPetrolStationListGet = "/api/petrol-station-list/get";
+        /*CarConsumptionRates APIs*/
+        public const string ApiCarConsumptionRateGet = "/api/car-consumption-rate/get";
 
         #endregion
 

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using PetroPay.Core.Api.Handlers;
@@ -30,14 +31,20 @@ namespace PetroPay.Web.Controllers.Entities.PromotionCoupons.Edit
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            await EditAuditingPromotionCouponPromotionCouponPromotionCoupon(editPromotionCoupon, request);
-            return ActionResult.Ok(ApiMessages.PromotionCouponMessage.EditedSuccessfully);
+            Tuple<bool, string> result = await EditAuditingPromotionCouponPromotionCouponPromotionCoupon(editPromotionCoupon, request);
+            
+            if(result.Item1)
+                return ActionResult.Ok(ApiMessages.PromotionCouponMessage.EditedSuccessfully);
+            return ActionResult.Error(result.Item2);
         }
 
-        private async Task EditAuditingPromotionCouponPromotionCouponPromotionCoupon(PromotionCoupon editPromotionCoupon, PromotionCouponEditRequest request)
+        private async Task<Tuple<bool, string>> EditAuditingPromotionCouponPromotionCouponPromotionCoupon(PromotionCoupon editPromotionCoupon, PromotionCouponEditRequest request)
         {
             _mapper.Map(request, editPromotionCoupon);
+            if (editPromotionCoupon.CouponEndDate <= editPromotionCoupon.CouponActiveDate)
+                return new Tuple<bool, string>(false, ApiMessages.PromotionCouponMessage.StartDateShouldBeLessThanEndDate);
             await _context.SaveChangesAsync();
+            return new Tuple<bool, string>(true, string.Empty);
         }
     }
 }

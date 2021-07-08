@@ -237,6 +237,8 @@ namespace PetroPay.Core.Constants
             public const string EditedSuccessfully = "Api.PromotionCoupon.Edit.Successful";
             public const string ArchivedSuccessfully = "Api.PromotionCoupon.Archived.Successful";
             public const string DeletedSuccessfully = "Api.PromotionCoupon.Deleted.Successful";
+            
+            public const string StartDateShouldBeLessThanEndDate = "Api.PromotionCoupon.StartDateShouldBeLessThanEndDate";
         }
     }
 }

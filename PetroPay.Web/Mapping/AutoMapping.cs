@@ -43,6 +43,7 @@ using PetroPay.Web.Controllers.Entities.Subscriptions.Edit;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Get;
 using PetroPay.Web.Controllers.Reports.AccountBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarBalances.Get;
+using PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get;
 using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceSummary.Get;
@@ -232,13 +233,49 @@ namespace PetroPay.Web.Mapping
                     opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""));
                 
             #region PromotionCoupon
-            
+
             CreateMap<PromotionCoupon, PromotionCouponGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CouponId));
-            CreateMap<PromotionCoupon, PromotionCouponDetailResponse>();
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CouponId))
+                .ForMember(w => w.CouponActiveDate, opt =>
+                    opt.MapFrom(e =>
+                        e.CouponActiveDate.HasValue ? e.CouponActiveDate.Value.Date.ToString(DateTimeConstants.DateFormat) : ""))
+                .ForMember(w => w.CouponEndDate, opt =>
+                    opt.MapFrom(e =>
+                        e.CouponEndDate.HasValue ? e.CouponEndDate.Value.Date.ToString(DateTimeConstants.DateFormat) : ""));
+                
+            CreateMap<PromotionCoupon, PromotionCouponDetailResponse>()
+                .ForMember(w => w.CouponActiveDate, opt =>
+                    opt.MapFrom(e =>
+                        e.CouponActiveDate.HasValue ? e.CouponActiveDate.Value.Date.ToString(DateTimeConstants.DateFormat) : ""))
+                .ForMember(w => w.CouponEndDate, opt =>
+                    opt.MapFrom(e =>
+                        e.CouponEndDate.HasValue ? e.CouponEndDate.Value.Date.ToString(DateTimeConstants.DateFormat) : ""));
             CreateMap<PromotionCouponEditRequest, PromotionCoupon>()
-                .ForMember(w => w.CouponId, opt => opt.Ignore());
-            CreateMap<PromotionCouponAddRequest, PromotionCoupon>();
+                .ForMember(w => w.CouponId, opt => opt.Ignore())
+                .ForMember(w => w.CouponActiveDate, opt =>
+                    opt.MapFrom(e =>
+                        !string.IsNullOrEmpty(e.CouponActiveDate)
+                            ? DateTime.ParseExact(e.CouponActiveDate, DateTimeConstants.DateFormat,
+                                CultureInfo.InvariantCulture)
+                            : default))
+                .ForMember(w => w.CouponEndDate, opt =>
+                    opt.MapFrom(e =>
+                        !string.IsNullOrEmpty(e.CouponEndDate)
+                            ? DateTime.ParseExact(e.CouponEndDate, DateTimeConstants.DateFormat,
+                                CultureInfo.InvariantCulture)
+                            : default));
+            CreateMap<PromotionCouponAddRequest, PromotionCoupon>().ForMember(w => w.CouponActiveDate, opt =>
+                    opt.MapFrom(e =>
+                        !string.IsNullOrEmpty(e.CouponActiveDate)
+                            ? DateTime.ParseExact(e.CouponActiveDate, DateTimeConstants.DateFormat,
+                                CultureInfo.InvariantCulture)
+                            : default))
+                .ForMember(w => w.CouponEndDate, opt =>
+                    opt.MapFrom(e =>
+                        !string.IsNullOrEmpty(e.CouponEndDate)
+                            ? DateTime.ParseExact(e.CouponEndDate, DateTimeConstants.DateFormat,
+                                CultureInfo.InvariantCulture)
+                            : default));
             
             #endregion
             #endregion
@@ -278,7 +315,8 @@ namespace PetroPay.Web.Mapping
             
             CreateMap<ViewAccountBalance, AccountBalanceGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
-                        
+            CreateMap<ViewCarConsumptionRate, CarConsumptionRateGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             
 
             #endregion
