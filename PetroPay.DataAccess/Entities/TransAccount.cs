@@ -12,6 +12,8 @@ namespace PetroPay.DataAccess.Entities
         public string TransDocument { get; set; }
         public decimal? TransAmount { get; set; }
         public string TransReference { get; set; }
+        public int? UserId { get; set; }
+        public string UserName { get; set; }
 
         public virtual AccountMaster Account { get; set; }
     }

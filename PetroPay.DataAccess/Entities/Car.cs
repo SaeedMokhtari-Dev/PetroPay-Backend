@@ -10,6 +10,7 @@ namespace PetroPay.DataAccess.Entities
         {
             CarSubscriptions = new HashSet<CarSubscription>();
             Invoices = new HashSet<Invoice>();
+            OdometerRecords = new HashSet<OdometerRecord>();
         }
 
         public int CarId { get; set; }
@@ -52,10 +53,15 @@ namespace PetroPay.DataAccess.Entities
         public bool? WorkAllDays { get; set; }
         public int? AccountId { get; set; }
         public string CarNfcCode { get; set; }
+        public bool? CarChangeOliApproval { get; set; }
+        public bool? CarChangeTyerApproval { get; set; }
+        public bool? CarWashApproval { get; set; }
+        public bool? CarOdometerRecordRequired { get; set; }
 
         public virtual AccountMaster Account { get; set; }
         public virtual CompanyBranch CompanyBarnch { get; set; }
         public virtual ICollection<CarSubscription> CarSubscriptions { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
+        public virtual ICollection<OdometerRecord> OdometerRecords { get; set; }
     }
 }

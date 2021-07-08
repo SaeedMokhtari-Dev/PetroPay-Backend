@@ -18,5 +18,6 @@ namespace PetroPay.DataAccess.Entities
         public string PaymentMethodName { get; set; }
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
+        public int CarId { get; set; }
     }
 }

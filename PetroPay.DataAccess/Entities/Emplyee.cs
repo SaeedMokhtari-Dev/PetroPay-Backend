@@ -1,9 +1,16 @@
-﻿#nullable disable
+﻿using System.Collections.Generic;
+
+#nullable disable
 
 namespace PetroPay.DataAccess.Entities
 {
     public partial class Emplyee
     {
+        public Emplyee()
+        {
+            EmployeeMenus = new HashSet<EmployeeMenu>();
+        }
+
         public int EmplyeeId { get; set; }
         public string EmplyeeName { get; set; }
         public string EmplyeePhone { get; set; }
@@ -14,5 +21,7 @@ namespace PetroPay.DataAccess.Entities
         public string EmplyeeStatus { get; set; }
         public byte[] EmplyeePhoto { get; set; }
         public byte[] SsmaTimeStamp { get; set; }
+
+        public virtual ICollection<EmployeeMenu> EmployeeMenus { get; set; }
     }
 }

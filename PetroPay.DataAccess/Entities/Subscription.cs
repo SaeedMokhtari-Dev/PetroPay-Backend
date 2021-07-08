@@ -28,8 +28,13 @@ namespace PetroPay.DataAccess.Entities
         public bool? SubscriptionActive { get; set; }
         public string PaymentReferenceNumber { get; set; }
         public DateTime? SubscriptionDate { get; set; }
-
         public string SubscriptionPaymentDocPhoto { get; set; }
+        public int? CouponId { get; set; }
+        public string CouponCode { get; set; }
+        public decimal? SubscriptionDiscountValues { get; set; }
+        public decimal? SubscriptionVatTaxValue { get; set; }
+        public decimal? SubscriptionTaxValue { get; set; }
+        public double? SubscriptionInvoiceNumber { get; set; }
 
         public virtual Bundle Bundles { get; set; }
         public virtual Company Company { get; set; }
