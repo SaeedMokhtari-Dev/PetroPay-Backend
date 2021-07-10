@@ -77,22 +77,13 @@ namespace PetroPay.Core.Constants
             public const string CompanyBranchIdRequired = "Api.Car.CompanyBranchId.Required";
             public const string IdRequired = "Api.Car.Id.Required";
             public const string CarNfcCodeRequired = "Api.Car.CarNfcCode.Required";
-            public const string NameRequired = "Api.Car.Name.Required";
-            public const string EmailRequired = "Api.Car.Email.Required";
-            public const string LogoRequired = "Api.Car.Logo.Required";
-            public const string EmailIsDuplicate = "Api.Car.Email.Duplicate";
-            public const string EmailIsWrong = "Api.Car.Email.IsWrong";
             
             public const string AddedSuccessfully = "Api.Car.Add.Successful";
             public const string EditedSuccessfully = "Api.Car.Edit.Successful";
-            public const string ArchivedSuccessfully = "Api.Car.Archived.Successful";
             public const string DeletedSuccessfully = "Api.Car.Deleted.Successful";
             public const string ActivatedSuccessfully = "Api.Car.Activated.Successful";
             
-            public const string ArchiveEntityEditNotAllowed = "Api.Car.ArchivedEntityEdit.NotAllowed";
             public const string AddMoreThanMaxNotAllowed = "Api.Car.AddMoreThanMax.NotAllowed";
-            public const string AddMoreThanSubscriptionsNotAllowed = "Api.Car.AddMoreThanSubscriptions.NotAllowed";
-            
         }
         public static class PetroStationMessage
         {
@@ -261,6 +252,17 @@ namespace PetroPay.Core.Constants
             public const string ArchivedSuccessfully = "Api.OdometerRecord.Archived.Successful";
             public const string DeletedSuccessfully = "Api.OdometerRecord.Deleted.Successful";
             
+        }
+        public static class MenuMessage
+        {
+            public const string IdRequired = "Api.Menu.Id.Required";
+            
+            public const string AddedSuccessfully = "Api.Menu.Add.Successful";
+            public const string EditedSuccessfully = "Api.Menu.Edit.Successful";
+            public const string DeletedSuccessfully = "Api.Menu.Deleted.Successful";
+            public const string ActivatedSuccessfully = "Api.Menu.Activated.Successful";
+            
+            public const string AddMoreThanMaxNotAllowed = "Api.Menu.AddMoreThanMax.NotAllowed";
         }
     }
 }

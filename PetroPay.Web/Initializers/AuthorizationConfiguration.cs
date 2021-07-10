@@ -20,6 +20,7 @@ namespace PetroPay.Web.Initializers
             });
 
             services.AddScoped<IAuthorizationHandler, ActiveUserAuthorizationHandler>();
+            services.AddScoped<IAuthorizationHandler, AdminUserAuthorizationHandler>();
 
             return services;
         }

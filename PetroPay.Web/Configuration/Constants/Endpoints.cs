@@ -123,6 +123,14 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiOdometerRecordDetail = "/api/odometer-record/detail";
         public const string ApiOdometerRecordDelete = "/api/odometer-record/delete";
         
+        /*Menu APIs*/
+        public const string ApiMenuAdd = "/api/menu/add";
+        public const string ApiMenuEdit = "/api/menu/edit";
+        public const string ApiMenuGet = "/api/menu/get";
+        public const string ApiMenuDetail = "/api/menu/detail";
+        public const string ApiMenuDelete = "/api/menu/delete";
+        public const string ApiMenuList = "/api/menu/list";
+        public const string ApiMenuActive = "/api/menu/active";
         #endregion
 
         #region Reports

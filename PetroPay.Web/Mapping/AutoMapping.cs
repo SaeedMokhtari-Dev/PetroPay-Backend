@@ -23,6 +23,10 @@ using PetroPay.Web.Controllers.Entities.Companies.Add;
 using PetroPay.Web.Controllers.Entities.Companies.Detail;
 using PetroPay.Web.Controllers.Entities.Companies.Edit;
 using PetroPay.Web.Controllers.Entities.Companies.Get;
+using PetroPay.Web.Controllers.Entities.Menus.Add;
+using PetroPay.Web.Controllers.Entities.Menus.Detail;
+using PetroPay.Web.Controllers.Entities.Menus.Edit;
+using PetroPay.Web.Controllers.Entities.Menus.Get;
 using PetroPay.Web.Controllers.Entities.OdometerRecords.Add;
 using PetroPay.Web.Controllers.Entities.OdometerRecords.Detail;
 using PetroPay.Web.Controllers.Entities.OdometerRecords.Edit;
@@ -345,6 +349,27 @@ namespace PetroPay.Web.Mapping
                             ? DateTime.ParseExact(e.OdometerRecordDate, DateTimeConstants.DateFormat,
                                 CultureInfo.InvariantCulture)
                             : default));
+            
+            #endregion
+            
+            
+            #region Menu
+
+            CreateMap<Menu, MenuGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.Id))
+                .ForMember(w => w.ParentTitleEn,
+                    opt => opt.MapFrom(e => e.ParentId.HasValue ? e.Parent.EnTitle : string.Empty))
+                .ForMember(w => w.ParentTitleAr,
+                    opt => opt.MapFrom(e => e.ParentId.HasValue ? e.Parent.ArTitle : string.Empty))
+                .ForMember(w => w.CreatedAt,
+                    opt => opt.MapFrom(e => e.CreatedAt.ToString(DateTimeConstants.DateTimeFormat)));
+            CreateMap<Menu, MenuDetailResponse>()
+                .ForMember(w => w.MenuId, opt => opt.MapFrom(e => e.Id));
+            CreateMap<MenuEditRequest, Menu>()
+                .ForMember(w => w.Id, opt => opt.Ignore())
+                .ForMember(w => w.CreatedAt, opt => opt.Ignore());
+            CreateMap<MenuAddRequest, Menu>()
+                .ForMember(w => w.CreatedAt, opt => opt.MapFrom(e => DateTime.Now));
             
             #endregion
             #endregion

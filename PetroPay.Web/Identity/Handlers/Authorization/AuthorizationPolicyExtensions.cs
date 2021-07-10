@@ -8,6 +8,7 @@ namespace PetroPay.Web.Identity.Handlers.Authorization
         public static AuthorizationOptions RequireActiveUser(this AuthorizationOptions options)
         {
             options.AddPolicy(nameof(Policies.ActiveUser), x => x.Requirements.Add(new ActiveUserPolicyRequirement(true)));
+            options.AddPolicy(nameof(Policies.AdminUser), x => x.Requirements.Add(new ActiveUserPolicyRequirement(true)));
 
             return options;
         }

@@ -25,5 +25,8 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Get
         public string CompanyAdminPhone { get; set; }
         public string CompanyAdminEmail { get; set; }
         public decimal? CompanyBalnce { get; set; }
+        
+        public string CompanyVatNumber { get; set; }
+        public string CompanyTaxNumber { get; set; }
     }
 }
