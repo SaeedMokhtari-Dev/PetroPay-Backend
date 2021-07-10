@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -10,6 +11,7 @@ using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Identity.Contexts;
+using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
 {
@@ -18,13 +20,15 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
         private readonly UserContext _userContext;
+        private readonly UserService _userService;
 
         public TransferBalanceAddHandler(
-            PetroPayContext context, IMapper mapper, UserContext userContext)
+            PetroPayContext context, IMapper mapper, UserContext userContext, UserService userService)
         {
             _context = context;
             _mapper = mapper;
             _userContext = userContext;
+            _userService = userService;
         }
 
         protected override async Task<ActionResult> Execute(TransferBalanceAddRequest request)
@@ -96,6 +100,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
 
             await _context.ExecuteTransactionAsync(async () =>
             {
+                var user = await _userService.GetCurrentUserInfo();
                 company.CompanyBalnce -= amount;
                 TransAccount deductFromCompany = new TransAccount()
                 {
@@ -105,6 +110,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Recharge Branch Balance",
                     TransReference = branch.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    deductFromCompany.UserId = user.Item2.Id;
+                    deductFromCompany.UserName = user.Item2.Name;
+                    deductFromCompany.UserType = user.Item2.Role.GetDisplayName();
+                }
                 deductFromCompany = (await _context.TransAccounts.AddAsync(deductFromCompany)).Entity;
 
                 branch.CompanyBranchBalnce += amount;
@@ -116,6 +128,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Recharge Branch Balance",
                     TransReference = company.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    addToBranchAccount.UserId = user.Item2.Id;
+                    addToBranchAccount.UserName = user.Item2.Name;
+                    addToBranchAccount.UserType = user.Item2.Role.GetDisplayName();
+                }
                 addToBranchAccount = (await _context.TransAccounts.AddAsync(addToBranchAccount)).Entity;
                 
                 await _context.SaveChangesAsync();
@@ -139,6 +158,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
 
             await _context.ExecuteTransactionAsync(async () =>
             {
+                var user = await _userService.GetCurrentUserInfo();
                 branch.CompanyBranchBalnce -= amount;
                 TransAccount deductFromBranchAccount = new TransAccount()
                 {
@@ -148,6 +168,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Refund Branch Balance To Company",
                     TransReference = company.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    deductFromBranchAccount.UserId = user.Item2.Id;
+                    deductFromBranchAccount.UserName = user.Item2.Name;
+                    deductFromBranchAccount.UserType = user.Item2.Role.GetDisplayName();
+                }
                 deductFromBranchAccount = (await _context.TransAccounts.AddAsync(deductFromBranchAccount)).Entity;
                 
                 company.CompanyBalnce += amount;
@@ -159,6 +186,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Refund Branch Balance To Company",
                     TransReference = branch.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    addToCompany.UserId = user.Item2.Id;
+                    addToCompany.UserName = user.Item2.Name;
+                    addToCompany.UserType = user.Item2.Role.GetDisplayName();
+                }
                 addToCompany = (await _context.TransAccounts.AddAsync(addToCompany)).Entity;
                 
                 await _context.SaveChangesAsync();
@@ -182,6 +216,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
 
             await _context.ExecuteTransactionAsync(async () =>
             {
+                var user = await _userService.GetCurrentUserInfo();
                 car.CarBalnce -= amount;
                 TransAccount deductFromCarAccount = new TransAccount()
                 {
@@ -191,6 +226,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Transfer Balance Car To Car",
                     TransReference = destinationCar.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    deductFromCarAccount.UserId = user.Item2.Id;
+                    deductFromCarAccount.UserName = user.Item2.Name;
+                    deductFromCarAccount.UserType = user.Item2.Role.GetDisplayName();
+                }
                 deductFromCarAccount = (await _context.TransAccounts.AddAsync(deductFromCarAccount)).Entity;
                 
                 destinationCar.CarBalnce += amount;
@@ -202,6 +244,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Transfer Balance Car To Car",
                     TransReference = car.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    addToDestinationCar.UserId = user.Item2.Id;
+                    addToDestinationCar.UserName = user.Item2.Name;
+                    addToDestinationCar.UserType = user.Item2.Role.GetDisplayName();
+                }
                 addToDestinationCar = (await _context.TransAccounts.AddAsync(addToDestinationCar)).Entity;
                 
                 await _context.SaveChangesAsync();
@@ -224,6 +273,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
 
             await _context.ExecuteTransactionAsync(async () =>
             {
+                var user = await _userService.GetCurrentUserInfo();
                 branch.CompanyBranchBalnce -= amount;
                 TransAccount deductFromBranchAccount = new TransAccount()
                 {
@@ -233,6 +283,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Recharge Car Balance",
                     TransReference = car.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    deductFromBranchAccount.UserId = user.Item2.Id;
+                    deductFromBranchAccount.UserName = user.Item2.Name;
+                    deductFromBranchAccount.UserType = user.Item2.Role.GetDisplayName();
+                }
                 deductFromBranchAccount = (await _context.TransAccounts.AddAsync(deductFromBranchAccount)).Entity;
                 
                 car.CarBalnce += amount;
@@ -244,6 +301,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Recharge Car Balance",
                     TransReference = branch.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    addToCar.UserId = user.Item2.Id;
+                    addToCar.UserName = user.Item2.Name;
+                    addToCar.UserType = user.Item2.Role.GetDisplayName();
+                }
                 addToCar = (await _context.TransAccounts.AddAsync(addToCar)).Entity;
                 
                 await _context.SaveChangesAsync();
@@ -266,6 +330,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
 
             await _context.ExecuteTransactionAsync(async () =>
             {
+                var user = await _userService.GetCurrentUserInfo();
                 car.CarBalnce -= amount;
                 TransAccount deductFromCar = new TransAccount()
                 {
@@ -275,6 +340,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Refund Balance Car To Branch",
                     TransReference = branch.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    deductFromCar.UserId = user.Item2.Id;
+                    deductFromCar.UserName = user.Item2.Name;
+                    deductFromCar.UserType = user.Item2.Role.GetDisplayName();
+                }
                 deductFromCar = (await _context.TransAccounts.AddAsync(deductFromCar)).Entity;
                 
                 branch.CompanyBranchBalnce += amount;
@@ -286,6 +358,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                     TransDocument = "Refund Balance Car To Branch",
                     TransReference = car.AccountId.ToString()
                 };
+                
+                if (user.Item1)
+                {
+                    addToBranchAccount.UserId = user.Item2.Id;
+                    addToBranchAccount.UserName = user.Item2.Name;
+                    addToBranchAccount.UserType = user.Item2.Role.GetDisplayName();
+                }
                 addToBranchAccount = (await _context.TransAccounts.AddAsync(addToBranchAccount)).Entity;
                 
                 await _context.SaveChangesAsync();

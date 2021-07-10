@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Itenso.TimePeriod;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -11,6 +12,7 @@ using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Calculate;
 using PetroPay.Web.Identity.Contexts;
+using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
 {
@@ -20,14 +22,16 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
         private readonly IMapper _mapper;
         private readonly SubscriptionCalculator _subscriptionCalculator;
         private readonly UserContext _userContext;
+        private readonly UserService _userService;
 
         public SubscriptionEditHandler(
-            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext)
+            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext, UserService userService)
         {
             _context = context;
             _mapper = mapper;
             _subscriptionCalculator = subscriptionCalculator;
             _userContext = userContext;
+            _userService = userService;
         }
 
         protected override async Task<ActionResult> Execute(SubscriptionEditRequest request)
@@ -100,6 +104,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
                 _mapper.Map(request, editSubscription);
                 if (request.PayFromCompanyBalance)
                 {
+                    var user = await _userService.GetCurrentUserInfo();
                     editSubscription.SubscriptionActive = true;
                     editSubscription.SubscriptionPaymentMethod = "CompanyBalance";
                     Company company = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
@@ -113,6 +118,13 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
                         TransDocument = "paySubscri",
                         TransReference = company.AccountId.ToString()
                     };
+                    
+                    if (user.Item1)
+                    {
+                        deductFromCompany.UserId = user.Item2.Id;
+                        deductFromCompany.UserName = user.Item2.Name;
+                        deductFromCompany.UserType = user.Item2.Role.GetDisplayName();
+                    }
                     deductFromCompany = (await _context.TransAccounts.AddAsync(deductFromCompany)).Entity;
                     PetropayAccount petropayAccount =
                         await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccName == "Subscriptions");
@@ -129,6 +141,13 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
                         TransDocument = "paySubscri",
                         TransReference = company.AccountId.ToString()
                     };
+                    
+                    if (user.Item1)
+                    {
+                        addToSubscriptionAccount.UserId = user.Item2.Id;
+                        addToSubscriptionAccount.UserName = user.Item2.Name;
+                        addToSubscriptionAccount.UserType = user.Item2.Role.GetDisplayName();
+                    }
                     addToSubscriptionAccount = (await _context.TransAccounts.AddAsync(addToSubscriptionAccount)).Entity;
                 }
                 else

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -11,6 +12,7 @@ using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Calculate;
 using PetroPay.Web.Identity.Contexts;
+using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
 {
@@ -20,14 +22,16 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         private readonly IMapper _mapper;
         private readonly SubscriptionCalculator _subscriptionCalculator;
         private readonly UserContext _userContext;
+        private readonly UserService _userService;
         
         public SubscriptionAddHandler(
-            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext)
+            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext, UserService userService)
         {
             this._context = context;
             this._mapper = mapper;
             _subscriptionCalculator = subscriptionCalculator;
             _userContext = userContext;
+            _userService = userService;
         }
 
         protected override async Task<ActionResult> Execute(SubscriptionAddRequest request)
@@ -69,6 +73,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         {
             Subscription subscription = await _context.ExecuteTransactionAsync(async () =>
             {
+                var user = await _userService.GetCurrentUserInfo();
                 Subscription newSubscription = _mapper.Map<Subscription>(request);
                 if (request.PayFromCompanyBalance)
                 {
@@ -85,6 +90,12 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
                         TransDocument = "paySubscri",
                         TransReference = company.AccountId.ToString()
                     };
+                    if (user.Item1)
+                    {
+                        deductFromCompany.UserId = user.Item2.Id;
+                        deductFromCompany.UserName = user.Item2.Name;
+                        deductFromCompany.UserType = user.Item2.Role.GetDisplayName();
+                    }
                     deductFromCompany = (await _context.TransAccounts.AddAsync(deductFromCompany)).Entity;
                     PetropayAccount petropayAccount =
                         await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccName == "Subscriptions");
@@ -101,6 +112,12 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
                         TransDocument = "paySubscri",
                         TransReference = company.AccountId.ToString()
                     };
+                    if (user.Item1)
+                    {
+                        addToSubscriptionAccount.UserId = user.Item2.Id;
+                        addToSubscriptionAccount.UserName = user.Item2.Name;
+                        addToSubscriptionAccount.UserType = user.Item2.Role.GetDisplayName();
+                    }
                     addToSubscriptionAccount = (await _context.TransAccounts.AddAsync(addToSubscriptionAccount)).Entity;
                 }
                 else

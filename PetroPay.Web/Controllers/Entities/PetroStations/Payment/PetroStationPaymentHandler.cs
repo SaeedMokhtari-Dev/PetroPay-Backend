@@ -2,11 +2,14 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.OpenApi.Extensions;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.PetroStations.Payment
 {
@@ -14,12 +17,14 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Payment
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
+        private readonly UserService _userService;
 
         public PetroStationPaymentHandler(
-            PetroPayContext context, IMapper mapper)
+            PetroPayContext context, IMapper mapper, UserService userService)
         {
             _context = context;
             _mapper = mapper;
+            _userService = userService;
         }
 
         protected override async Task<ActionResult> Execute(PetroStationPaymentRequest request)
@@ -47,6 +52,8 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Payment
 
             await _context.ExecuteTransactionAsync(async () =>
             {
+                var user = await _userService.GetCurrentUserInfo();
+                
                 station.StationBalance -= amount;
                 TransAccount deductFromStation = new TransAccount()
                 {
@@ -56,6 +63,13 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Payment
                     TransDocument = "Petrol Station Payment",
                     TransReference = reference
                 };
+                
+                if (user.Item1)
+                {
+                    deductFromStation.UserId = user.Item2.Id;
+                    deductFromStation.UserName = user.Item2.Name;
+                    deductFromStation.UserType = user.Item2.Role.GetDisplayName();
+                }
                 deductFromStation = (await _context.TransAccounts.AddAsync(deductFromStation)).Entity;
 
                 petropayAccount.AccBalance += amount;
@@ -67,6 +81,12 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Payment
                     TransDocument = "Petrol Station Payment",
                     TransReference = reference
                 };
+                if (user.Item1)
+                {
+                    addToPetropayAccount.UserId = user.Item2.Id;
+                    addToPetropayAccount.UserName = user.Item2.Name;
+                    addToPetropayAccount.UserType = user.Item2.Role.GetDisplayName();
+                }
                 addToPetropayAccount = (await _context.TransAccounts.AddAsync(addToPetropayAccount)).Entity;
                 
                 await _context.SaveChangesAsync();
