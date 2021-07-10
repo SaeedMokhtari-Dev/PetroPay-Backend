@@ -7,6 +7,8 @@ using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Identity.Contexts;
+using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.PromotionCoupons.Add
 {
@@ -14,12 +16,14 @@ namespace PetroPay.Web.Controllers.Entities.PromotionCoupons.Add
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
+        private readonly UserService _userService;
         
         public PromotionCouponAddHandler(
-            PetroPayContext context, IMapper mapper)
+            PetroPayContext context, IMapper mapper, UserService userService)
         {
             this._context = context;
             this._mapper = mapper;
+            _userService = userService;
         }
 
         protected override async Task<ActionResult> Execute(PromotionCouponAddRequest request)
@@ -39,6 +43,14 @@ namespace PetroPay.Web.Controllers.Entities.PromotionCoupons.Add
                 //newPromotionCoupon.CouponId = ++maxId;
                 if (newPromotionCoupon.CouponEndDate <= newPromotionCoupon.CouponActiveDate)
                     return new Tuple<bool, string>(false, ApiMessages.PromotionCouponMessage.StartDateShouldBeLessThanEndDate);
+
+                var user = await _userService.GetCurrentUserInfo();
+                if (user.Item1)
+                {
+                    newPromotionCoupon.UserId = user.Item2.Id;
+                    newPromotionCoupon.UserName = user.Item2.Name;
+                }
+
                 newPromotionCoupon = (await _context.PromotionCoupons.AddAsync(newPromotionCoupon)).Entity;
                 await _context.SaveChangesAsync();
 

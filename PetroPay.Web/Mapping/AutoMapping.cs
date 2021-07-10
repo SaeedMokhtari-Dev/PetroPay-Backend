@@ -4,6 +4,9 @@ using AutoMapper;
 using Itenso.TimePeriod;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Controllers.Entities.AppSettings.Add;
+using PetroPay.Web.Controllers.Entities.AppSettings.Detail;
+using PetroPay.Web.Controllers.Entities.AppSettings.Edit;
 using PetroPay.Web.Controllers.Entities.Branches.Add;
 using PetroPay.Web.Controllers.Entities.Branches.Detail;
 using PetroPay.Web.Controllers.Entities.Branches.Edit;
@@ -231,11 +234,12 @@ namespace PetroPay.Web.Mapping
             
             #endregion
 
+            #region TransAccount
             CreateMap<TransAccount, PetropayAccountGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId))
                 .ForMember(w => w.AccountName,
                     opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""));
-                
+            #endregion
             #region PromotionCoupon
 
             CreateMap<PromotionCoupon, PromotionCouponGetResponseItem>()
@@ -280,6 +284,28 @@ namespace PetroPay.Web.Mapping
                             ? DateTime.ParseExact(e.CouponEndDate, DateTimeConstants.DateFormat,
                                 CultureInfo.InvariantCulture)
                             : default));
+            
+            #endregion
+            
+            #region AppSetting
+
+            CreateMap<AppSetting, AppSettingDetailResponse>()
+                .ForMember(w => w.CompanyLogo, opt =>
+                    opt.MapFrom(e => $"data:image/png;base64,{e.CompanyLogo}"))
+                .ForMember(w => w.CompanyStampImage, opt =>
+                    opt.MapFrom(e => $"data:image/png;base64,{e.CompanyStampImage}"));
+            CreateMap<AppSettingEditRequest, AppSetting>()
+                .ForMember(w => w.Id, opt =>
+                    opt.Ignore())
+                .ForMember(w => w.CompanyLogo, opt =>
+                    opt.MapFrom(e => e.CompanyLogo.Remove(0, e.CompanyLogo.IndexOf(',') + 1)))
+                .ForMember(w => w.CompanyStampImage, opt =>
+                    opt.MapFrom(e => e.CompanyStampImage.Remove(0, e.CompanyStampImage.IndexOf(',') + 1)));
+            CreateMap<AppSettingAddRequest, AppSetting>()
+                .ForMember(w => w.CompanyLogo, opt =>
+                    opt.MapFrom(e => e.CompanyLogo.Remove(0, e.CompanyLogo.IndexOf(',') + 1)))
+                .ForMember(w => w.CompanyStampImage, opt =>
+                    opt.MapFrom(e => e.CompanyStampImage.Remove(0, e.CompanyStampImage.IndexOf(',') + 1)));
             
             #endregion
             #endregion

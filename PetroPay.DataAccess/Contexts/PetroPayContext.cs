@@ -175,7 +175,7 @@ namespace PetroPay.DataAccess.Contexts
 
             modelBuilder.Entity<AppSetting>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("App_setting");
 

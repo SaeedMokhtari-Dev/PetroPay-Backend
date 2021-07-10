@@ -240,5 +240,17 @@ namespace PetroPay.Core.Constants
             
             public const string StartDateShouldBeLessThanEndDate = "Api.PromotionCoupon.StartDateShouldBeLessThanEndDate";
         }
+        
+        
+        public static class AppSettingMessage
+        {
+            public const string IdRequired = "Api.AppSetting.Id.Required";
+            
+            public const string AddedSuccessfully = "Api.AppSetting.Add.Successful";
+            public const string EditedSuccessfully = "Api.AppSetting.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.AppSetting.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.AppSetting.Deleted.Successful";
+            
+        }
     }
 }

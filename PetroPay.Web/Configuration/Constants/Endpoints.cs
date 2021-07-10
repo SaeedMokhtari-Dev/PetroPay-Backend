@@ -109,6 +109,12 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiPromotionCouponDetail = "/api/promotion-coupon/detail";
         public const string ApiPromotionCouponDelete = "/api/promotion-coupon/delete";
         
+        /*AppSetting APIs*/
+        public const string ApiAppSettingAdd = "/api/app-setting/add";
+        public const string ApiAppSettingEdit = "/api/app-setting/edit";
+        public const string ApiAppSettingGet = "/api/app-setting/get";
+        public const string ApiAppSettingDetail = "/api/app-setting/detail";
+        public const string ApiAppSettingDelete = "/api/app-setting/delete";
         #endregion
 
         #region Reports

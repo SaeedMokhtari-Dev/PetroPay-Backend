@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
-using PetroPay.Core.Constants;
+using PetroPay.Core.Api.Models;
 using PetroPay.Core.Interfaces;
 using PetroPay.Web.Configuration.Models;
 using SmtpClient = MailKit.Net.Smtp.SmtpClient;

@@ -1,13 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-#nullable disable
-
-namespace PetroPay.DataAccess.Entities
+namespace PetroPay.Web.Controllers.Entities.AppSettings.Detail
 {
-    public partial class AppSetting
+    public class AppSettingDetailResponse
     {
-        public int Id { get; set; }
         public string CompanyNameEn { get; set; }
         public string CompanyNameAr { get; set; }
         public string CompanyAddress { get; set; }
