@@ -894,6 +894,9 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
+                entity.Property(e => e.UserType)
+                    .HasMaxLength(50)
+                    .HasColumnName("user_type");
 
                 entity.HasOne(d => d.Car)
                     .WithMany(p => p.OdometerRecords)
@@ -1083,6 +1086,10 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
+                
+                entity.Property(e => e.UserType)
+                    .HasMaxLength(50)
+                    .HasColumnName("user_type");
             });
 
             modelBuilder.Entity<RechargeBalance>(entity =>
@@ -1322,6 +1329,10 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
+                
+                entity.Property(e => e.UserType)
+                    .HasMaxLength(50)
+                    .HasColumnName("user_type");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.TransAccounts)

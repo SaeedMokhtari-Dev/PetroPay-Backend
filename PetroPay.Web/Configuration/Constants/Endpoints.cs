@@ -115,6 +115,14 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiAppSettingGet = "/api/app-setting/get";
         public const string ApiAppSettingDetail = "/api/app-setting/detail";
         public const string ApiAppSettingDelete = "/api/app-setting/delete";
+        
+        /*OdometerRecord APIs*/
+        public const string ApiOdometerRecordAdd = "/api/odometer-record/add";
+        public const string ApiOdometerRecordEdit = "/api/odometer-record/edit";
+        public const string ApiOdometerRecordGet = "/api/odometer-record/get";
+        public const string ApiOdometerRecordDetail = "/api/odometer-record/detail";
+        public const string ApiOdometerRecordDelete = "/api/odometer-record/delete";
+        
         #endregion
 
         #region Reports

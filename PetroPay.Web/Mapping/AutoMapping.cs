@@ -23,6 +23,10 @@ using PetroPay.Web.Controllers.Entities.Companies.Add;
 using PetroPay.Web.Controllers.Entities.Companies.Detail;
 using PetroPay.Web.Controllers.Entities.Companies.Edit;
 using PetroPay.Web.Controllers.Entities.Companies.Get;
+using PetroPay.Web.Controllers.Entities.OdometerRecords.Add;
+using PetroPay.Web.Controllers.Entities.OdometerRecords.Detail;
+using PetroPay.Web.Controllers.Entities.OdometerRecords.Edit;
+using PetroPay.Web.Controllers.Entities.OdometerRecords.Get;
 using PetroPay.Web.Controllers.Entities.PetropayAccounts.Get;
 using PetroPay.Web.Controllers.Entities.PetroStations.Add;
 using PetroPay.Web.Controllers.Entities.PetroStations.Detail;
@@ -306,6 +310,41 @@ namespace PetroPay.Web.Mapping
                     opt.MapFrom(e => e.CompanyLogo.Remove(0, e.CompanyLogo.IndexOf(',') + 1)))
                 .ForMember(w => w.CompanyStampImage, opt =>
                     opt.MapFrom(e => e.CompanyStampImage.Remove(0, e.CompanyStampImage.IndexOf(',') + 1)));
+            
+            #endregion
+            
+            #region OdometerRecord
+
+            CreateMap<OdometerRecord, OdometerRecordGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.OdometerRecordId))
+                .ForMember(w => w.CarIdNumber, opt =>
+                    opt.MapFrom(e => e.CarId.HasValue ? e.Car.CarIdNumber : string.Empty))
+                .ForMember(w => w.OdometerRecordDate, opt =>
+                    opt.MapFrom(e =>
+                        e.OdometerRecordDate.HasValue
+                            ? e.OdometerRecordDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : ""));
+            CreateMap<OdometerRecord, OdometerRecordDetailResponse>()
+                .ForMember(w => w.OdometerRecordDate, opt =>
+                    opt.MapFrom(e =>
+                        e.OdometerRecordDate.HasValue
+                            ? e.OdometerRecordDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : ""));
+            CreateMap<OdometerRecordEditRequest, OdometerRecord>()
+                .ForMember(w => w.OdometerRecordId, opt => opt.Ignore())
+                .ForMember(w => w.OdometerRecordDate, opt =>
+                    opt.MapFrom(e =>
+                        !string.IsNullOrEmpty(e.OdometerRecordDate)
+                            ? DateTime.ParseExact(e.OdometerRecordDate, DateTimeConstants.DateFormat,
+                                CultureInfo.InvariantCulture)
+                            : default));
+            CreateMap<OdometerRecordAddRequest, OdometerRecord>()
+                .ForMember(w => w.OdometerRecordDate, opt =>
+                    opt.MapFrom(e =>
+                        !string.IsNullOrEmpty(e.OdometerRecordDate)
+                            ? DateTime.ParseExact(e.OdometerRecordDate, DateTimeConstants.DateFormat,
+                                CultureInfo.InvariantCulture)
+                            : default));
             
             #endregion
             #endregion

@@ -12,6 +12,7 @@ namespace PetroPay.DataAccess.Entities
         public double? OdometerValue { get; set; }
         public int? UserId { get; set; }
         public string UserName { get; set; }
+        public string UserType { get; set; }
 
         public virtual Car Car { get; set; }
     }

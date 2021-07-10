@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -49,6 +50,7 @@ namespace PetroPay.Web.Controllers.Entities.PromotionCoupons.Add
                 {
                     newPromotionCoupon.UserId = user.Item2.Id;
                     newPromotionCoupon.UserName = user.Item2.Name;
+                    newPromotionCoupon.UserType = user.Item2.Role.GetDisplayName();
                 }
 
                 newPromotionCoupon = (await _context.PromotionCoupons.AddAsync(newPromotionCoupon)).Entity;

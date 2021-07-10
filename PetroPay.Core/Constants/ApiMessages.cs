@@ -252,5 +252,15 @@ namespace PetroPay.Core.Constants
             public const string DeletedSuccessfully = "Api.AppSetting.Deleted.Successful";
             
         }
+        public static class OdometerRecordMessage
+        {
+            public const string IdRequired = "Api.OdometerRecord.Id.Required";
+            
+            public const string AddedSuccessfully = "Api.OdometerRecord.Add.Successful";
+            public const string EditedSuccessfully = "Api.OdometerRecord.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.OdometerRecord.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.OdometerRecord.Deleted.Successful";
+            
+        }
     }
 }
