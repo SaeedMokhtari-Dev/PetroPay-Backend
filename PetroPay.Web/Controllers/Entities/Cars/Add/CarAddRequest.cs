@@ -39,5 +39,6 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Add
         public bool? CarWorkWithApproval { get; set; }
         public bool? CarApprovedOneTime { get; set; }
         public bool? WorkAllDays { get; set; }
+        public bool CarOdometerRecordRequired { get; set; }
     }
 }
