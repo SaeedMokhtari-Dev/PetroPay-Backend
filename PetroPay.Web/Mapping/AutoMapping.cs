@@ -23,6 +23,10 @@ using PetroPay.Web.Controllers.Entities.Companies.Add;
 using PetroPay.Web.Controllers.Entities.Companies.Detail;
 using PetroPay.Web.Controllers.Entities.Companies.Edit;
 using PetroPay.Web.Controllers.Entities.Companies.Get;
+using PetroPay.Web.Controllers.Entities.Emplyees.Add;
+using PetroPay.Web.Controllers.Entities.Emplyees.Detail;
+using PetroPay.Web.Controllers.Entities.Emplyees.Edit;
+using PetroPay.Web.Controllers.Entities.Emplyees.Get;
 using PetroPay.Web.Controllers.Entities.Menus.Add;
 using PetroPay.Web.Controllers.Entities.Menus.Detail;
 using PetroPay.Web.Controllers.Entities.Menus.Edit;
@@ -370,6 +374,15 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.CreatedAt, opt => opt.Ignore());
             CreateMap<MenuAddRequest, Menu>()
                 .ForMember(w => w.CreatedAt, opt => opt.MapFrom(e => DateTime.Now));
+            
+            #endregion 
+            #region Emplyee
+
+            CreateMap<Emplyee, EmplyeeGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.EmplyeeId));
+            CreateMap<Emplyee, EmplyeeDetailResponse>();
+            CreateMap<EmplyeeEditRequest, Emplyee>();
+            CreateMap<EmplyeeAddRequest, Emplyee>();
             
             #endregion
             #endregion

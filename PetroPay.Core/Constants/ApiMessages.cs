@@ -264,5 +264,16 @@ namespace PetroPay.Core.Constants
             
             public const string AddMoreThanMaxNotAllowed = "Api.Menu.AddMoreThanMax.NotAllowed";
         }
+        public static class EmplyeeMessage
+        {
+            public const string IdRequired = "Api.Emplyee.Id.Required";
+            
+            public const string AddedSuccessfully = "Api.Emplyee.Add.Successful";
+            public const string EditedSuccessfully = "Api.Emplyee.Edit.Successful";
+            public const string DeletedSuccessfully = "Api.Emplyee.Deleted.Successful";
+            public const string ActivatedSuccessfully = "Api.Emplyee.Activated.Successful";
+            
+            public const string AddMoreThanMaxNotAllowed = "Api.Emplyee.AddMoreThanMax.NotAllowed";
+        }
     }
 }
