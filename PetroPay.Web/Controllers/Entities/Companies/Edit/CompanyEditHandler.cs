@@ -56,13 +56,10 @@ namespace PetroPay.Web.Controllers.Entities.Companies.Edit
         {
             _mapper.Map(request, editCompany);
 
-            if (request.IsCompanyCommercialPhotoChanged)
-            {
-                request.CompanyCommercialPhoto =
-                    request.CompanyCommercialPhoto.Remove(0, request.CompanyCommercialPhoto.IndexOf(',') + 1);
-                editCompany.CompanyCommercialPhoto =
-                    request.CompanyCommercialPhoto.ToCharArray().Select(Convert.ToByte).ToArray();
-            }
+            request.CompanyCommercialPhoto =
+                request.CompanyCommercialPhoto.Remove(0, request.CompanyCommercialPhoto.IndexOf(',') + 1);
+            editCompany.CompanyCommercialPhoto =
+                request.CompanyCommercialPhoto.ToCharArray().Select(Convert.ToByte).ToArray();
 
             await _context.SaveChangesAsync();
         }

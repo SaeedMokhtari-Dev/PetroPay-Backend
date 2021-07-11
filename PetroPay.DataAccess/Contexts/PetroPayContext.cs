@@ -517,7 +517,6 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("Company_Tax_Number");
 
                 entity.Property(e => e.CompanyTaxPhoto)
-                    .HasMaxLength(50)
                     .HasColumnName("Company_Tax_photo");
 
                 entity.Property(e => e.CompanyType)
@@ -529,7 +528,6 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("Company_VAT_Number");
 
                 entity.Property(e => e.CompanyVatPhoto)
-                    .HasMaxLength(50)
                     .HasColumnName("Company_VAT_photo");
 
                 entity.Property(e => e.SsmaTimeStamp)

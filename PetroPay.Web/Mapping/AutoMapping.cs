@@ -85,12 +85,24 @@ namespace PetroPay.Web.Mapping
             CreateMap<Company, CompanyGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CompanyId));
             CreateMap<Company, CompanyDetailResponse>()
-                .ForMember(w => w.CompanyCommercialPhoto, opt => opt.Ignore());
+                .ForMember(w => w.CompanyCommercialPhoto, opt => opt.Ignore())
+                .ForMember(w => w.CompanyTaxPhoto,
+                    opt => opt.MapFrom(e => $"data:image/png;base64,{e.CompanyTaxPhoto}"))
+                .ForMember(w => w.CompanyVatPhoto,
+                    opt => opt.MapFrom(e => $"data:image/png;base64,{e.CompanyVatPhoto}"));
             CreateMap<CompanyEditRequest, Company>()
                 .ForMember(w => w.CompanyCommercialPhoto, opt => opt.Ignore())
-                .ForMember(w => w.CompanyId, opt => opt.Ignore());
+                .ForMember(w => w.CompanyId, opt => opt.Ignore())
+                .ForMember(w => w.CompanyVatPhoto,
+                    opt => opt.MapFrom(e => e.CompanyVatPhoto.Remove(0, e.CompanyVatPhoto.IndexOf(',') + 1)))
+                .ForMember(w => w.CompanyTaxPhoto,
+                    opt => opt.MapFrom(e => e.CompanyTaxPhoto.Remove(0, e.CompanyTaxPhoto.IndexOf(',') + 1)));
             CreateMap<CompanyAddRequest, Company>()
-                .ForMember(w => w.CompanyCommercialPhoto, opt => opt.Ignore());
+                .ForMember(w => w.CompanyCommercialPhoto, opt => opt.Ignore())
+                .ForMember(w => w.CompanyVatPhoto,
+                    opt => opt.MapFrom(e => e.CompanyVatPhoto.Remove(0, e.CompanyVatPhoto.IndexOf(',') + 1)))
+                .ForMember(w => w.CompanyTaxPhoto,
+                    opt => opt.MapFrom(e => e.CompanyTaxPhoto.Remove(0, e.CompanyTaxPhoto.IndexOf(',') + 1)));
             
             #endregion
             #region Branch
