@@ -147,6 +147,7 @@ namespace PetroPay.Web.Configuration.Constants
         /*EmployeeMenu APIs*/
         public const string ApiEmployeeMenuAdd = "/api/employee-menu/add";
         public const string ApiEmployeeMenuDetail = "/api/employee-menu/detail";
+        public const string ApiEmployeeMenuTree = "/api/employee-menu/tree";
         #endregion
 
         #region Reports
