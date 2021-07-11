@@ -224,6 +224,10 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.CompanyVatTaxNumber)
                     .HasMaxLength(50)
                     .HasColumnName("company_Vat_tax_number");
+                
+                entity.Property(e => e.ComapnyPhoneNumber)
+                    .HasMaxLength(50)
+                    .HasColumnName("comapny_phone_number");
             });
 
             modelBuilder.Entity<Bundle>(entity =>
