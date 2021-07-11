@@ -261,8 +261,6 @@ namespace PetroPay.Core.Constants
             public const string EditedSuccessfully = "Api.Menu.Edit.Successful";
             public const string DeletedSuccessfully = "Api.Menu.Deleted.Successful";
             public const string ActivatedSuccessfully = "Api.Menu.Activated.Successful";
-            
-            public const string AddMoreThanMaxNotAllowed = "Api.Menu.AddMoreThanMax.NotAllowed";
         }
         public static class EmplyeeMessage
         {
@@ -273,7 +271,14 @@ namespace PetroPay.Core.Constants
             public const string DeletedSuccessfully = "Api.Emplyee.Deleted.Successful";
             public const string ActivatedSuccessfully = "Api.Emplyee.Activated.Successful";
             
-            public const string AddMoreThanMaxNotAllowed = "Api.Emplyee.AddMoreThanMax.NotAllowed";
+            
+        }
+        
+        public static class EmployeeMenuMessage
+        {
+            public const string IdRequired = "Api.EmployeeMenu.Id.Required";
+            
+            public const string AddedSuccessfully = "Api.EmployeeMenu.Add.Successful";
         }
     }
 }

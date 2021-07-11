@@ -131,6 +131,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiMenuDelete = "/api/menu/delete";
         public const string ApiMenuList = "/api/menu/list";
         public const string ApiMenuActive = "/api/menu/active";
+        public const string ApiMenuTree = "/api/menu/tree";
         
         /*Emplyee APIs*/
         public const string ApiEmplyeeAdd = "/api/employee/add";
@@ -140,6 +141,12 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiEmplyeeDelete = "/api/employee/delete";
         public const string ApiEmplyeeList = "/api/employee/list";
         public const string ApiEmplyeeActive = "/api/employee/active";
+        
+        
+        
+        /*EmployeeMenu APIs*/
+        public const string ApiEmployeeMenuAdd = "/api/employee-menu/add";
+        public const string ApiEmployeeMenuDetail = "/api/employee-menu/detail";
         #endregion
 
         #region Reports
