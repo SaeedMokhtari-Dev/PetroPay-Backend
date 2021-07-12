@@ -23,15 +23,19 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         private readonly SubscriptionCalculator _subscriptionCalculator;
         private readonly UserContext _userContext;
         private readonly UserService _userService;
+        private readonly SubscriptionService _subscriptionService;
+        private readonly EmailService _emailService;
         
         public SubscriptionAddHandler(
-            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext, UserService userService)
+            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext, UserService userService, SubscriptionService subscriptionService, EmailService emailService)
         {
             this._context = context;
             this._mapper = mapper;
             _subscriptionCalculator = subscriptionCalculator;
             _userContext = userContext;
             _userService = userService;
+            _subscriptionService = subscriptionService;
+            _emailService = emailService;
         }
 
         protected override async Task<ActionResult> Execute(SubscriptionAddRequest request)
@@ -50,7 +54,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
             
             SubscriptionCalculateResponse subscriptionCost =
                 await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                    request.SubscriptionType, startDate, endDate);
+                    request.SubscriptionType, startDate, endDate, request.CouponCode);
             
             if(subscriptionCost == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
@@ -64,22 +68,30 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
             if(!request.PayFromCompanyBalance && string.IsNullOrEmpty(request.SubscriptionPaymentMethod))
                 return ActionResult.Error(ApiMessages.SubscriptionMessage.SubscriptionPaymentMethodRequired);
             
-            Subscription subscription = await AddSubscription(request);
-            
+            Subscription subscription = await AddSubscription(request, subscriptionCost);
+
             return ActionResult.Ok(ApiMessages.SubscriptionMessage.AddedSuccessfully);
         }
         
-        private async Task<Subscription> AddSubscription(SubscriptionAddRequest request)
+        private async Task<Subscription> AddSubscription(SubscriptionAddRequest request, SubscriptionCalculateResponse subscriptionCost)
         {
+            Company company = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
+            
             Subscription subscription = await _context.ExecuteTransactionAsync(async () =>
             {
                 var user = await _userService.GetCurrentUserInfo();
                 Subscription newSubscription = _mapper.Map<Subscription>(request);
+                newSubscription.SubscriptionDiscountValues = subscriptionCost.Discount;
+                newSubscription.CouponId = subscriptionCost.CouponId;
+                newSubscription.CouponCode = request.CouponCode;
+                newSubscription.SubscriptionTaxValue = subscriptionCost.Tax;
+                newSubscription.SubscriptionVatTaxValue = subscriptionCost.Vat;
                 if (request.PayFromCompanyBalance)
                 {
                     newSubscription.SubscriptionActive = true;
                     newSubscription.SubscriptionPaymentMethod = "CompanyBalance";
-                    Company company = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
+                    newSubscription.SubscriptionInvoiceNumber = await _subscriptionService.GetSubscriptionInvoiceNumber();
+                    
                     company.CompanyBalnce -= request.SubscriptionCost;
 
                     TransAccount deductFromCompany = new TransAccount()
@@ -145,6 +157,11 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
 
                 return newSubscription;
             });
+            if (request.PayFromCompanyBalance)
+            {
+                await _emailService.SendSubscriptionInvoiceMail(company.CompanyAdminEmail, company.CompanyName,
+                    Convert.ToInt64(subscription.SubscriptionInvoiceNumber).ToString());
+            }
             return subscription;
         }
     }

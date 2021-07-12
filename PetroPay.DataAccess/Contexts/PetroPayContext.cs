@@ -1256,12 +1256,14 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.SubscriptionDate).HasColumnName("subscription_date");
 
                 entity.Property(e => e.SubscriptionDiscountValues)
-                    .HasColumnType("money")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("subscription_discount_values");
 
                 entity.Property(e => e.SubscriptionEndDate).HasColumnName("subscription_end_date");
 
-                entity.Property(e => e.SubscriptionInvoiceNumber).HasColumnName("subscription_invoice_number");
+                entity.Property(e => e.SubscriptionInvoiceNumber)
+                    .HasColumnName("float")
+                    .HasColumnName("subscription_invoice_number");
 
                 entity.Property(e => e.SubscriptionPaymentDocPhoto).HasColumnName("subscription_payment_doc_photo");
 
@@ -1274,7 +1276,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("subscription_start_date");
 
                 entity.Property(e => e.SubscriptionTaxValue)
-                    .HasColumnType("money")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("subscription_tax_value");
 
                 entity.Property(e => e.SubscriptionType)
@@ -1283,7 +1285,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasComment("monthly yearly quartly");
 
                 entity.Property(e => e.SubscriptionVatTaxValue)
-                    .HasColumnType("money")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("subscription_vat_tax_value");
 
                 entity.HasOne(d => d.Bundles)

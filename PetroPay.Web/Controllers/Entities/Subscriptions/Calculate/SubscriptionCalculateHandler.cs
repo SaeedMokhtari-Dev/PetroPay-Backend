@@ -38,7 +38,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
             }
             
             SubscriptionCalculateResponse response = await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                request.SubscriptionType, startDate, endDate);
+                request.SubscriptionType, startDate, endDate, request.CouponCode);
 
             if (response == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);

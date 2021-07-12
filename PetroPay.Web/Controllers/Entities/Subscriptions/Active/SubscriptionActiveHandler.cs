@@ -17,13 +17,16 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
         private readonly UserService _userService;
-
+        private readonly SubscriptionService _subscriptionService;
+        private readonly EmailService _emailService;
         public SubscriptionActiveHandler(
-            PetroPayContext context, IMapper mapper, UserService userService)
+            PetroPayContext context, IMapper mapper, UserService userService, SubscriptionService subscriptionService, EmailService emailService)
         {
             _context = context;
             _mapper = mapper;
             _userService = userService;
+            _subscriptionService = subscriptionService;
+            _emailService = emailService;
         }
 
         protected override async Task<ActionResult> Execute(SubscriptionActiveRequest request)
@@ -112,7 +115,11 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
             addToSubscriptionAccount = (await _context.TransAccounts.AddAsync(addToSubscriptionAccount)).Entity;
 
             subscription.SubscriptionActive = true;
+            subscription.SubscriptionInvoiceNumber = await _subscriptionService.GetSubscriptionInvoiceNumber();
             await _context.SaveChangesAsync();
+            
+            await _emailService.SendSubscriptionInvoiceMail(company.CompanyAdminEmail, company.CompanyName,
+                Convert.ToInt64(subscription.SubscriptionInvoiceNumber).ToString());
             
             return ActionResult.Ok(ApiMessages.SubscriptionMessage.ActivatedSuccessfully);
         }

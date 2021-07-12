@@ -9,5 +9,6 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
         public string SubscriptionType { get; set; }
         public string SubscriptionStartDate { get; set; }
         public string SubscriptionEndDate { get; set; }
+        public string CouponCode { get; set; }
     }
 }

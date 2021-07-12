@@ -15,5 +15,6 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         public decimal SubscriptionCost { get; set; }
         public string PaymentReferenceNumber { get; set; }
         public string SubscriptionPaymentDocPhoto { get; set; }
+        public string CouponCode { get; set; }
     }
 }

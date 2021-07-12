@@ -53,6 +53,17 @@ namespace PetroPay.Web.Services
             string htmlBody = $"<a href='{clientBaseUrl}/auth/password/change/{token}'>click here to reset password</a>";
             await SendMail(email, "Reset Password", htmlBody, $"{fullName}");
         }
+
+        public async Task SendSubscriptionInvoiceMail(string receiverEmail, string name, string invoiceNumber)
+        {
+            var clientBaseUrl = _configuration.GetValue<string>("ClientBaseUrl");
+            string htmlBody = "<p>Your Subscription Confirmed Successfully</p>" +
+                              "<p>For see and download subscription invoice click on the link below.</p>" +
+                              $"<a href='{clientBaseUrl}/app/subscription/invoice/{invoiceNumber}'>click here to open the page</a>";
+            string subject = "Your Subscription Confirmed Successfully";
+
+            await SendMail(receiverEmail, subject, htmlBody, name);
+        }
         /*public async Task SendUserActivationEmail(ApiMessages.User user)
         {
             var clientBaseUrl = _configuration.GetValue<string>("ClientBaseUrl");

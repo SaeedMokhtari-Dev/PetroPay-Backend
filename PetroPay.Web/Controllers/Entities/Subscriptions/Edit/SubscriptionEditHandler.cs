@@ -23,15 +23,19 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
         private readonly SubscriptionCalculator _subscriptionCalculator;
         private readonly UserContext _userContext;
         private readonly UserService _userService;
+        private readonly SubscriptionService _subscriptionService;
+        private readonly EmailService _emailService;
 
         public SubscriptionEditHandler(
-            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext, UserService userService)
+            PetroPayContext context, IMapper mapper, SubscriptionCalculator subscriptionCalculator, UserContext userContext, UserService userService, SubscriptionService subscriptionService, EmailService emailService)
         {
             _context = context;
             _mapper = mapper;
             _subscriptionCalculator = subscriptionCalculator;
             _userContext = userContext;
             _userService = userService;
+            _subscriptionService = subscriptionService;
+            _emailService = emailService;
         }
 
         protected override async Task<ActionResult> Execute(SubscriptionEditRequest request)
@@ -79,7 +83,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
             }
             SubscriptionCalculateResponse subscriptionCost =
                 await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                    request.SubscriptionType, startDate, endDate);
+                    request.SubscriptionType, startDate, endDate, request.CouponCode);
             
             if(subscriptionCost == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
@@ -93,21 +97,28 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
             if(!request.PayFromCompanyBalance && string.IsNullOrEmpty(request.SubscriptionPaymentMethod))
                 return ActionResult.Error(ApiMessages.SubscriptionMessage.SubscriptionPaymentMethodRequired);
             
-            await EditSubscription(editSubscription, request);
+            await EditSubscription(editSubscription, request, subscriptionCost);
             return ActionResult.Ok(ApiMessages.SubscriptionMessage.EditedSuccessfully);
         }
 
-        private async Task EditSubscription(Subscription editSubscription, SubscriptionEditRequest request)
+        private async Task EditSubscription(Subscription editSubscription, SubscriptionEditRequest request, SubscriptionCalculateResponse subscriptionCost)
         {
-            Subscription subscription = await _context.ExecuteTransactionAsync(async () =>
+            Company company = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
+            editSubscription = await _context.ExecuteTransactionAsync(async () =>
             {
                 _mapper.Map(request, editSubscription);
+                editSubscription.CouponId = subscriptionCost.CouponId;
+                editSubscription.CouponCode = request.CouponCode;
+                editSubscription.SubscriptionDiscountValues = subscriptionCost.Discount;
+                editSubscription.SubscriptionVatTaxValue = subscriptionCost.Vat;
+                editSubscription.SubscriptionTaxValue = subscriptionCost.Tax;
                 if (request.PayFromCompanyBalance)
                 {
                     var user = await _userService.GetCurrentUserInfo();
                     editSubscription.SubscriptionActive = true;
                     editSubscription.SubscriptionPaymentMethod = "CompanyBalance";
-                    Company company = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
+                    editSubscription.SubscriptionInvoiceNumber = await _subscriptionService.GetSubscriptionInvoiceNumber();
+                    
                     company.CompanyBalnce -= request.SubscriptionCost;
 
                     TransAccount deductFromCompany = new TransAccount()
@@ -163,6 +174,12 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
                 await _context.SaveChangesAsync();
                 return editSubscription;
             });
+
+            if (request.PayFromCompanyBalance)
+            {
+                await _emailService.SendSubscriptionInvoiceMail(company.CompanyAdminEmail, company.CompanyName,
+                    Convert.ToInt64(editSubscription.SubscriptionInvoiceNumber).ToString());
+            }
         }
     }
 }
