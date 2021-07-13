@@ -1,5 +1,10 @@
+using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Itenso.TimePeriod;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -30,6 +35,28 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Edit
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
+            var lastOdometer = await _context.OdometerRecords.OrderByDescending(w => w.OdometerRecordDate)
+                .FirstOrDefaultAsync(w => w.OdometerRecordId != editOdometerRecord.OdometerRecordId && 
+                                          w.CarId.HasValue && w.CarId.Value == request.CarId);
+
+            if (lastOdometer != null)
+            {
+                if (lastOdometer.OdometerRecordDate.HasValue)
+                {
+                    DateDiff dateDiff = new DateDiff(lastOdometer.OdometerRecordDate.Value, 
+                        DateTime.ParseExact(request.OdometerRecordDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture));
+                    if (dateDiff.Months < 1)
+                    {
+                        return ActionResult.Error(ApiMessages.OdometerRecordMessage.AtLeastOneMonth);
+                    }
+                }
+
+                if ((lastOdometer.OdometerValue ?? 0) >= (request.OdometerValue ?? 0))
+                {
+                    return ActionResult.Error(ApiMessages.OdometerRecordMessage.NewRecordShouldBeGreaterThanPreviousRecord);
+                }
+            }
+            
             await EditAuditingOdometerRecordOdometerRecordOdometerRecord(editOdometerRecord, request);
             return ActionResult.Ok(ApiMessages.OdometerRecordMessage.EditedSuccessfully);
         }

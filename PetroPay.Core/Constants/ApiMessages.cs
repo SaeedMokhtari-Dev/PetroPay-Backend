@@ -252,6 +252,9 @@ namespace PetroPay.Core.Constants
             public const string ArchivedSuccessfully = "Api.OdometerRecord.Archived.Successful";
             public const string DeletedSuccessfully = "Api.OdometerRecord.Deleted.Successful";
             
+            public const string AtLeastOneMonth = "Api.OdometerRecord.AtLeastOneMonth";
+            public const string NewRecordShouldBeGreaterThanPreviousRecord = "Api.OdometerRecord.NewRecordShouldBeGreaterThanPreviousRecord";
+            
         }
         public static class MenuMessage
         {

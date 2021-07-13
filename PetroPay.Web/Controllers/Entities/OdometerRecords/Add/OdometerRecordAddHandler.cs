@@ -1,5 +1,9 @@
+using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Itenso.TimePeriod;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Extensions;
 using PetroPay.Core.Api.Handlers;
@@ -27,6 +31,26 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Add
 
         protected override async Task<ActionResult> Execute(OdometerRecordAddRequest request)
         {
+            var lastOdometer = await _context.OdometerRecords.OrderByDescending(w => w.OdometerRecordDate)
+                .FirstOrDefaultAsync(w => w.CarId.HasValue && w.CarId.Value == request.CarId);
+
+            if (lastOdometer != null)
+            {
+                if (lastOdometer.OdometerRecordDate.HasValue)
+                {
+                    DateDiff dateDiff = new DateDiff(lastOdometer.OdometerRecordDate.Value, 
+                        DateTime.ParseExact(request.OdometerRecordDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture));
+                    if (dateDiff.Months < 1)
+                    {
+                        return ActionResult.Error(ApiMessages.OdometerRecordMessage.AtLeastOneMonth);
+                    }
+                }
+
+                if ((lastOdometer.OdometerValue ?? 0) >= (request.OdometerValue ?? 0))
+                {
+                    return ActionResult.Error(ApiMessages.OdometerRecordMessage.NewRecordShouldBeGreaterThanPreviousRecord);
+                }
+            }
             OdometerRecord odometerRecord = await AddOdometerRecord(request);
             
             return ActionResult.Ok(ApiMessages.OdometerRecordMessage.AddedSuccessfully);

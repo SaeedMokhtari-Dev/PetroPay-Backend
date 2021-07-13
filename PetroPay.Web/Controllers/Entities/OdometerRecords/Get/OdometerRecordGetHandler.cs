@@ -25,7 +25,7 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Get
         {
             var query = _context.OdometerRecords
                 .Include(w => w.Car)
-                .OrderBy(w => w.OdometerRecordId)
+                .OrderByDescending(w => w.OdometerRecordId)
                 .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();
 
