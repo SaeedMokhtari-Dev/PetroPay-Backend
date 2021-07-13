@@ -12,6 +12,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         public string SubscriptionType { get; set; }
         public string SubscriptionStartDate { get; set; }
         public string SubscriptionEndDate { get; set; }
+        public int NumberOfDateDiff { get; set; }
         public decimal SubscriptionCost { get; set; }
         public string PaymentReferenceNumber { get; set; }
         public string SubscriptionPaymentDocPhoto { get; set; }

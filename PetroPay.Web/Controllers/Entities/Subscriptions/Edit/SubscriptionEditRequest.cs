@@ -12,6 +12,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
         public string SubscriptionType { get; set; }
         public string SubscriptionStartDate { get; set; }
         public string SubscriptionEndDate { get; set; }
+        public int NumberOfDateDiff { get; set; }
         public decimal SubscriptionCost { get; set; }
         public bool PayFromCompanyBalance { get; set; }
         /*public bool? SubscriptionActive { get; set; }*/

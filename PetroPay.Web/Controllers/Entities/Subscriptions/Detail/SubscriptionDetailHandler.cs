@@ -36,7 +36,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
             }
 
             SubscriptionDetailResponse response = _mapper.Map<SubscriptionDetailResponse>(subscription);
-            DateDiff dateDiff = new DateDiff(subscription.SubscriptionStartDate ?? DateTime.Now, subscription.SubscriptionEndDate ?? DateTime.Now);
+            /*DateDiff dateDiff = new DateDiff(subscription.SubscriptionStartDate ?? DateTime.Now, subscription.SubscriptionEndDate ?? DateTime.Now);
             switch (subscription.SubscriptionType)
             {
                 case "Monthly":
@@ -45,7 +45,18 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
                 case "Yearly":
                     response.NumberOfDateDiff = dateDiff.Years;
                     break;
-            }
+            }*/
+            /*var dateDiff = (subscription.SubscriptionEndDate ?? DateTime.Now) -
+                           (subscription.SubscriptionStartDate ?? DateTime.Now);
+            switch (subscription.SubscriptionType)
+            {
+                case "Monthly":
+                    response.NumberOfDateDiff = dateDiff.;
+                    break;
+                case "Yearly":
+                    response.NumberOfDateDiff = dateDiff.Years;
+                    break;
+            }*/
                         
 
             /*var petropayAccount = await _context.PetropayAccounts.FirstOrDefaultAsync(

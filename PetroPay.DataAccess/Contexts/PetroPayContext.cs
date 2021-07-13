@@ -1288,6 +1288,10 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnType("money")
                     .HasColumnName("subscription_cost")
                     .HasDefaultValueSql("((0))");
+                
+                entity.Property(e => e.NumberOfDateDiff)
+                    .HasColumnName("numberOfDateDiff")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.SubscriptionDate).HasColumnName("subscription_date");
 

@@ -36,7 +36,7 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Add
 
             if (lastOdometer != null)
             {
-                if (lastOdometer.OdometerRecordDate.HasValue)
+                /*if (lastOdometer.OdometerRecordDate.HasValue)
                 {
                     DateDiff dateDiff = new DateDiff(lastOdometer.OdometerRecordDate.Value, 
                         DateTime.ParseExact(request.OdometerRecordDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture));
@@ -44,7 +44,7 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Add
                     {
                         return ActionResult.Error(ApiMessages.OdometerRecordMessage.AtLeastOneMonth);
                     }
-                }
+                }*/
 
                 if ((lastOdometer.OdometerValue ?? 0) >= (request.OdometerValue ?? 0))
                 {

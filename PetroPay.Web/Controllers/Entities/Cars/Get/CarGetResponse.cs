@@ -50,5 +50,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
         public bool? CarApprovedOneTime { get; set; }
         public bool? WorkAllDays { get; set; }
         public string CarNfcCode { get; set; }
+        public bool TimeToOdometerRecord { get; set; }
+        public bool CarOdometerRecordRequired { get; set; }
     }
 }

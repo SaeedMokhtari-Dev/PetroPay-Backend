@@ -32,13 +32,13 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
             {
                 startDate = DateTime.ParseExact(request.SubscriptionStartDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
             }
-            if (!string.IsNullOrEmpty(request.SubscriptionEndDate))
+            /*if (!string.IsNullOrEmpty(request.SubscriptionEndDate))
             {
                 endDate = DateTime.ParseExact(request.SubscriptionEndDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
-            }
+            }*/
             
             SubscriptionCalculateResponse response = await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                request.SubscriptionType, startDate, endDate, request.CouponCode);
+                request.SubscriptionType, startDate, request.NumberOfDateDiff, request.CouponCode);
 
             if (response == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);

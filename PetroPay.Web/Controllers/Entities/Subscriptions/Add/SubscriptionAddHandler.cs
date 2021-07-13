@@ -41,20 +41,15 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
         protected override async Task<ActionResult> Execute(SubscriptionAddRequest request)
         {
             DateTime startDate = DateTime.Now;
-            DateTime endDate = DateTime.Now;
             
             if (!string.IsNullOrEmpty(request.SubscriptionStartDate))
             {
                 startDate = DateTime.ParseExact(request.SubscriptionStartDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
             }
-            if (!string.IsNullOrEmpty(request.SubscriptionEndDate))
-            {
-                endDate = DateTime.ParseExact(request.SubscriptionEndDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
-            }
             
             SubscriptionCalculateResponse subscriptionCost =
                 await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                    request.SubscriptionType, startDate, endDate, request.CouponCode);
+                    request.SubscriptionType, startDate, request.NumberOfDateDiff, request.CouponCode);
             
             if(subscriptionCost == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
@@ -67,6 +62,16 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
             
             if(!request.PayFromCompanyBalance && string.IsNullOrEmpty(request.SubscriptionPaymentMethod))
                 return ActionResult.Error(ApiMessages.SubscriptionMessage.SubscriptionPaymentMethodRequired);
+            
+            switch (request.SubscriptionType)
+            {
+                case "Monthly":
+                    request.SubscriptionEndDate = startDate.AddMonths(request.NumberOfDateDiff).ToString(DateTimeConstants.DateFormat);
+                    break;
+                case "Yearly":
+                    request.SubscriptionEndDate = startDate.AddYears(request.NumberOfDateDiff).ToString(DateTimeConstants.DateFormat);
+                    break;
+            }
             
             Subscription subscription = await AddSubscription(request, subscriptionCost);
 

@@ -59,31 +59,9 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
             {
                 startDate = DateTime.ParseExact(request.SubscriptionStartDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
             }
-            if (!string.IsNullOrEmpty(request.SubscriptionEndDate))
-            {
-                endDate = DateTime.ParseExact(request.SubscriptionEndDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
-            }
-
-            /*if (!request.SubscriptionEndDate.HasValue)
-                request.SubscriptionEndDate = editSubscription.SubscriptionEndDate ?? DateTime.Now;*/
-            
-            DateDiff dateDiff = new DateDiff(startDate, endDate);
-            switch (request.SubscriptionType)
-            {
-                case "Monthly":
-                    if(dateDiff.Months < 1)
-                        return ActionResult.Error(ApiMessages.SubscriptionMessage.MoreThan1Month);
-                    endDate = startDate.AddMonths(dateDiff.Months);    
-                    break;
-                case "Yearly":
-                    if(dateDiff.Years < 1)
-                        return ActionResult.Error(ApiMessages.SubscriptionMessage.MoreThan1Year);
-                    endDate = startDate.AddYears(dateDiff.Years);
-                    break;
-            }
             SubscriptionCalculateResponse subscriptionCost =
                 await _subscriptionCalculator.CalculateSubscriptionCost(request.BundlesId, request.SubscriptionCarNumbers,
-                    request.SubscriptionType, startDate, endDate, request.CouponCode);
+                    request.SubscriptionType, startDate, request.NumberOfDateDiff, request.CouponCode);
             
             if(subscriptionCost == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
@@ -96,6 +74,17 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
             
             if(!request.PayFromCompanyBalance && string.IsNullOrEmpty(request.SubscriptionPaymentMethod))
                 return ActionResult.Error(ApiMessages.SubscriptionMessage.SubscriptionPaymentMethodRequired);
+            
+                        
+            switch (request.SubscriptionType)
+            {
+                case "Monthly":
+                    request.SubscriptionEndDate = startDate.AddMonths(request.NumberOfDateDiff).ToString(DateTimeConstants.DateFormat);
+                    break;
+                case "Yearly":
+                    request.SubscriptionEndDate = startDate.AddYears(request.NumberOfDateDiff).ToString(DateTimeConstants.DateFormat);
+                    break;
+            }
             
             await EditSubscription(editSubscription, request, subscriptionCost);
             return ActionResult.Ok(ApiMessages.SubscriptionMessage.EditedSuccessfully);

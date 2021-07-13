@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Itenso.TimePeriod;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
+using Org.BouncyCastle.Crypto.Tls;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Enums;
@@ -49,6 +52,27 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
 
             var mappedResult = _mapper.Map<List<CarGetResponseItem>>(result);
             response.Items = mappedResult;
+            if (_userContext.Role == RoleType.Customer)
+            {
+                var carIds = response.Items.Select(w => w.CarId);
+                var odometerRecords = await _context.OdometerRecords.Where(w => carIds.Contains(w.CarId ?? 0)
+                    && (w.UserId ?? 0) == request.CompanyId
+                    && w.UserType == "Customer").ToListAsync();
+
+                foreach (var carGetResponseItem in response.Items)
+                {
+                    if (carGetResponseItem.CarOdometerRecordRequired)
+                    {
+                        var lastOdometer = odometerRecords
+                            .OrderByDescending(w => w.OdometerRecordDate)
+                            .FirstOrDefault(w => (w.CarId ?? 0) == carGetResponseItem.CarId);
+                        if ((lastOdometer == null) || lastOdometer.OdometerRecordDate.HasValue &&
+                            new DateDiff(lastOdometer.OdometerRecordDate.Value, DateTime.Now).Months >= 1)
+                            carGetResponseItem.TimeToOdometerRecord = true;
+                    }
+                }
+            }
+
             return ActionResult.Ok(response);
         }
         private IQueryable<Car> createQuery(IQueryable<Car> query, CarGetRequest request)
