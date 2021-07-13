@@ -24,6 +24,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Get
         public bool? SubscriptionActive { get; set; }
         public string PaymentReferenceNumber { get; set; }
         public string SubscriptionDate { get; set; }
+        public double? SubscriptionInvoiceNumber { get; set; }
         public bool Expired { get; set; }
     }
 }
