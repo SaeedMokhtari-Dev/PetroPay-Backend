@@ -66,6 +66,7 @@ using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceSummary.Get;
 using PetroPay.Web.Controllers.Reports.OdometerBetweenDates.Get;
+using PetroPay.Web.Controllers.Reports.OdometerHistories.Get;
 using PetroPay.Web.Controllers.Reports.PetrolStationLists.Get;
 using PetroPay.Web.Controllers.Reports.StationReports.Get;
 using PetroPay.Web.Controllers.Reports.StationSales.Get;
@@ -443,6 +444,8 @@ namespace PetroPay.Web.Mapping
             CreateMap<ViewCarOdometerMin, CarOdometerMinGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewOdometerBetweenDate, OdometerBetweenDateGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+            CreateMap<ViewOdometerHistory, OdometerHistoryGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             
 

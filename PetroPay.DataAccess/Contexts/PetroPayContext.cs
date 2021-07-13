@@ -64,6 +64,7 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<ViewStationReport> ViewStationReports { get; set; }
         public virtual DbSet<ViewStationSale> ViewStationSales { get; set; }
         public virtual DbSet<ViewStationStatement> ViewStationStatements { get; set; }
+        public virtual DbSet<ViewOdometerHistory> ViewOdometerHistories { get; set; }
 
         public async Task ExecuteTransactionAsync(Func<Task> action)
         {
@@ -139,7 +140,42 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("Account_taype")
                     .IsFixedLength();
             });
+            modelBuilder.Entity<ViewOdometerHistory>(entity =>
+            {
+                entity.HasNoKey();
 
+                entity.ToView("View_odometer_history");
+
+                entity.Property(e => e.CarDriverName)
+                    .HasMaxLength(255)
+                    .HasColumnName("car_driver_name");
+
+                entity.Property(e => e.CarId).HasColumnName("car_id");
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+                entity.Property(e => e.CompanyBranchId).HasColumnName("company_branch_id");
+
+                entity.Property(e => e.CarIdNumber)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_id_number");
+
+                entity.Property(e => e.CarTypeOfFuel)
+                    .HasMaxLength(255)
+                    .HasColumnName("car_type_of_fuel");
+
+                entity.Property(e => e.CompanyBranchName)
+                    .HasMaxLength(255)
+                    .HasColumnName("company_branch_name");
+
+                entity.Property(e => e.CompanyName)
+                    .HasMaxLength(255)
+                    .HasColumnName("Company_name");
+
+                entity.Property(e => e.OdometerRecordDate)
+                    .HasColumnType("date")
+                    .HasColumnName("odometer_record_date");
+
+                entity.Property(e => e.OdometerValue).HasColumnName("odometer_value");
+            });
             modelBuilder.Entity<Apidatum>(entity =>
             {
                 entity.HasNoKey();
