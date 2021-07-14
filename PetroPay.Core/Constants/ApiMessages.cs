@@ -283,5 +283,17 @@ namespace PetroPay.Core.Constants
             
             public const string AddedSuccessfully = "Api.EmployeeMenu.Add.Successful";
         }
+        
+        public static class NewCustomerMessage
+        {
+            public const string IdRequired = "Api.NewCustomer.Id.Required";
+            
+            public const string AddedSuccessfully = "Api.NewCustomer.Add.Successful";
+            public const string EditedSuccessfully = "Api.NewCustomer.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.NewCustomer.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.NewCustomer.Deleted.Successful";
+            public const string ActivatedSuccessfully = "Api.NewCustomer.Activated.Successful";
+            
+        }
     }
 }
