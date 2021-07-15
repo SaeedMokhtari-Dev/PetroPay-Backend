@@ -11,6 +11,5 @@ namespace PetroPay.Web.Controllers.Entities.NewCustomers.Edit
         public string CustPhoneNumber { get; set; }
         public string CustAddress { get; set; }
         public bool? CustReqStatus { get; set; }
-        public DateTime? CutReqDatetime { get; set; }
     }
 }

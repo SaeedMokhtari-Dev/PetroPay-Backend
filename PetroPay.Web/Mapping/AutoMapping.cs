@@ -408,8 +408,10 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CustReqId));
             CreateMap<NewCustomer, NewCustomerDetailResponse>();
             CreateMap<NewCustomerEditRequest, NewCustomer>()
-                .ForMember(w => w.CustReqId, opt => opt.Ignore());
-            CreateMap<NewCustomerAddRequest, NewCustomer>();
+                .ForMember(w => w.CustReqId, opt => opt.Ignore())
+                .ForMember(w => w.CutReqDatetime, opt => opt.Ignore());
+            CreateMap<NewCustomerAddRequest, NewCustomer>()
+                .ForMember(w => w.CutReqDatetime, opt => opt.MapFrom(e => DateTime.Now));
             
             #endregion
             #endregion
