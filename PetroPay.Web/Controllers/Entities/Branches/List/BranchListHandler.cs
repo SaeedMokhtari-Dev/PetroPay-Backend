@@ -30,7 +30,7 @@ namespace PetroPay.Web.Controllers.Entities.Branches.List
             if (!request.CompanyId.HasValue && _userContext.Role != RoleType.Admin)
                 request.CompanyId = _userContext.Id;
             
-            var query = _context.CompanyBranches
+            var query = _context.CompanyBranches.Include(w => w.Company)
                 .Where(e => e.CompanyBranchActiva.HasValue && e.CompanyBranchActiva.Value)
                 .OrderBy(w => w.CompanyBranchId)
                 .AsQueryable();
@@ -42,7 +42,9 @@ namespace PetroPay.Web.Controllers.Entities.Branches.List
             new BranchListResponseItem() {
                 Key = w.CompanyBranchId, 
                 Title = w.CompanyBranchName,
-                Balance = w.CompanyBranchBalnce ?? 0
+                Balance = w.CompanyBranchBalnce ?? 0,
+                CompanyId = w.Company.CompanyId,
+                CompanyName = w.Company.CompanyName
             }).ToListAsync();
             
             return ActionResult.Ok(response);

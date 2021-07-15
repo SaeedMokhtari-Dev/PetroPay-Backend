@@ -30,7 +30,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.List
             if(_userContext.Role == RoleType.Customer && !request.CompanyId.HasValue)
                 request.CompanyId = _userContext.Id;
             
-            var query = _context.Cars.Include(w => w.CompanyBarnch)
+            var query = _context.Cars.Include(w => w.CompanyBarnch).ThenInclude(w => w.Company)
                 .OrderBy(w => w.CarId)
                 .AsQueryable();
 
@@ -42,9 +42,13 @@ namespace PetroPay.Web.Controllers.Entities.Cars.List
             {
                 Key = w.CarId,
                 CarNumber = w.CarIdNumber,
-                BranchName = w.CompanyBarnch.CompanyBranchName,
+                CompanyId = w.CompanyBarnchId.HasValue ? w.CompanyBarnch.CompanyId ?? 0 : 0,
+                CompanyName = w.CompanyBarnchId.HasValue ? (w.CompanyBarnch.CompanyId.HasValue ? w.CompanyBarnch.CompanyBranchName : string.Empty) : string.Empty,
+                BranchId = w.CompanyBarnchId ?? 0,
+                BranchName = w.CompanyBarnchId.HasValue ? w.CompanyBarnch.CompanyBranchName : string.Empty,
                 Balance = w.CarBalnce ?? 0,
-                CarOdometerRecordRequired = w.CarOdometerRecordRequired ?? false
+                CarOdometerRecordRequired = w.CarOdometerRecordRequired ?? false,
+                
             }).ToListAsync();
             
             return ActionResult.Ok(result);
