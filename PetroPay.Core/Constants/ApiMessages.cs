@@ -151,10 +151,12 @@ namespace PetroPay.Core.Constants
             public const string EditedSuccessfully = "Api.Subscription.Edit.Successful";
             public const string ActivatedSuccessfully = "Api.Subscription.Activated.Successful";
             public const string DeletedSuccessfully = "Api.Subscription.Deleted.Successful";
+            public const string RejectedSuccessfully = "Api.Subscription.Rejected.Successful";
             public const string CarsAddedSuccessfully = "Api.Subscription.CarsAdded.Successful";
             
             public const string ActiveEntityEditNotAllowed = "Api.Subscription.ActiveEntityEdit.NotAllowed";
             public const string ActiveEntityDeleteNotAllowed = "Api.Subscription.ActiveEntityDelete.NotAllowed";
+            public const string ActiveEntityRejectNotAllowed = "Api.Subscription.ActiveEntityReject.NotAllowed";
             public const string SubscriptionCarAddNotAllowed = "Api.Subscription.SubscriptionCarAdd.NotAllowed";
             public const string CarAddMoreNotAllowed = "Api.Subscription.CarAddMore.NotAllowed";
             

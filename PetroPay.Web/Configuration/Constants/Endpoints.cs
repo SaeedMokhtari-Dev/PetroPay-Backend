@@ -85,6 +85,8 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiSubscriptionCalculate = "/api/subscription/calculate";
         public const string ApiSubscriptionCarAdd = "/api/subscription/car-add";
         public const string ApiSubscriptionInvoice = "/api/subscription/invoice";
+        public const string ApiSubscriptionReject = "/api/subscription/reject";
+        
         
         /*RechargeBalance APIs*/
         public const string ApiRechargeBalanceAdd = "/api/recharge-balance/add";

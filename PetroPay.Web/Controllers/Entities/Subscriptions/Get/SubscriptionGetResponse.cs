@@ -26,5 +26,6 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Get
         public string SubscriptionDate { get; set; }
         public double? SubscriptionInvoiceNumber { get; set; }
         public bool Expired { get; set; }
+        public bool Rejected { get; set; }
     }
 }

@@ -1293,6 +1293,9 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("numberOfDateDiff")
                     .HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.Rejected)
+                    .HasColumnName("rejected");
+                    
                 entity.Property(e => e.SubscriptionDate).HasColumnName("subscription_date");
 
                 entity.Property(e => e.SubscriptionDiscountValues)

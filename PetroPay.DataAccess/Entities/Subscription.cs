@@ -36,6 +36,7 @@ namespace PetroPay.DataAccess.Entities
         public decimal? SubscriptionTaxValue { get; set; }
         public double? SubscriptionInvoiceNumber { get; set; }
         public int? NumberOfDateDiff { get; set; }
+        public bool? Rejected { get; set; }
 
         public virtual Bundle Bundles { get; set; }
         public virtual Company Company { get; set; }
