@@ -7,7 +7,7 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Delete
     {
         public EmplyeeDeleteValidator()
         {
-            RuleFor(x => x.EmplyeesId).NotEmpty().WithMessage(ApiMessages.EmplyeeMessage.IdRequired);
+            RuleFor(x => x.EmployeesId).NotEmpty().WithMessage(ApiMessages.EmplyeeMessage.IdRequired);
         }
     }
 }

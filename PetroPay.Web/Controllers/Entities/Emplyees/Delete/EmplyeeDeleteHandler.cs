@@ -23,7 +23,7 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Delete
         protected override async Task<ActionResult> Execute(EmplyeeDeleteRequest request)
         {
             Emplyee emplyee = await _context.Emplyees
-                .FindAsync(request.EmplyeesId);
+                .FindAsync(request.EmployeesId);
 
             if (emplyee == null)
             {

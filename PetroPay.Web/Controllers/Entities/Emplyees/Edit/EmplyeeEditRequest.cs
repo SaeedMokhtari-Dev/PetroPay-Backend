@@ -2,11 +2,14 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Edit
 {
     public class EmplyeeEditRequest
     {
-        public int EmplyeesId { get; set; }
-        public int? EmplyeesNumberFrom { get; set; }
-        public int? EmplyeesNumberTo { get; set; }
-        public decimal? EmplyeesFeesMonthly { get; set; }
-        public decimal? EmplyeesFeesYearly { get; set; }
-        public decimal? EmplyeesNfcCost { get; set; }
+        public int EmplyeeId { get; set; }
+        public string EmplyeeName { get; set; }
+        public string EmplyeePhone { get; set; }
+        public string EmplyeeEmail { get; set; }
+        public string EmplyeeCode { get; set; }
+        public string EmplyeeUserName { get; set; }
+        public string EmplyeePassword { get; set; }
+        public string EmplyeeStatus { get; set; }
+        public string EmplyeePhoto { get; set; }
     }
 }

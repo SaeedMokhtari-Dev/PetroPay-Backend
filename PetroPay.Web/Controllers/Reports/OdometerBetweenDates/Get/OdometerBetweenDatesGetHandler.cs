@@ -80,27 +80,6 @@ namespace PetroPay.Web.Controllers.Reports.OdometerBetweenDates.Get
                 DateTime dateTimeTo = DateTime.ParseExact(request.DateTimeTo, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
                 query = query.Where(w => w.OdometerRecordDate.HasValue && w.OdometerRecordDate.Value <= dateTimeTo);
             }
-            /*if (request.CompanyId.HasValue)
-            {
-                query = query.Where(w => w.CompanyId == request.CompanyId);
-            }*/
-            /*if (!string.IsNullOrEmpty(request.CompanyName))
-            {
-                query = query.Where(w => w.C.Contains(request.CompanyName));
-            }*/
-            /*if (!string.IsNullOrEmpty(request.CarIdNumber))
-            {
-                query = query.Where(w => w.CarIdNumber.Contains(request.CarIdNumber));
-            }*/
-            /*if (request.CompanyBranchId.HasValue)
-            {
-                query = query.Where(w => w.CompanyBranchId == request.CompanyBranchId);
-            }
-            if (!string.IsNullOrEmpty(request.CompanyBranchName))
-            {
-                query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));
-            }*/
-            /**/
             return query;
 
         }

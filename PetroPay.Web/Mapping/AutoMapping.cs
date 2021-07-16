@@ -398,9 +398,15 @@ namespace PetroPay.Web.Mapping
 
             CreateMap<Emplyee, EmplyeeGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.EmplyeeId));
-            CreateMap<Emplyee, EmplyeeDetailResponse>();
-            CreateMap<EmplyeeEditRequest, Emplyee>();
-            CreateMap<EmplyeeAddRequest, Emplyee>();
+            CreateMap<Emplyee, EmplyeeDetailResponse>()
+                .ForMember(w => w.EmplyeePhoto, opt =>
+                    opt.Ignore());
+            CreateMap<EmplyeeEditRequest, Emplyee>()
+                .ForMember(w => w.EmplyeePhoto, opt =>
+                    opt.Ignore());
+            CreateMap<EmplyeeAddRequest, Emplyee>()
+                .ForMember(w => w.EmplyeePhoto, opt =>
+                    opt.Ignore());
             
             #endregion
             #region NewCustomer

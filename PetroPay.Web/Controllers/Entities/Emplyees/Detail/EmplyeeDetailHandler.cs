@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PetroPay.Core.Api.Handlers;
@@ -23,7 +25,7 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Detail
         protected override async Task<ActionResult> Execute(EmplyeeDetailRequest request)
         {
             Emplyee emplyee = await _context.Emplyees
-                .FindAsync(request.EmplyeesId);
+                .FindAsync(request.EmployeesId);
 
             if (emplyee == null)
             {
@@ -31,6 +33,11 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Detail
             }
 
             EmplyeeDetailResponse response = _mapper.Map<EmplyeeDetailResponse>(emplyee);
+            
+            if (emplyee.EmplyeePhoto != null)
+            {
+                response.EmplyeePhoto = $"data:image/png;base64,{String.Join("", emplyee.EmplyeePhoto.Select(Convert.ToChar))}";
+            }
             
             return ActionResult.Ok(response);
         }

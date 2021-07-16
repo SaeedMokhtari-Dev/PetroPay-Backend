@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PetroPay.Core.Api.Handlers;
@@ -23,7 +25,7 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Edit
         protected override async Task<ActionResult> Execute(EmplyeeEditRequest request)
         {
             Emplyee editEmplyee = await _context.Emplyees
-                .FindAsync(request.EmplyeesId);
+                .FindAsync(request.EmplyeeId);
 
             if (editEmplyee == null)
             {
@@ -37,6 +39,10 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Edit
         private async Task EditAuditingEmplyeeEmplyeeEmplyee(Emplyee editEmplyee, EmplyeeEditRequest request)
         {
             _mapper.Map(request, editEmplyee);
+            request.EmplyeePhoto =
+                request.EmplyeePhoto.Remove(0, request.EmplyeePhoto.IndexOf(',') + 1);
+            editEmplyee.EmplyeePhoto =
+                request.EmplyeePhoto.ToCharArray().Select(Convert.ToByte).ToArray();
             await _context.SaveChangesAsync();
         }
     }

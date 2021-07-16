@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +34,16 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Add
         {
             Emplyee emplyee = await _context.ExecuteTransactionAsync(async () =>
             {
+                int maxId = await _context.Emplyees.MaxAsync(w => w.EmplyeeId);
                 Emplyee newEmplyee = _mapper.Map<Emplyee>(request);
+                if (!string.IsNullOrEmpty(request.EmplyeePhoto))
+                {
+                    request.EmplyeePhoto =
+                        request.EmplyeePhoto.Remove(0, request.EmplyeePhoto.IndexOf(',') + 1);
+                    newEmplyee.EmplyeePhoto =
+                        request.EmplyeePhoto.ToCharArray().Select(Convert.ToByte).ToArray();
+                }
+                newEmplyee.EmplyeeId = ++maxId;
                 newEmplyee = (await _context.Emplyees.AddAsync(newEmplyee)).Entity;
                 await _context.SaveChangesAsync();
 

@@ -7,7 +7,7 @@ namespace PetroPay.Web.Controllers.Entities.Emplyees.Edit
     {
         public EmplyeeEditValidator()
         {
-            RuleFor(x => x.EmplyeesId).NotEmpty().WithMessage(ApiMessages.EmplyeeMessage.IdRequired);
+            RuleFor(x => x.EmplyeeId).NotEmpty().WithMessage(ApiMessages.EmplyeeMessage.IdRequired);
         }
     }
 }

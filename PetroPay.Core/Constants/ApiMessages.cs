@@ -269,12 +269,12 @@ namespace PetroPay.Core.Constants
         }
         public static class EmplyeeMessage
         {
-            public const string IdRequired = "Api.Emplyee.Id.Required";
+            public const string IdRequired = "Api.Employee.Id.Required";
             
-            public const string AddedSuccessfully = "Api.Emplyee.Add.Successful";
-            public const string EditedSuccessfully = "Api.Emplyee.Edit.Successful";
-            public const string DeletedSuccessfully = "Api.Emplyee.Deleted.Successful";
-            public const string ActivatedSuccessfully = "Api.Emplyee.Activated.Successful";
+            public const string AddedSuccessfully = "Api.Employee.Add.Successful";
+            public const string EditedSuccessfully = "Api.Employee.Edit.Successful";
+            public const string DeletedSuccessfully = "Api.Employee.Deleted.Successful";
+            public const string ActivatedSuccessfully = "Api.Employee.Activated.Successful";
             
             
         }
