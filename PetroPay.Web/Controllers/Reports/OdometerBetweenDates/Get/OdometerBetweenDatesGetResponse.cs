@@ -13,7 +13,7 @@ namespace PetroPay.Web.Controllers.Reports.OdometerBetweenDates.Get
         public Guid Key { get; set; }
         public int? CarId { get; set; }
         public string CarIdNumber { get; set; }
-        public DateTime? OdometerRecordDate { get; set; }
+        public string OdometerRecordDate { get; set; }
         public double? OdometerValue { get; set; }
         public int OdometerRecordId { get; set; }
     }

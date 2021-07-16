@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -69,6 +70,16 @@ namespace PetroPay.Web.Controllers.Reports.OdometerBetweenDates.Get
             {
                 query = query.Where(w => w.CarId == request.CarId);
             }
+            if (!string.IsNullOrEmpty(request.DateTimeFrom))
+            {
+                DateTime dateTimeFrom = DateTime.ParseExact(request.DateTimeFrom, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+                query = query.Where(w => w.OdometerRecordDate.HasValue && w.OdometerRecordDate.Value >= dateTimeFrom);
+            }
+            if (!string.IsNullOrEmpty(request.DateTimeTo))
+            {
+                DateTime dateTimeTo = DateTime.ParseExact(request.DateTimeTo, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+                query = query.Where(w => w.OdometerRecordDate.HasValue && w.OdometerRecordDate.Value <= dateTimeTo);
+            }
             /*if (request.CompanyId.HasValue)
             {
                 query = query.Where(w => w.CompanyId == request.CompanyId);
@@ -89,16 +100,7 @@ namespace PetroPay.Web.Controllers.Reports.OdometerBetweenDates.Get
             {
                 query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));
             }*/
-            /*if (!string.IsNullOrEmpty(request.TransDateFrom))
-            {
-                DateTime dateTimeFrom = Convert.ToDateTime(request.TransDateFrom);
-                query = query.Where(w => w.TransDate >= dateTimeFrom);
-            }
-            if (!string.IsNullOrEmpty(request.TransDateTo))
-            {
-                DateTime dateTimeTo = Convert.ToDateTime(request.TransDateTo);
-                query = query.Where(w => w.TransDate <= dateTimeTo);
-            }*/
+            /**/
             return query;
 
         }

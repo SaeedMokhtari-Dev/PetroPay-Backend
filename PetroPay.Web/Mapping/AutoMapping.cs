@@ -472,7 +472,12 @@ namespace PetroPay.Web.Mapping
             CreateMap<ViewCarOdometerMin, CarOdometerMinGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewOdometerBetweenDate, OdometerBetweenDateGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
+                .ForMember(w => w.OdometerRecordDate,
+                    opt => opt.MapFrom(e =>
+                        e.OdometerRecordDate.HasValue
+                            ? e.OdometerRecordDate.Value.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty));
             CreateMap<ViewOdometerHistory, OdometerHistoryGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             
