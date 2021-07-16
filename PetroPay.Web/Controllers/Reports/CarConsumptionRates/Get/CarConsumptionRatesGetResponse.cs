@@ -17,11 +17,11 @@ namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
         public int? CarId { get; set; }
         public string CarIdNumber { get; set; }
         public string CarDriverName { get; set; }
-        public DateTime? DateMin { get; set; }
-        public DateTime? DateMax { get; set; }
+        public string DateMin { get; set; }
+        public string DateMax { get; set; }
         public double? LiterConsumption { get; set; }
         public double? AmountConsumption { get; set; }
         public double? KmConsumption { get; set; }
-        public double? CunsumptionRate { get; set; }
+        public string CunsumptionRate { get; set; }
     }
 }

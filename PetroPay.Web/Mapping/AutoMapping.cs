@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Runtime.Serialization;
 using AutoMapper;
 using Itenso.TimePeriod;
 using PetroPay.Core.Constants;
@@ -452,7 +453,18 @@ namespace PetroPay.Web.Mapping
             CreateMap<ViewAccountBalance, AccountBalanceGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewCarConsumptionRate, CarConsumptionRateGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
+                .ForMember(w => w.DateMin,
+                    opt => opt.MapFrom(e =>
+                        e.DateMin.HasValue ? e.DateMin.Value.ToString(DateTimeConstants.DateFormat) : string.Empty))
+                .ForMember(w => w.DateMax,
+                    opt => opt.MapFrom(e =>
+                        e.DateMax.HasValue ? e.DateMax.Value.ToString(DateTimeConstants.DateFormat) : string.Empty))
+                .ForMember(w => w.CunsumptionRate,
+                    opt => opt.MapFrom(e =>
+                        e.CunsumptionRate.HasValue
+                            ? e.CunsumptionRate.Value.ToString("#.##")
+                            : string.Empty));
             CreateMap<ViewCarKmConsumption, CarKmConsumptionGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewCarOdometerMax, CarOdometerMaxGetResponseItem>()
