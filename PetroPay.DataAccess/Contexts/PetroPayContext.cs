@@ -57,16 +57,16 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<ViewCarOdometerMin> ViewCarOdometerMins { get; set; }
         public virtual DbSet<ViewCarTransaction> ViewCarTransactions { get; set; }
         public virtual DbSet<ViewCustomerBalance> ViewCustomerBalances { get; set; }
+        public virtual DbSet<ViewInvoice> ViewInvoices { get; set; }
         public virtual DbSet<ViewInvoiceDetail> ViewInvoiceDetails { get; set; }
         public virtual DbSet<ViewInvoicesSummary> ViewInvoicesSummaries { get; set; }
         public virtual DbSet<ViewOdometerBetweenDate> ViewOdometerBetweenDates { get; set; }
+        public virtual DbSet<ViewOdometerHistory> ViewOdometerHistories { get; set; }
         public virtual DbSet<ViewPetrolStationList> ViewPetrolStationLists { get; set; }
         public virtual DbSet<ViewStationBalance> ViewStationBalances { get; set; }
         public virtual DbSet<ViewStationReport> ViewStationReports { get; set; }
         public virtual DbSet<ViewStationSale> ViewStationSales { get; set; }
         public virtual DbSet<ViewStationStatement> ViewStationStatements { get; set; }
-        public virtual DbSet<ViewOdometerHistory> ViewOdometerHistories { get; set; }
-        public virtual DbSet<ViewInvoice> ViewInvoices { get; set; }
 
         public async Task ExecuteTransactionAsync(Func<Task> action)
         {
@@ -257,7 +257,7 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.CompanyVatRate)
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("company_Vat_rate")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValueSql("('(0)')");
 
                 entity.Property(e => e.CompanyVatTaxNumber)
                     .HasMaxLength(50)
@@ -401,7 +401,7 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.Property(e => e.CarOdometerRecordRequired)
                     .HasColumnName("car_odometer_record_required")
-                    .HasDefaultValueSql("((0))");
+                    .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.CarPlatePhoto).HasColumnName("car_plate_photo");
 
@@ -558,8 +558,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(50)
                     .HasColumnName("Company_Tax_Number");
 
-                entity.Property(e => e.CompanyTaxPhoto)
-                    .HasColumnName("Company_Tax_photo");
+                entity.Property(e => e.CompanyTaxPhoto).HasColumnName("Company_Tax_photo");
 
                 entity.Property(e => e.CompanyType)
                     .HasMaxLength(255)
@@ -569,8 +568,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(50)
                     .HasColumnName("Company_VAT_Number");
 
-                entity.Property(e => e.CompanyVatPhoto)
-                    .HasColumnName("Company_VAT_photo");
+                entity.Property(e => e.CompanyVatPhoto).HasColumnName("Company_VAT_photo");
 
                 entity.Property(e => e.SsmaTimeStamp)
                     .IsRequired()
@@ -934,6 +932,7 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
+
                 entity.Property(e => e.UserType)
                     .HasMaxLength(50)
                     .HasColumnName("user_type");
@@ -1001,6 +1000,14 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(255)
                     .HasColumnName("station_banck_account");
 
+                entity.Property(e => e.StationBonusBalance).HasColumnName("station_bonus_balance");
+
+                entity.Property(e => e.StationCarWashingService).HasColumnName("station_car_washing_service");
+
+                entity.Property(e => e.StationChangeOilService).HasColumnName("station_change_oil_service");
+
+                entity.Property(e => e.StationChangeTireService).HasColumnName("station_change_tire_service");
+
                 entity.Property(e => e.StationDiesel).HasColumnName("station_diesel");
 
                 entity.Property(e => e.StationEmail)
@@ -1051,9 +1058,6 @@ namespace PetroPay.DataAccess.Contexts
                     .WithMany(p => p.PetroStations)
                     .HasForeignKey(d => d.AccountId)
                     .HasConstraintName("FK_Petro_station_AccountMaster");
-                
-                entity.Property(e => e.StationServiceActive)
-                    .HasColumnName("station_service_active").HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<PetropayAccount>(entity =>
@@ -1095,12 +1099,12 @@ namespace PetroPay.DataAccess.Contexts
 
             modelBuilder.Entity<PromotionCoupon>(entity =>
             {
-                entity.HasKey(e => e.CouponId);
+                entity.HasKey(e => e.CouponId)
+                    .HasName("PK__promotio__58CF6389B37E60A9");
 
                 entity.ToTable("promotion_Coupon");
 
-                entity.Property(e => e.CouponId)
-                    .HasColumnName("coupon_id");
+                entity.Property(e => e.CouponId).HasColumnName("coupon_id");
 
                 entity.Property(e => e.CouponActive).HasColumnName("coupon_active");
 
@@ -1126,7 +1130,7 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
-                
+
                 entity.Property(e => e.UserType)
                     .HasMaxLength(50)
                     .HasColumnName("user_type");
@@ -1306,9 +1310,7 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.Property(e => e.SubscriptionEndDate).HasColumnName("subscription_end_date");
 
-                entity.Property(e => e.SubscriptionInvoiceNumber)
-                    .HasColumnName("float")
-                    .HasColumnName("subscription_invoice_number");
+                entity.Property(e => e.SubscriptionInvoiceNumber).HasColumnName("subscription_invoice_number");
 
                 entity.Property(e => e.SubscriptionPaymentDocPhoto).HasColumnName("subscription_payment_doc_photo");
 
@@ -1378,7 +1380,7 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.UserName)
                     .HasMaxLength(50)
                     .HasColumnName("user_name");
-                
+
                 entity.Property(e => e.UserType)
                     .HasMaxLength(50)
                     .HasColumnName("user_type");

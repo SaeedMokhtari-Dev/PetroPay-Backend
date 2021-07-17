@@ -19,5 +19,8 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Detail
         public string StationEmail { get; set; }
         public bool? StationServiceActive { get; set; }
         public bool StationServiceDeposit { get; set; }
+        public bool StationChangeOilService { get; set; }
+        public bool StationCarWashingService { get; set; }
+        public bool StationChangeTireService { get; set; }
     }
 }
