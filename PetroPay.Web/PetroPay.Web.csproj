@@ -13,6 +13,9 @@
         <PackageReference Include="AutoMapper" Version="10.1.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+        <PackageReference Include="FastReport.OpenSource" Version="2021.3.15" />
+        <PackageReference Include="FastReport.OpenSource.Data.MsSql" Version="2021.3.0" />
+        <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2021.3.15" />
         <PackageReference Include="FluentValidation" Version="10.0.2" />
         <PackageReference Include="MailKit" Version="2.11.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.5" />
@@ -36,6 +39,7 @@
     <ItemGroup>
       <Folder Include="Controllers\Reports\InvoiceDetails" />
       <Folder Include="Database" />
+      <Folder Include="Report" />
     </ItemGroup>
 
     <ItemGroup>

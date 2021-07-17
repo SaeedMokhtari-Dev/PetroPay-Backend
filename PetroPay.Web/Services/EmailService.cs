@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -16,10 +18,12 @@ namespace PetroPay.Web.Services
     {
         private readonly SmtpOptions _smtpOptions;
         private readonly IConfiguration _configuration;
+        private readonly ReportService _reportService;
 
-        public EmailService(IOptions<SmtpOptions> smtpOptions, IConfiguration configuration)
+        public EmailService(IOptions<SmtpOptions> smtpOptions, IConfiguration configuration, ReportService reportService)
         {
             this._configuration = configuration;
+            _reportService = reportService;
             this._smtpOptions = smtpOptions.Value;
         }
 
@@ -36,6 +40,34 @@ namespace PetroPay.Web.Services
             message.Subject = subject;
             bodyBuilder.HtmlBody = htmlBody;
             message.Body = bodyBuilder.ToMessageBody();
+             
+
+            var client = new SmtpClient
+            {
+                ServerCertificateValidationCallback = (s, c, h, e) => true
+            };
+
+            await client.ConnectAsync(_smtpOptions.Hostname, _smtpOptions.Port, _smtpOptions.GetSecureSocketOption());
+            await client.AuthenticateAsync(_smtpOptions.Username, _smtpOptions.Password);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
+        public async Task SendMailWithAttachment(string receiverEmail, string subject, string htmlBody, string name,
+            byte[] data)
+        {
+            var message = new MimeMessage();
+            var bodyBuilder = new BodyBuilder();
+            
+            // from
+            message.From.Add(new MailboxAddress(_smtpOptions.FromName, _smtpOptions.FromAddress));
+            // to
+            message.To.Add(new MailboxAddress(name, receiverEmail));
+            
+            message.Subject = subject;
+            bodyBuilder.HtmlBody = htmlBody;
+            bodyBuilder.Attachments.Add("Invoice", data, new ContentType("application", "pdf"));
+            message.Body = bodyBuilder.ToMessageBody();
+            
 
             var client = new SmtpClient
             {
@@ -62,13 +94,17 @@ namespace PetroPay.Web.Services
                               $"<a href='{clientBaseUrl}/app/subscription/invoice/{invoiceNumber}'>click here to open the page</a>";
             string subject = "Your Subscription Confirmed Successfully";
 
-            await SendMail(receiverEmail, subject, htmlBody, name);
+            Stream stream = await _reportService.GetInvoicePdf(int.Parse(invoiceNumber));
+            
+            await SendMailWithAttachment(receiverEmail, subject, htmlBody, name, ReadFully(stream));
         }
-        /*public async Task SendUserActivationEmail(ApiMessages.User user)
+        private byte[] ReadFully(Stream input)
         {
-            var clientBaseUrl = _configuration.GetValue<string>("ClientBaseUrl");
-            string htmlBody = $"<a href='{clientBaseUrl}/auth/change-password/{user.PasswordResetToken.Token}'>click here to activate</a>";
-            await SendMail(user.Email, "Activate Account", htmlBody, $"{user.FirstName} {user.LastName}");
-        }*/
+            using (MemoryStream ms = new MemoryStream())
+            {
+                input.CopyTo(ms);
+                return ms.ToArray();
+            }
+        }
     }
 }

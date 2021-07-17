@@ -22,6 +22,7 @@ namespace PetroPay.DataAccess.Contexts
         }
         
 
+        
         public virtual DbSet<AccountMaster> AccountMasters { get; set; }
         public virtual DbSet<Apidatum> Apidata { get; set; }
         public virtual DbSet<AppSetting> AppSettings { get; set; }
@@ -65,6 +66,7 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<ViewStationSale> ViewStationSales { get; set; }
         public virtual DbSet<ViewStationStatement> ViewStationStatements { get; set; }
         public virtual DbSet<ViewOdometerHistory> ViewOdometerHistories { get; set; }
+        public virtual DbSet<ViewInvoice> ViewInvoices { get; set; }
 
         public async Task ExecuteTransactionAsync(Func<Task> action)
         {
@@ -1493,7 +1495,53 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.Property(e => e.LiterConsumption).HasColumnName("liter_consumption");
             });
+modelBuilder.Entity<ViewInvoice>(entity =>
+                                               {
+                                                   entity.HasNoKey();
+                                   
+                                                   entity.ToView("View_Invoice");
+                                   
+                                                   entity.Property(e => e.Amount).HasColumnType("decimal(22, 4)");
+                                   
+                                                   entity.Property(e => e.CompanyAddress).HasMaxLength(50);
+                                   
+                                                   entity.Property(e => e.CompanyCommercialRecordNumber).HasMaxLength(50);
+                                   
+                                                   entity.Property(e => e.CompanyEmail).HasMaxLength(50);
+                                   
+                                                   entity.Property(e => e.CompanyLogo).IsUnicode(false);
+                                   
+                                                   entity.Property(e => e.CompanyNameAr).HasMaxLength(50);
+                                   
+                                                   entity.Property(e => e.CompanyNameEn).HasMaxLength(50);
+                                   
+                                                   entity.Property(e => e.CompanyTaxRecordNumber).HasMaxLength(50);
 
+                entity.Property(e => e.CompanyWebsite)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CustomerAddress).HasMaxLength(255);
+
+                entity.Property(e => e.CustomerName).HasMaxLength(255);
+
+                entity.Property(e => e.Discount).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.SubTotal).HasColumnType("decimal(22, 4)");
+
+                entity.Property(e => e.Tax).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.TaxRate).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.Total).HasColumnType("money");
+
+                entity.Property(e => e.UnitCost).HasColumnType("decimal(22, 4)");
+
+                entity.Property(e => e.Vat).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.VatRate).HasColumnType("decimal(18, 3)");
+            });
             modelBuilder.Entity<ViewCarKmConsumption>(entity =>
             {
                 entity.HasNoKey();
