@@ -15,17 +15,11 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Reject
     public class SubscriptionRejectHandler : ApiRequestHandler<SubscriptionRejectRequest>
     {
         private readonly PetroPayContext _context;
-        private readonly IMapper _mapper;
-        private readonly UserService _userService;
-        private readonly SubscriptionService _subscriptionService;
         private readonly EmailService _emailService;
         public SubscriptionRejectHandler(
-            PetroPayContext context, IMapper mapper, UserService userService, SubscriptionService subscriptionService, EmailService emailService)
+            PetroPayContext context, EmailService emailService)
         {
             _context = context;
-            _mapper = mapper;
-            _userService = userService;
-            _subscriptionService = subscriptionService;
             _emailService = emailService;
         }
 
@@ -63,6 +57,10 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Reject
             
             subscription.Rejected = true;
             await _context.SaveChangesAsync();
+
+            if (!string.IsNullOrEmpty(company.CompanyAdminEmail))
+                await _emailService.SendMail(company.CompanyAdminEmail, "Your Subscription Request Rejected",
+                    $"<p>Your Subscription Request With Id '{subscription.SubscriptionId}' Rejected By Admin</p>", company.CompanyName);
             
             return ActionResult.Ok(ApiMessages.SubscriptionMessage.RejectedSuccessfully);
         }
