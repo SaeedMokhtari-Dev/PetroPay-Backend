@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -75,16 +76,18 @@ namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
             {
                 query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));
             }
-            /*if (!string.IsNullOrEmpty(request.DateFrom))
+            if (!string.IsNullOrEmpty(request.DateFrom))
             {
-                DateTime dateTimeFrom = Convert.ToDateTime(request.DateFrom);
-                query = query.Where(w => w.Date >= dateTimeFrom);
+                DateTime dateTimeFrom = DateTime.ParseExact(request.DateFrom, DateTimeConstants.DateFormat,
+                    CultureInfo.InvariantCulture);
+                query = query.Where(w => w.DateMin >= dateTimeFrom);
             }
             if (!string.IsNullOrEmpty(request.DateTo))
             {
-                DateTime dateTimeTo = Convert.ToDateTime(request.DateTo);
-                query = query.Where(w => w.Date <= dateTimeTo);
-            }*/
+                DateTime dateTimeTo = DateTime.ParseExact(request.DateTo, DateTimeConstants.DateFormat,
+                    CultureInfo.InvariantCulture);
+                query = query.Where(w => w.DateMax <= dateTimeTo);
+            }
             return query;
 
         }
