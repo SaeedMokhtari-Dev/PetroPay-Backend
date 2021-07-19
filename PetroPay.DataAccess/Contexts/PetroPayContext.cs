@@ -266,6 +266,9 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.ComapnyPhoneNumber)
                     .HasMaxLength(50)
                     .HasColumnName("comapny_phone_number");
+                entity.Property(e => e.ComapnyWebsite)
+                    .HasMaxLength(50)
+                    .HasColumnName("comapny_webSite");
             });
 
             modelBuilder.Entity<Bundle>(entity =>

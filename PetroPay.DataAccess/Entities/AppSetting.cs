@@ -20,5 +20,6 @@ namespace PetroPay.DataAccess.Entities
         public string CompanyStampImage { get; set; }
         public decimal? ComapnyTaxRate { get; set; }
         public string ComapnyPhoneNumber { get; set; }
+        public string ComapnyWebsite { get; set; }
     }
 }

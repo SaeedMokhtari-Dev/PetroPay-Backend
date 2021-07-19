@@ -52,7 +52,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Invoice
             response.CompanyTaxRecordNumber = appSetting.ComapnyTaxRecordNumber;
             response.CompanyCommercialRecordNumber = appSetting.CompanyCommercialRecordNumber;
             response.CompanyEmail = appSetting.CompanyEmail;
-            //response.CompanyWebsite = appSetting.CompanyW;
+            response.CompanyWebsite = appSetting.ComapnyWebsite;
 
             response.CustomerName = subscription.CompanyId.HasValue ? subscription.Company.CompanyName : String.Empty;
             response.CustomerAddress = subscription.CompanyId.HasValue ? subscription.Company.CompanyAddress : String.Empty;

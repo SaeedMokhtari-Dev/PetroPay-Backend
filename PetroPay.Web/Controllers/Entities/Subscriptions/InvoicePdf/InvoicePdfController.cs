@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IO;
+using Microsoft.AspNetCore.Mvc;
 using PetroPay.Web.Configuration.Constants;
 using PetroPay.Web.Services;
 
@@ -18,7 +19,17 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.InvoicePdf
         public FileResult Post(int invoiceNumber)
         {
             var strm = _reportService.GetInvoicePdf(invoiceNumber);
-            return File(strm, "application/pdf", "invoice.pdf"); 
+            var content = ReadFully(strm);
+            return File(content, "application/pdf", "invoice.pdf");
+            //return File(strm, "application/pdf", "invoice.pdf"); 
+        }
+        private byte[] ReadFully(Stream input)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                input.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
     }
 }
