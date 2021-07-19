@@ -31,7 +31,7 @@ namespace PetroPay.Web.Services
             _configuration = configuration;
         }
 
-        public async Task<Stream> GetInvoicePdf(int invoiceNumber)
+        public Stream GetInvoicePdf(int invoiceNumber)
         {
             var connectionString = _configuration.GetValue<string>(SettingsKeys.ConnectionString);
             

@@ -94,7 +94,7 @@ namespace PetroPay.Web.Services
                               $"<a href='{clientBaseUrl}/app/subscription/invoice/{invoiceNumber}'>click here to open the page</a>";
             string subject = "Your Subscription Confirmed Successfully";
 
-            Stream stream = await _reportService.GetInvoicePdf(int.Parse(invoiceNumber));
+            Stream stream = _reportService.GetInvoicePdf(int.Parse(invoiceNumber));
             
             await SendMailWithAttachment(receiverEmail, subject, htmlBody, name, ReadFully(stream));
         }

@@ -75,15 +75,15 @@ namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
             {
                 query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));
             }
-            /*if (!string.IsNullOrEmpty(request.TransDateFrom))
+            /*if (!string.IsNullOrEmpty(request.DateFrom))
             {
-                DateTime dateTimeFrom = Convert.ToDateTime(request.TransDateFrom);
-                query = query.Where(w => w.TransDate >= dateTimeFrom);
+                DateTime dateTimeFrom = Convert.ToDateTime(request.DateFrom);
+                query = query.Where(w => w.Date >= dateTimeFrom);
             }
-            if (!string.IsNullOrEmpty(request.TransDateTo))
+            if (!string.IsNullOrEmpty(request.DateTo))
             {
-                DateTime dateTimeTo = Convert.ToDateTime(request.TransDateTo);
-                query = query.Where(w => w.TransDate <= dateTimeTo);
+                DateTime dateTimeTo = Convert.ToDateTime(request.DateTo);
+                query = query.Where(w => w.Date <= dateTimeTo);
             }*/
             return query;
 
