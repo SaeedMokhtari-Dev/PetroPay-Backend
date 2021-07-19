@@ -5,7 +5,7 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceDetails.Get
     public class InvoiceDetailGetResponse
     {
         public int InvoiceId { get; set; }
-        public DateTime? InvoiceDataTime { get; set; }
+        public string InvoiceDataTime { get; set; }
         public string InvoicePayType { get; set; }
         public string InvoicePayStatus { get; set; }
         public string ServiceEnDescription { get; set; }

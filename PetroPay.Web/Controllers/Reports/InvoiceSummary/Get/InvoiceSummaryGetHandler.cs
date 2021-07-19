@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -81,12 +83,16 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeFrom))
             {
-                DateTime dateTimeFrom = Convert.ToDateTime(request.InvoiceDataTimeFrom);
+                //DateTime dateTimeFrom = Convert.ToDateTime(request.InvoiceDataTimeFrom);
+                DateTime dateTimeFrom = DateTime.ParseExact(request.InvoiceDataTimeFrom, DateTimeConstants.DateFormat,
+                    CultureInfo.InvariantCulture);
                 query = query.Where(w => w.InvoiceDataTime >= dateTimeFrom);
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeTo))
             {
-                DateTime dateTimeTo = Convert.ToDateTime(request.InvoiceDataTimeTo);
+                //DateTime dateTimeTo = Convert.ToDateTime(request.InvoiceDataTimeTo);
+                DateTime dateTimeTo = DateTime.ParseExact(request.InvoiceDataTimeTo, DateTimeConstants.DateFormat,
+                    CultureInfo.InvariantCulture);
                 query = query.Where(w => w.InvoiceDataTime <= dateTimeTo);
             }
             if (!string.IsNullOrEmpty(request.ServiceDescription))

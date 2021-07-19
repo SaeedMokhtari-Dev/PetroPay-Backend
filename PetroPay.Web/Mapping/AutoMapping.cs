@@ -204,6 +204,11 @@ namespace PetroPay.Web.Mapping
                     opt => opt.MapFrom(e =>
                         e.BankTransactionDate.HasValue
                             ? e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty))
+                .ForMember(w => w.RechageDate,
+                    opt => opt.MapFrom(e =>
+                        e.RechageDate.HasValue
+                            ? e.RechageDate.Value.Date.ToString(DateTimeConstants.DateFormat)
                             : string.Empty));
             
             CreateMap<RechargeBalance, RechargeBalanceDetailResponse>()
@@ -268,7 +273,12 @@ namespace PetroPay.Web.Mapping
             CreateMap<TransAccount, PetropayAccountGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId))
                 .ForMember(w => w.AccountName,
-                    opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""));
+                    opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""))
+                .ForMember(w => w.TransDate, opt =>
+                    opt.MapFrom(e =>
+                        e.TransDate.HasValue
+                            ? e.TransDate.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : ""));
             #endregion
             #region PromotionCoupon
 
@@ -421,7 +431,13 @@ namespace PetroPay.Web.Mapping
             #region NewCustomer
             
             CreateMap<NewCustomer, NewCustomerGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.CustReqId));
+                .ForMember(w => w.Key, opt => 
+                    opt.MapFrom(e => e.CustReqId))
+                .ForMember(w => w.CutReqDatetime, opt =>
+                    opt.MapFrom(e =>
+                        e.CutReqDatetime.HasValue
+                            ? e.CutReqDatetime.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : ""));
             CreateMap<NewCustomer, NewCustomerDetailResponse>();
             CreateMap<NewCustomerEditRequest, NewCustomer>()
                 .ForMember(w => w.CustReqId, opt => opt.Ignore())
@@ -435,7 +451,12 @@ namespace PetroPay.Web.Mapping
             #region Reports
 
             CreateMap<ViewInvoicesSummary, InvoiceSummaryGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
+                .ForMember(w => w.InvoiceDataTime, opt =>
+                    opt.MapFrom(e =>
+                        e.InvoiceDataTime.HasValue
+                            ? e.InvoiceDataTime.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : ""));
             CreateMap<ViewCarBalance, CarBalanceGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
                 .ForMember(w => w.SubscriptionStartDate,
@@ -449,9 +470,19 @@ namespace PetroPay.Web.Mapping
                             ? e.SubscriptionEndDate.Value.Date.ToString(DateTimeConstants.DateFormat)
                             : string.Empty));
             CreateMap<ViewStationReport, StationReportGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
+                .ForMember(w => w.InvoiceDataTime, opt =>
+                    opt.MapFrom(e =>
+                        e.InvoiceDataTime.HasValue
+                            ? e.InvoiceDataTime.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : ""));
             CreateMap<ViewCarTransaction, CarTransactionGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
+                .ForMember(w => w.TransDate, opt =>
+                    opt.MapFrom(e =>
+                        e.TransDate.HasValue
+                            ? e.TransDate.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : ""));
             CreateMap<ViewStationSale, StationSaleGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
                 .ForMember(w => w.SumInvoiceDataTime, opt => opt.MapFrom(e => e.SumInvoiceDataTime.ReverseDate()));
@@ -460,7 +491,12 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.InvoiceDataTime, opt => opt.MapFrom(e => e.InvoiceDataTime.ReverseDate()));
             CreateMap<ViewCarTransaction, CarTransactionGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
-            CreateMap<ViewInvoiceDetail, InvoiceDetailGetResponse>();
+            CreateMap<ViewInvoiceDetail, InvoiceDetailGetResponse>()
+                .ForMember(w => w.InvoiceDataTime, opt =>
+                    opt.MapFrom(e =>
+                        e.InvoiceDataTime.HasValue
+                            ? e.InvoiceDataTime.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : ""));
             
             CreateMap<ViewPetrolStationList, PetrolStationListGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
@@ -494,7 +530,12 @@ namespace PetroPay.Web.Mapping
                             ? e.OdometerRecordDate.Value.ToString(DateTimeConstants.DateFormat)
                             : string.Empty));
             CreateMap<ViewOdometerHistory, OdometerHistoryGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()))
+                .ForMember(w => w.OdometerRecordDate,
+                    opt => opt.MapFrom(e =>
+                        e.OdometerRecordDate.HasValue
+                            ? e.OdometerRecordDate.Value.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty));
             
 
             #endregion

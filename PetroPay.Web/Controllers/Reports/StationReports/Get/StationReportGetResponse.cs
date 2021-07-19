@@ -19,6 +19,6 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
         public string CarIdNumber { get; set; }
         public double? InvoiceAmount { get; set; }
         public string PaymentMethodName { get; set; }
-        public DateTime? InvoiceDataTime { get; set; }
+        public string InvoiceDataTime { get; set; }
     }
 }

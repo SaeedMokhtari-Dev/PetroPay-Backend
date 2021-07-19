@@ -18,7 +18,7 @@ namespace PetroPay.Web.Controllers.Reports.CarTransactions.Get
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public int TransId { get; set; }
-        public DateTime? TransDate { get; set; }
+        public string TransDate { get; set; }
         public string TransDocument { get; set; }
         public decimal? TransAmount { get; set; }
         public string TransReference { get; set; }

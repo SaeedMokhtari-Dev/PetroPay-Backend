@@ -19,7 +19,7 @@ namespace PetroPay.Web.Controllers.Reports.OdometerHistories.Get
         public string CarIdNumber { get; set; }
         public string CarTypeOfFuel { get; set; }
         public string CarDriverName { get; set; }
-        public DateTime? OdometerRecordDate { get; set; }
+        public string OdometerRecordDate { get; set; }
         public double? OdometerValue { get; set; }
     }
 }
