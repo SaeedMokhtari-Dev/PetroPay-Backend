@@ -350,6 +350,15 @@ namespace PetroPay.Web.Mapping
                         e.OdometerRecordDate.HasValue
                             ? e.OdometerRecordDate.Value.Date.ToString(DateTimeConstants.DateFormat)
                             : ""));
+            CreateMap<ViewOdometerRecord, OdometerRecordGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.OdometerRecordId))
+                .ForMember(w => w.CarIdNumber, opt =>
+                    opt.MapFrom(e => e.CarIdNumber))
+                .ForMember(w => w.OdometerRecordDate, opt =>
+                    opt.MapFrom(e =>
+                        e.OdometerRecordDate.HasValue
+                            ? e.OdometerRecordDate.Value.Date.ToString(DateTimeConstants.DateFormat)
+                            : ""));
             CreateMap<OdometerRecord, OdometerRecordDetailResponse>()
                 .ForMember(w => w.OdometerRecordDate, opt =>
                     opt.MapFrom(e =>

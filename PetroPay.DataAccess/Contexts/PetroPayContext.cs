@@ -62,6 +62,7 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<ViewInvoicesSummary> ViewInvoicesSummaries { get; set; }
         public virtual DbSet<ViewOdometerBetweenDate> ViewOdometerBetweenDates { get; set; }
         public virtual DbSet<ViewOdometerHistory> ViewOdometerHistories { get; set; }
+        public virtual DbSet<ViewOdometerRecord> ViewOdometerRecords { get; set; }
         public virtual DbSet<ViewPetrolStationList> ViewPetrolStationLists { get; set; }
         public virtual DbSet<ViewStationBalance> ViewStationBalances { get; set; }
         public virtual DbSet<ViewStationReport> ViewStationReports { get; set; }
@@ -1781,6 +1782,51 @@ modelBuilder.Entity<ViewInvoice>(entity =>
                     .HasColumnName("odometerRecordID");
 
                 entity.Property(e => e.OdometerValue).HasColumnName("odometer_value");
+            });
+            
+            modelBuilder.Entity<ViewOdometerRecord>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_Odometer_Record");
+
+                entity.Property(e => e.CarId).HasColumnName("car_id");
+
+                entity.Property(e => e.CarIdNumber)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_id_number");
+
+                entity.Property(e => e.CompanyBranchId).HasColumnName("company_branch_id");
+
+                entity.Property(e => e.CompanyBranchName)
+                    .HasMaxLength(255)
+                    .HasColumnName("company_branch_name");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.CompanyName)
+                    .HasMaxLength(255)
+                    .HasColumnName("Company_name");
+
+                entity.Property(e => e.OdometerRecordDate)
+                    .HasColumnType("date")
+                    .HasColumnName("odometer_record_date");
+
+                entity.Property(e => e.OdometerRecordId).HasColumnName("odometerRecordID");
+
+                entity.Property(e => e.OdometerValue).HasColumnName("odometer_value");
+
+                entity.Property(e => e.Seqnum).HasColumnName("seqnum");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(50)
+                    .HasColumnName("user_name");
+
+                entity.Property(e => e.UserType)
+                    .HasMaxLength(50)
+                    .HasColumnName("user_type");
             });
 
             modelBuilder.Entity<ViewPetrolStationList>(entity =>
