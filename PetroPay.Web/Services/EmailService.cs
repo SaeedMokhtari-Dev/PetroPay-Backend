@@ -22,9 +22,9 @@ namespace PetroPay.Web.Services
 
         public EmailService(IOptions<SmtpOptions> smtpOptions, IConfiguration configuration, ReportService reportService)
         {
-            this._configuration = configuration;
+            _configuration = configuration;
             _reportService = reportService;
-            this._smtpOptions = smtpOptions.Value;
+            _smtpOptions = smtpOptions.Value;
         }
 
         public async Task SendMail(string receiverEmail, string subject, string htmlBody, string name)

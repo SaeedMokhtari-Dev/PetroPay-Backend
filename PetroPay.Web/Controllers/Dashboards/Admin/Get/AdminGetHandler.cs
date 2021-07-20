@@ -41,7 +41,7 @@ namespace PetroPay.Web.Controllers.Dashboards.Admin.Get
                 .Where(w => string.IsNullOrEmpty(w.CarNfcCode.Trim()) || w.CarNfcCode.Trim() == "0").CountAsync();
             
             response.SubscriptionRequests = await _context.Subscriptions
-                .Where(w => (!w.SubscriptionActive.HasValue) || w.SubscriptionActive == false).CountAsync();
+                .Where(w => ((!w.SubscriptionActive.HasValue) || w.SubscriptionActive == false) && ((!w.Rejected.HasValue) || w.Rejected == false)).CountAsync();
 
             var companies = await _context.Companies.Select(w => new
             {
