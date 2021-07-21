@@ -28,6 +28,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
         protected override async Task<ActionResult> Execute(SubscriptionDetailRequest request)
         {
             Subscription subscription = await _context.Subscriptions.Include(w => w.CarSubscriptions)
+                .ThenInclude(w => w.Car).ThenInclude(w => w.CompanyBarnch)
+                .Include(w => w.Company)
                 .FirstOrDefaultAsync(w => w.SubscriptionId == request.SubscriptionId);
 
             if (subscription == null)
@@ -36,38 +38,13 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
             }
 
             SubscriptionDetailResponse response = _mapper.Map<SubscriptionDetailResponse>(subscription);
-            /*DateDiff dateDiff = new DateDiff(subscription.SubscriptionStartDate ?? DateTime.Now, subscription.SubscriptionEndDate ?? DateTime.Now);
-            switch (subscription.SubscriptionType)
-            {
-                case "Monthly":
-                    response.NumberOfDateDiff = dateDiff.Months;
-                    break;
-                case "Yearly":
-                    response.NumberOfDateDiff = dateDiff.Years;
-                    break;
-            }*/
-            /*var dateDiff = (subscription.SubscriptionEndDate ?? DateTime.Now) -
-                           (subscription.SubscriptionStartDate ?? DateTime.Now);
-            switch (subscription.SubscriptionType)
-            {
-                case "Monthly":
-                    response.NumberOfDateDiff = dateDiff.;
-                    break;
-                case "Yearly":
-                    response.NumberOfDateDiff = dateDiff.Years;
-                    break;
-            }*/
-                        
-
-            /*var petropayAccount = await _context.PetropayAccounts.FirstOrDefaultAsync(
-                 w => w.AccName == response.SubscriptionPaymentMethod);
-            if (petropayAccount != null)
-                response.PetropayAccountId = petropayAccount.AccId;*/
-                
-
+           
             response.SubscriptionCars = subscription.CarSubscriptions.Select(w => new SubscriptionCar()
             {
                 Key = w.CarId,
+                CarIdNumber = w.Car.CarIdNumber,
+                BranchId =  w.Car.CompanyBarnchId ?? 0,
+                BranchName = w.Car.CompanyBarnchId.HasValue ? w.Car.CompanyBarnch.CompanyBranchName : string.Empty,
                 Disabled = w.Invoiced ?? false
             }).ToList();
             

@@ -162,7 +162,7 @@ namespace PetroPay.Web.Mapping
                         e.SubscriptionEndDate < DateTime.Now));
             CreateMap<Subscription, SubscriptionDetailResponse>()
                 .ForMember(w => w.CompanyName,
-                    opt => opt.MapFrom(e => (e.Company != null ? e.Company.CompanyName : "")))
+                    opt => opt.MapFrom(e => (e.CompanyId.HasValue ? e.Company.CompanyName : "")))
                 .ForMember(w => w.PayFromCompanyBalance,
                     opt => opt.MapFrom(e => e.SubscriptionPaymentMethod == "CompanyBalance"))
                 .ForMember(w => w.SubscriptionStartDate,
@@ -174,6 +174,11 @@ namespace PetroPay.Web.Mapping
                     opt => opt.MapFrom(e =>
                         e.SubscriptionEndDate.HasValue
                             ? e.SubscriptionEndDate.Value.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty))
+                .ForMember(w => w.SubscriptionDate,
+                    opt => opt.MapFrom(e =>
+                        e.SubscriptionDate.HasValue
+                            ? e.SubscriptionDate.Value.ToString(DateTimeConstants.DateTimeFormat)
                             : string.Empty));
             CreateMap<SubscriptionEditRequest, Subscription>()
                 .ForMember(w => w.SubscriptionId, opt => opt.Ignore())
