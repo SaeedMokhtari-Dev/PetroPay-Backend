@@ -1375,7 +1375,7 @@ namespace PetroPay.DataAccess.Contexts
                     .IsFixedLength();
 
                 entity.Property(e => e.TransReference)
-                    .HasMaxLength(10)
+                    .HasMaxLength(50)
                     .HasColumnName("trans_reference")
                     .IsFixedLength();
 
