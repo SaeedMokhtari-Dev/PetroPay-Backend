@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -22,8 +23,8 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Detail
 
         protected override async Task<ActionResult> Execute(RechargeBalanceDetailRequest request)
         {
-            RechargeBalance rechargeBalance = await _context.RechargeBalances
-                .FindAsync(request.RechargeId);
+            RechargeBalance rechargeBalance = await _context.RechargeBalances.Include(w => w.Company)
+                .FirstOrDefaultAsync(w => w.RechargeId == request.RechargeId);
 
             if (rechargeBalance == null)
             {

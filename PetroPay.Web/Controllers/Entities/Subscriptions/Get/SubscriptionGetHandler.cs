@@ -69,13 +69,13 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Get
             {
                 DateTime dateTimeFrom = DateTime.ParseExact(request.DateFrom, DateTimeConstants.DateFormat,
                     CultureInfo.InvariantCulture);
-                query = query.Where(w => w.SubscriptionDate >= dateTimeFrom);
+                query = query.Where(w => w.SubscriptionDate.HasValue && w.SubscriptionDate.Value >= dateTimeFrom);
             }
             if (!string.IsNullOrEmpty(request.DateTo))
             {
                 DateTime dateTimeTo = DateTime.ParseExact(request.DateTo, DateTimeConstants.DateFormat,
                     CultureInfo.InvariantCulture);
-                query = query.Where(w => w.SubscriptionDate <= dateTimeTo);
+                query = query.Where(w => w.SubscriptionDate.HasValue && w.SubscriptionDate.Value <= dateTimeTo);
             }
             if (request.Status.HasValue)
             {

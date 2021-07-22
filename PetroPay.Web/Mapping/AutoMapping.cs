@@ -222,6 +222,9 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.BankTransactionDate,
                     opt => opt.MapFrom(e => e.BankTransactionDate.HasValue ? 
                         e.BankTransactionDate.Value.Date.ToString(DateTimeConstants.DateFormat) : string.Empty))
+                .ForMember(w => w.RechageDate,
+                    opt => opt.MapFrom(e => e.RechageDate.HasValue ? 
+                        e.RechageDate.Value.ToString(DateTimeConstants.DateTimeFormat) : string.Empty))
                 .ForMember(w => w.RechargeDocumentPhoto, opt => 
                     opt.MapFrom(e => $"data:image/png;base64,{e.RechargeDocumentPhoto}"));
             

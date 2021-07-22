@@ -6,7 +6,7 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Detail
     public class RechargeBalanceDetailResponse
     {
         public int RechargeId { get; set; }
-        public DateTime? RechageDate { get; set; }
+        public string RechageDate { get; set; }
         public int? CompanyId { get; set; }
         public string CompanyName { get; set; }
         public decimal? RechargeAmount { get; set; }
