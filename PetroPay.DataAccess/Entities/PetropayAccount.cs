@@ -12,6 +12,7 @@ namespace PetroPay.DataAccess.Entities
         public string AccRefer { get; set; }
         public bool? AccPaymentMethodShow { get; set; }
         public bool? AccSubscriptionRequst { get; set; }
+        public bool? AccPetrolStationBonus { get; set; }
 
         public virtual AccountMaster Account { get; set; }
     }

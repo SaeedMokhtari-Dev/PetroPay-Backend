@@ -31,8 +31,8 @@ namespace PetroPay.DataAccess.Entities
         public byte[] SsmaTimeStamp { get; set; }
         public int? AccountId { get; set; }
         public string CompanyVatNumber { get; set; }
-        public string CompanyVatPhoto { get; set; }
         public string CompanyTaxNumber { get; set; }
+        public string CompanyVatPhoto { get; set; }
         public string CompanyTaxPhoto { get; set; }
 
         public virtual AccountMaster Account { get; set; }

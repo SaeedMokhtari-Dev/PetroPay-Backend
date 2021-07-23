@@ -30,5 +30,6 @@ namespace PetroPay.Web.Controllers.Dashboards.Admin.Get
         public int Key { get; set; }
         public string Name { get; set; }
         public decimal Balance { get; set; }
+        public decimal Bonus { get; set; }
     }
 }

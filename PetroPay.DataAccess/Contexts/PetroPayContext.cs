@@ -20,20 +20,18 @@ namespace PetroPay.DataAccess.Contexts
             : base(options)
         {
         }
-        
 
-        
         public virtual DbSet<AccountMaster> AccountMasters { get; set; }
         public virtual DbSet<Apidatum> Apidata { get; set; }
         public virtual DbSet<AppSetting> AppSettings { get; set; }
         public virtual DbSet<Bundle> Bundles { get; set; }
         public virtual DbSet<Car> Cars { get; set; }
         public virtual DbSet<CarSubscription> CarSubscriptions { get; set; }
+        public virtual DbSet<CarTypeMaster> CarTypeMasters { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyBranch> CompanyBranches { get; set; }
         public virtual DbSet<EmployeeMenu> EmployeeMenus { get; set; }
         public virtual DbSet<Emplyee> Emplyees { get; set; }
-        public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Invoice> Invoices { get; set; }
         public virtual DbSet<Menu> Menus { get; set; }
         public virtual DbSet<NewCustomer> NewCustomers { get; set; }
@@ -143,42 +141,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("Account_taype")
                     .IsFixedLength();
             });
-            modelBuilder.Entity<ViewOdometerHistory>(entity =>
-            {
-                entity.HasNoKey();
 
-                entity.ToView("View_odometer_history");
-
-                entity.Property(e => e.CarDriverName)
-                    .HasMaxLength(255)
-                    .HasColumnName("car_driver_name");
-
-                entity.Property(e => e.CarId).HasColumnName("car_id");
-                entity.Property(e => e.CompanyId).HasColumnName("company_id");
-                entity.Property(e => e.CompanyBranchId).HasColumnName("company_branch_id");
-
-                entity.Property(e => e.CarIdNumber)
-                    .HasMaxLength(50)
-                    .HasColumnName("car_id_number");
-
-                entity.Property(e => e.CarTypeOfFuel)
-                    .HasMaxLength(255)
-                    .HasColumnName("car_type_of_fuel");
-
-                entity.Property(e => e.CompanyBranchName)
-                    .HasMaxLength(255)
-                    .HasColumnName("company_branch_name");
-
-                entity.Property(e => e.CompanyName)
-                    .HasMaxLength(255)
-                    .HasColumnName("Company_name");
-
-                entity.Property(e => e.OdometerRecordDate)
-                    .HasColumnType("date")
-                    .HasColumnName("odometer_record_date");
-
-                entity.Property(e => e.OdometerValue).HasColumnName("odometer_value");
-            });
             modelBuilder.Entity<Apidatum>(entity =>
             {
                 entity.HasNoKey();
@@ -218,6 +181,12 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.ToTable("App_setting");
 
+                entity.Property(e => e.BonusMoneyRate).HasColumnName("bonus_money_rate");
+
+                entity.Property(e => e.ComapnyPhoneNumber)
+                    .HasMaxLength(50)
+                    .HasColumnName("comapny_phone_number");
+
                 entity.Property(e => e.ComapnyTaxRate)
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("comapny_tax_Rate")
@@ -226,6 +195,10 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.ComapnyTaxRecordNumber)
                     .HasMaxLength(50)
                     .HasColumnName("comapny_tax_record_number");
+
+                entity.Property(e => e.ComapnyWebSite)
+                    .HasMaxLength(50)
+                    .HasColumnName("comapny_webSite");
 
                 entity.Property(e => e.CompanyAddress)
                     .HasMaxLength(50)
@@ -258,18 +231,11 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.CompanyVatRate)
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("company_Vat_rate")
-                    .HasDefaultValueSql("('(0)')");
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.CompanyVatTaxNumber)
                     .HasMaxLength(50)
                     .HasColumnName("company_Vat_tax_number");
-                
-                entity.Property(e => e.ComapnyPhoneNumber)
-                    .HasMaxLength(50)
-                    .HasColumnName("comapny_phone_number");
-                entity.Property(e => e.ComapnyWebsite)
-                    .HasMaxLength(50)
-                    .HasColumnName("comapny_webSite");
             });
 
             modelBuilder.Entity<Bundle>(entity =>
@@ -497,6 +463,22 @@ namespace PetroPay.DataAccess.Contexts
                     .HasForeignKey(d => d.SubscriptionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_car_subscription_subscription");
+            });
+
+            modelBuilder.Entity<CarTypeMaster>(entity =>
+            {
+                entity.HasKey(e => e.CarTypeId)
+                    .HasName("PK_car_type_master");
+
+                entity.ToTable("Car_type_master");
+
+                entity.Property(e => e.CarTypeId).HasColumnName("car_type_id");
+
+                entity.Property(e => e.CarBonusPoint).HasColumnName("car_bonus_point");
+
+                entity.Property(e => e.CarTypeName)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_type_name");
             });
 
             modelBuilder.Entity<Company>(entity =>
@@ -728,20 +710,6 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("SSMA_TimeStamp");
             });
 
-            modelBuilder.Entity<Image>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("Image");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(10)
-                    .HasColumnName("id")
-                    .IsFixedLength();
-
-                entity.Property(e => e.Image1).HasColumnName("image");
-            });
-
             modelBuilder.Entity<Invoice>(entity =>
             {
                 entity.ToTable("Invoice");
@@ -769,6 +737,8 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.InvoiceAmount)
                     .HasColumnName("invoice_amount")
                     .HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.InvoiceBonusPoints).HasColumnName("invoice_bonus_points");
 
                 entity.Property(e => e.InvoiceConfirmedCode)
                     .HasMaxLength(255)
@@ -1004,7 +974,9 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(255)
                     .HasColumnName("station_banck_account");
 
-                entity.Property(e => e.StationBonusBalance).HasColumnName("station_bonus_balance");
+                entity.Property(e => e.StationBonusBalance)
+                    .HasColumnName("station_bonus_balance")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.StationCarWashingService).HasColumnName("station_car_washing_service");
 
@@ -1085,6 +1057,8 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("Acc_not");
 
                 entity.Property(e => e.AccPaymentMethodShow).HasColumnName("Acc_paymentMethodShow");
+
+                entity.Property(e => e.AccPetrolStationBonus).HasColumnName("Acc_petrol_Station_bonus");
 
                 entity.Property(e => e.AccRefer)
                     .HasMaxLength(20)
@@ -1284,9 +1258,15 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.Property(e => e.CouponId).HasColumnName("coupon_id");
 
+                entity.Property(e => e.NumberOfDateDiff)
+                    .HasColumnName("numberOfDateDiff")
+                    .HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.PaymentReferenceNumber)
                     .HasMaxLength(50)
                     .HasColumnName("payment_reference_number");
+
+                entity.Property(e => e.Rejected).HasColumnName("rejected");
 
                 entity.Property(e => e.SubscriptionActive).HasColumnName("Subscription_active");
 
@@ -1298,14 +1278,7 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnType("money")
                     .HasColumnName("subscription_cost")
                     .HasDefaultValueSql("((0))");
-                
-                entity.Property(e => e.NumberOfDateDiff)
-                    .HasColumnName("numberOfDateDiff")
-                    .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.Rejected)
-                    .HasColumnName("rejected");
-                    
                 entity.Property(e => e.SubscriptionDate).HasColumnName("subscription_date");
 
                 entity.Property(e => e.SubscriptionDiscountValues)
@@ -1501,53 +1474,7 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.Property(e => e.LiterConsumption).HasColumnName("liter_consumption");
             });
-modelBuilder.Entity<ViewInvoice>(entity =>
-                                               {
-                                                   entity.HasNoKey();
-                                   
-                                                   entity.ToView("View_Invoice");
-                                   
-                                                   entity.Property(e => e.Amount).HasColumnType("decimal(22, 4)");
-                                   
-                                                   entity.Property(e => e.CompanyAddress).HasMaxLength(50);
-                                   
-                                                   entity.Property(e => e.CompanyCommercialRecordNumber).HasMaxLength(50);
-                                   
-                                                   entity.Property(e => e.CompanyEmail).HasMaxLength(50);
-                                   
-                                                   entity.Property(e => e.CompanyLogo).IsUnicode(false);
-                                   
-                                                   entity.Property(e => e.CompanyNameAr).HasMaxLength(50);
-                                   
-                                                   entity.Property(e => e.CompanyNameEn).HasMaxLength(50);
-                                   
-                                                   entity.Property(e => e.CompanyTaxRecordNumber).HasMaxLength(50);
 
-                entity.Property(e => e.CompanyWebsite)
-                    .IsRequired()
-                    .HasMaxLength(1)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.CustomerAddress).HasMaxLength(255);
-
-                entity.Property(e => e.CustomerName).HasMaxLength(255);
-
-                entity.Property(e => e.Discount).HasColumnType("decimal(18, 3)");
-
-                entity.Property(e => e.SubTotal).HasColumnType("decimal(22, 4)");
-
-                entity.Property(e => e.Tax).HasColumnType("decimal(18, 3)");
-
-                entity.Property(e => e.TaxRate).HasColumnType("decimal(18, 3)");
-
-                entity.Property(e => e.Total).HasColumnType("money");
-
-                entity.Property(e => e.UnitCost).HasColumnType("decimal(22, 4)");
-
-                entity.Property(e => e.Vat).HasColumnType("decimal(18, 3)");
-
-                entity.Property(e => e.VatRate).HasColumnType("decimal(18, 3)");
-            });
             modelBuilder.Entity<ViewCarKmConsumption>(entity =>
             {
                 entity.HasNoKey();
@@ -1673,6 +1600,77 @@ modelBuilder.Entity<ViewInvoice>(entity =>
                     .HasColumnName("Sum_company_branch_balnce");
             });
 
+            modelBuilder.Entity<ViewInvoice>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_Invoice");
+
+                entity.Property(e => e.Amount)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CompanyAddress).HasMaxLength(50);
+
+                entity.Property(e => e.CompanyCommercialRecordNumber).HasMaxLength(50);
+
+                entity.Property(e => e.CompanyEmail).HasMaxLength(50);
+
+                entity.Property(e => e.CompanyLogo).IsUnicode(false);
+
+                entity.Property(e => e.CompanyNameAr).HasMaxLength(50);
+
+                entity.Property(e => e.CompanyNameEn).HasMaxLength(50);
+
+                entity.Property(e => e.CompanyTaxRecordNumber).HasMaxLength(50);
+
+                entity.Property(e => e.CompanyWebsite).HasMaxLength(50);
+
+                entity.Property(e => e.CustomerAddress).HasMaxLength(255);
+
+                entity.Property(e => e.CustomerName).HasMaxLength(255);
+
+                entity.Property(e => e.Discount)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.InvoiceNumber)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ServiceEndDate).HasColumnType("date");
+
+                entity.Property(e => e.ServiceStartDate).HasColumnType("date");
+
+                entity.Property(e => e.SubTotal)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Tax)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TaxRate)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Total)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UnitCost)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Vat)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.VatRate)
+                    .HasMaxLength(25)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<ViewInvoiceDetail>(entity =>
             {
                 entity.HasNoKey();
@@ -1783,7 +1781,46 @@ modelBuilder.Entity<ViewInvoice>(entity =>
 
                 entity.Property(e => e.OdometerValue).HasColumnName("odometer_value");
             });
-            
+
+            modelBuilder.Entity<ViewOdometerHistory>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_odometer_history");
+
+                entity.Property(e => e.CarDriverName)
+                    .HasMaxLength(255)
+                    .HasColumnName("car_driver_name");
+
+                entity.Property(e => e.CarId).HasColumnName("car_id");
+
+                entity.Property(e => e.CarIdNumber)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_id_number");
+
+                entity.Property(e => e.CarTypeOfFuel)
+                    .HasMaxLength(255)
+                    .HasColumnName("car_type_of_fuel");
+
+                entity.Property(e => e.CompanyBranchId).HasColumnName("company_branch_id");
+
+                entity.Property(e => e.CompanyBranchName)
+                    .HasMaxLength(255)
+                    .HasColumnName("company_branch_name");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.CompanyName)
+                    .HasMaxLength(255)
+                    .HasColumnName("Company_name");
+
+                entity.Property(e => e.OdometerRecordDate)
+                    .HasColumnType("date")
+                    .HasColumnName("odometer_record_date");
+
+                entity.Property(e => e.OdometerValue).HasColumnName("odometer_value");
+            });
+
             modelBuilder.Entity<ViewOdometerRecord>(entity =>
             {
                 entity.HasNoKey();

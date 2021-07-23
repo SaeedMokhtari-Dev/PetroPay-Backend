@@ -66,7 +66,8 @@ namespace PetroPay.Web.Controllers.Dashboards.Admin.Get
             {
                 Key = w.StationId,
                 Name = w.StationName,
-                Balance =  w.StationBalance ?? 0
+                Balance =  w.StationBalance ?? 0,
+                Bonus = w.StationBonusBalance ?? 0
             }).ToListAsync();
             
             return ActionResult.Ok(response);
