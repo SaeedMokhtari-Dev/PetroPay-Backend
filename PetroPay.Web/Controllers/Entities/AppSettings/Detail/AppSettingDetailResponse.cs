@@ -14,5 +14,6 @@ namespace PetroPay.Web.Controllers.Entities.AppSettings.Detail
         public string CompanyStampImage { get; set; }
         public decimal? ComapnyTaxRate { get; set; }
         public string ComapnyPhoneNumber { get; set; }
+        public double? BonusMoneyRate { get; set; }
     }
 }

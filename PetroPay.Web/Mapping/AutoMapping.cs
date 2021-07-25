@@ -61,6 +61,7 @@ using PetroPay.Web.Controllers.Entities.Subscriptions.Add;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Detail;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Edit;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Get;
+using PetroPay.Web.Controllers.Entities.TransferBonuses.Get;
 using PetroPay.Web.Controllers.Reports.AccountBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get;
@@ -279,6 +280,15 @@ namespace PetroPay.Web.Mapping
 
             #region TransAccount
             CreateMap<TransAccount, PetropayAccountGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId))
+                .ForMember(w => w.AccountName,
+                    opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""))
+                .ForMember(w => w.TransDate, opt =>
+                    opt.MapFrom(e =>
+                        e.TransDate.HasValue
+                            ? e.TransDate.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : ""));
+            CreateMap<TransAccount, TransferBonusGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => e.TransId))
                 .ForMember(w => w.AccountName,
                     opt => opt.MapFrom(e => e.AccountId.HasValue ? e.Account.AccountName : ""))

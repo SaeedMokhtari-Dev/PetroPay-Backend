@@ -28,7 +28,7 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.List
 
         protected override async Task<ActionResult> Execute(PetroStationListRequest request)
         {
-            if (_userContext.Role != RoleType.Admin)
+            if (_userContext.Role == RoleType.Customer)
                 return ActionResult.Error(ApiMessages.Forbidden);
             
             var query = _context.PetroStations
@@ -39,7 +39,8 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.List
             new PetroStationListResponseItem() {
                 Key = w.StationId, 
                 Title = w.StationName,
-                Balance = w.StationBalance ?? 0
+                Balance = w.StationBalance ?? 0,
+                Bonus = w.StationBonusBalance ?? 0
             }).ToListAsync();
             
             return ActionResult.Ok(response);

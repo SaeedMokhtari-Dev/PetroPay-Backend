@@ -27,7 +27,7 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.Get
 
         protected override async Task<ActionResult> Execute(PetropayAccountGetRequest request)
         {
-            var petropayAccounts = await _context.PetropayAccounts
+            var petropayAccounts = await _context.PetropayAccounts.Where(w => w.AccPetrolStationBonus == false)
                 .Select(w => w.AccountId).ToListAsync();
             var query = _context.TransAccounts.Include(w => w.Account)
                 .Where(w => petropayAccounts.Contains(w.AccountId)).OrderByDescending(w => w.TransId)

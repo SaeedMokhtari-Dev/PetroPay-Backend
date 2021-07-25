@@ -162,6 +162,9 @@ namespace PetroPay.Web.Configuration.Constants
         
         
         public const string ApiCarTypeMasterList = "/api/car-type-master/list";
+        
+        public const string ApiTransferBonusAdd = "/api/transfer-bonus/add";
+        public const string ApiTransferBonusGet = "/api/transfer-bonus/get";
         #endregion
 
         #region Reports

@@ -7,5 +7,6 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.List
         public int Key { get; set; }
         public string Title { get; set; }
         public decimal Balance { get; set; }
+        public int Bonus { get; set; }
     }
 }
