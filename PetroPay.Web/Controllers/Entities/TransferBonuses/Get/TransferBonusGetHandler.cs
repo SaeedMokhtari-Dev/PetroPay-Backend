@@ -35,10 +35,10 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Get
                 return ActionResult.Error(ApiMessages.Forbidden);
             if (!request.StationId.HasValue && _userContext.Role == RoleType.Supplier)
                 request.StationId = _userContext.Id;
-            /*var transferBonuses = await _context.TransferBonuses
-                .Select(w => w.AccountId).ToListAsync();*/
+            var transferBonuses = await _context.PetropayAccounts.Where(w => w.AccPetrolStationBonus.HasValue && w.AccPetrolStationBonus.Value == true)
+                .Select(w => w.AccountId).ToListAsync();
             var query = _context.TransAccounts.Include(w => w.Account)
-                .Where(w => w.TransReference.StartsWith("transfer bonus"))
+                .Where(w => transferBonuses.Contains(w.AccountId))
                 .OrderByDescending(w => w.TransId)
                 .AsQueryable();
 
