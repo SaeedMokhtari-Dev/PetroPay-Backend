@@ -27,7 +27,7 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.Get
 
         protected override async Task<ActionResult> Execute(PetropayAccountGetRequest request)
         {
-            var petropayAccounts = await _context.PetropayAccounts.Where(w => w.AccPetrolStationBonus == false)
+            var petropayAccounts = await _context.PetropayAccounts
                 .Select(w => w.AccountId).ToListAsync();
             var query = _context.TransAccounts.Include(w => w.Account)
                 .Where(w => petropayAccounts.Contains(w.AccountId)).OrderByDescending(w => w.TransId)
@@ -59,6 +59,10 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.Get
         }
         private IQueryable<TransAccount> createQuery(IQueryable<TransAccount> query, PetropayAccountGetRequest request)
         {
+            if (request.PetropayAccountId.HasValue)
+            {
+                query = query.Where(w => w.AccountId == request.PetropayAccountId);
+            }
             if (!string.IsNullOrEmpty(request.DateFrom))
             {
                 DateTime dateTimeFrom = DateTime.ParseExact(request.DateFrom, DateTimeConstants.DateFormat,

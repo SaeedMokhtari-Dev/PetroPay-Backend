@@ -5,5 +5,6 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.List
         public int Key { get; set; }
         public string Title { get; set; }
         public decimal Balance { get; set; }
+        public int AccountId { get; set; }
     }
 }

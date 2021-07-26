@@ -34,7 +34,8 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.List
                 {
                     Key = w.AccId,
                     Title = w.AccName,
-                    Balance = w.AccBalance ?? 0
+                    Balance = w.AccBalance ?? 0,
+                    AccountId = w.AccountId ?? 0
                 })
                 .ToListAsync();
 
