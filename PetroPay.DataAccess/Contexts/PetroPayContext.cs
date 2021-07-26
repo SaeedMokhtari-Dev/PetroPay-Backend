@@ -54,7 +54,9 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<ViewCarOdometerMax> ViewCarOdometerMaxes { get; set; }
         public virtual DbSet<ViewCarOdometerMin> ViewCarOdometerMins { get; set; }
         public virtual DbSet<ViewCarTransaction> ViewCarTransactions { get; set; }
+        public virtual DbSet<ViewCompanyBranchStatement> ViewCompanyBranchStatements { get; set; }
         public virtual DbSet<ViewCustomerBalance> ViewCustomerBalances { get; set; }
+        public virtual DbSet<ViewCustomerStatement> ViewCustomerStatements { get; set; }
         public virtual DbSet<ViewInvoice> ViewInvoices { get; set; }
         public virtual DbSet<ViewInvoiceDetail> ViewInvoiceDetails { get; set; }
         public virtual DbSet<ViewInvoicesSummary> ViewInvoicesSummaries { get; set; }
@@ -1573,6 +1575,40 @@ namespace PetroPay.DataAccess.Contexts
                     .IsFixedLength();
             });
 
+            modelBuilder.Entity<ViewCompanyBranchStatement>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_company_branch_statement");
+
+                entity.Property(e => e.AccountId).HasColumnName("Account_id");
+
+                entity.Property(e => e.CompanyBranchId).HasColumnName("company_branch_id");
+
+                entity.Property(e => e.CompanyBranchName)
+                    .HasMaxLength(255)
+                    .HasColumnName("company_branch_name");
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.CompanyName)
+                    .HasMaxLength(255)
+                    .HasColumnName("Company_name");
+
+                entity.Property(e => e.SumTransAmount)
+                    .HasColumnType("decimal(38, 2)")
+                    .HasColumnName("Sum_trans_amount");
+
+                entity.Property(e => e.TransDocument)
+                    .HasMaxLength(50)
+                    .HasColumnName("trans_document")
+                    .IsFixedLength();
+
+                entity.Property(e => e.TransactionDateTime)
+                    .HasMaxLength(4000)
+                    .HasColumnName("transaction_date_time");
+            });
+
             modelBuilder.Entity<ViewCustomerBalance>(entity =>
             {
                 entity.HasNoKey();
@@ -1598,6 +1634,39 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.SumCompanyBranchBalnce)
                     .HasColumnType("decimal(38, 2)")
                     .HasColumnName("Sum_company_branch_balnce");
+            });
+
+            modelBuilder.Entity<ViewCustomerStatement>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("View_Customer_statement");
+
+                entity.Property(e => e.AccountId).HasColumnName("Account_id");
+
+                entity.Property(e => e.AccountName)
+                    .HasMaxLength(50)
+                    .HasColumnName("Account_Name")
+                    .IsFixedLength();
+
+                entity.Property(e => e.CompanyId).HasColumnName("company_id");
+
+                entity.Property(e => e.CompanyName)
+                    .HasMaxLength(255)
+                    .HasColumnName("Company_name");
+
+                entity.Property(e => e.SumTransAmount)
+                    .HasColumnType("decimal(38, 2)")
+                    .HasColumnName("Sum_trans_amount");
+
+                entity.Property(e => e.TransDocument)
+                    .HasMaxLength(50)
+                    .HasColumnName("trans_document")
+                    .IsFixedLength();
+
+                entity.Property(e => e.TransactionDataTime)
+                    .HasMaxLength(4000)
+                    .HasColumnName("transaction_data_time");
             });
 
             modelBuilder.Entity<ViewInvoice>(entity =>

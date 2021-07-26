@@ -69,6 +69,7 @@ using PetroPay.Web.Controllers.Reports.CarKmConsumptions.Get;
 using PetroPay.Web.Controllers.Reports.CarOdometerMaxes.Get;
 using PetroPay.Web.Controllers.Reports.CarOdometerMins.Get;
 using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
+using PetroPay.Web.Controllers.Reports.CustomerStatements.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceDetails.Get;
 using PetroPay.Web.Controllers.Reports.InvoiceSummary.Get;
 using PetroPay.Web.Controllers.Reports.OdometerBetweenDates.Get;
@@ -554,7 +555,9 @@ namespace PetroPay.Web.Mapping
                         e.OdometerRecordDate.HasValue
                             ? e.OdometerRecordDate.Value.ToString(DateTimeConstants.DateFormat)
                             : string.Empty));
-            
+            CreateMap<ViewCustomerStatement, CustomerStatementGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+
 
             #endregion
         }

@@ -201,6 +201,8 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiOdometerBetweenDateGet = "/api/odometer-between-date/get";
         /*OdometerHistories APIs*/
         public const string ApiOdometerHistoryGet = "/api/odometer-history/get";
+        /*CustomerStatements APIs*/
+        public const string ApiCustomerStatementGet = "/api/customer-statement/get";
 
         #endregion
 
