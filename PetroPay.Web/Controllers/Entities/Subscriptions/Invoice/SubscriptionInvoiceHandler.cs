@@ -10,6 +10,7 @@ using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Invoice
 {
@@ -43,7 +44,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Invoice
             SubscriptionInvoiceResponse response = new SubscriptionInvoiceResponse();
             response.InvoiceNumber = subscription.SubscriptionInvoiceNumber ?? 0;
             response.DateOfIssue = subscription.SubscriptionDate.HasValue
-                ? subscription.SubscriptionDate.Value.ToString(DateTimeConstants.DateFormat) : DateTime.Now.ToString(DateTimeConstants.DateFormat);
+                ? subscription.SubscriptionDate.Value.ToString(DateTimeConstants.DateFormat) : DateTime.Now.GetEgyptDateTime().ToString(DateTimeConstants.DateFormat);
 
             response.CompanyLogo = $"data:image/png;base64,{appSetting.CompanyLogo}";
             response.CompanyNameAr = appSetting.CompanyNameAr;

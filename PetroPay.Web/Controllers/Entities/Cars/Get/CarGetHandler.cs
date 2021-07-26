@@ -13,6 +13,7 @@ using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Controllers.Reports.CarTransactions.Get;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Entities.Cars.Get
@@ -67,7 +68,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
                             .OrderByDescending(w => w.OdometerRecordDate)
                             .FirstOrDefault(w => (w.CarId ?? 0) == carGetResponseItem.CarId);
                         if ((lastOdometer == null) || lastOdometer.OdometerRecordDate.HasValue &&
-                            new DateDiff(lastOdometer.OdometerRecordDate.Value, DateTime.Now).Months >= 1)
+                            new DateDiff(lastOdometer.OdometerRecordDate.Value, DateTime.Now.GetEgyptDateTime()).Months >= 1)
                             carGetResponseItem.TimeToOdometerRecord = true;
                     }
                 }

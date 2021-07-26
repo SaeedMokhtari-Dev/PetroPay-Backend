@@ -10,6 +10,7 @@ using PetroPay.Core.Constants;
 using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 using PetroPay.Web.Services;
 
@@ -85,7 +86,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                 {
                     AccountId = petroPayAccount.AccountId,
                     TransAmount = -1 * (balance),
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "petrol station bonus",
                     TransReference = $"transfer bonus {amount} point"
                 };
@@ -103,7 +104,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                 {
                     AccountId = station.AccountId,
                     TransAmount = balance,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "petrol station balance",
                     TransReference = $"transfer bonus {amount} point"
                 };

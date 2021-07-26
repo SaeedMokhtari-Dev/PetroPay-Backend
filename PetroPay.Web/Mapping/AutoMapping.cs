@@ -160,7 +160,7 @@ namespace PetroPay.Web.Mapping
                             : string.Empty))
                 .ForMember(w => w.Expired,
                     opt => opt.MapFrom(e =>
-                        e.SubscriptionEndDate < DateTime.Now));
+                        e.SubscriptionEndDate < DateTime.Now.GetEgyptDateTime()));
             CreateMap<Subscription, SubscriptionDetailResponse>()
                 .ForMember(w => w.CompanyName,
                     opt => opt.MapFrom(e => (e.CompanyId.HasValue ? e.Company.CompanyName : "")))
@@ -191,7 +191,7 @@ namespace PetroPay.Web.Mapping
                     opt => opt.MapFrom(src => DateTime.ParseExact(src.SubscriptionEndDate, DateTimeConstants.DateFormat,
                         CultureInfo.InvariantCulture)));
             CreateMap<SubscriptionAddRequest, Subscription>()
-                .ForMember(w => w.SubscriptionDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(w => w.SubscriptionDate, opt => opt.MapFrom(src => DateTime.Now.GetEgyptDateTime()))
                 .ForMember(w => w.SubscriptionStartDate,
                     opt => opt.MapFrom(src => DateTime.ParseExact(src.SubscriptionStartDate,
                         DateTimeConstants.DateFormat, CultureInfo.InvariantCulture)))
@@ -239,7 +239,7 @@ namespace PetroPay.Web.Mapping
                     opt.MapFrom(e => e.RechargeDocumentPhoto.Remove(0, e.RechargeDocumentPhoto.IndexOf(',') + 1)));
             
             CreateMap<RechargeBalanceAddRequest, RechargeBalance>()
-                .ForMember(w => w.RechageDate, opt => opt.MapFrom(src => DateTime.Now))
+                .ForMember(w => w.RechageDate, opt => opt.MapFrom(src => DateTime.Now.GetEgyptDateTime()))
                 .ForMember(w => w.BankTransactionDate,
                     opt => opt.MapFrom(src => 
                         !string.IsNullOrEmpty(src.BankTransactionDate) ? DateTime.ParseExact(src.BankTransactionDate, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture) : default))
@@ -428,7 +428,7 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.Id, opt => opt.Ignore())
                 .ForMember(w => w.CreatedAt, opt => opt.Ignore());
             CreateMap<MenuAddRequest, Menu>()
-                .ForMember(w => w.CreatedAt, opt => opt.MapFrom(e => DateTime.Now));
+                .ForMember(w => w.CreatedAt, opt => opt.MapFrom(e => DateTime.Now.GetEgyptDateTime()));
             
             #endregion 
             #region Emplyee
@@ -461,7 +461,7 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.CustReqId, opt => opt.Ignore())
                 .ForMember(w => w.CutReqDatetime, opt => opt.Ignore());
             CreateMap<NewCustomerAddRequest, NewCustomer>()
-                .ForMember(w => w.CutReqDatetime, opt => opt.MapFrom(e => DateTime.Now));
+                .ForMember(w => w.CutReqDatetime, opt => opt.MapFrom(e => DateTime.Now.GetEgyptDateTime()));
             
             #endregion
             #endregion

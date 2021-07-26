@@ -10,6 +10,7 @@ using PetroPay.Core.Constants;
 using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 using PetroPay.Web.Services;
 
@@ -106,7 +107,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = company.AccountId,
                     TransAmount = -1 * (amount),
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Recharge Branch Balance",
                     TransReference = branch.AccountId.ToString()
                 };
@@ -124,7 +125,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = branch.AccountId,
                     TransAmount = amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Recharge Branch Balance",
                     TransReference = company.AccountId.ToString()
                 };
@@ -164,7 +165,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = branch.AccountId,
                     TransAmount = -1 * amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Refund Branch Balance To Company",
                     TransReference = company.AccountId.ToString()
                 };
@@ -182,7 +183,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = company.AccountId,
                     TransAmount = amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Refund Branch Balance To Company",
                     TransReference = branch.AccountId.ToString()
                 };
@@ -222,7 +223,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = car.AccountId,
                     TransAmount = -1 * amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Transfer Balance Car To Car",
                     TransReference = destinationCar.AccountId.ToString()
                 };
@@ -240,7 +241,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = destinationCar.AccountId,
                     TransAmount = amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Transfer Balance Car To Car",
                     TransReference = car.AccountId.ToString()
                 };
@@ -279,7 +280,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = branch.AccountId,
                     TransAmount = -1 * amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Recharge Car Balance",
                     TransReference = car.AccountId.ToString()
                 };
@@ -297,7 +298,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = car.AccountId,
                     TransAmount = amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Recharge Car Balance",
                     TransReference = branch.AccountId.ToString()
                 };
@@ -336,7 +337,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = car.AccountId,
                     TransAmount = -1 * amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Refund Balance Car To Branch",
                     TransReference = branch.AccountId.ToString()
                 };
@@ -354,7 +355,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
                 {
                     AccountId = branch.AccountId,
                     TransAmount = amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "Refund Balance Car To Branch",
                     TransReference = car.AccountId.ToString()
                 };

@@ -8,6 +8,7 @@ using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.Payment
@@ -58,7 +59,7 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.Payment
                 {
                     AccountId = fromPetroPayAccount.AccountId,
                     TransAmount = -1 * (amount),
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "PetroPay Transfer balance",
                     TransReference = reference
                 };
@@ -75,7 +76,7 @@ namespace PetroPay.Web.Controllers.Entities.PetropayAccounts.Payment
                 {
                     AccountId = toPetropayAccount.AccountId,
                     TransAmount = amount,
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "PetroPay Transfer balance",
                     TransReference = reference
                 };

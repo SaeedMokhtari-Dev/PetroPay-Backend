@@ -8,6 +8,7 @@ using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
@@ -77,7 +78,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
             {
                 AccountId = selectedPetropayAccount.AccountId,
                 TransAmount = -1 * (subscription.SubscriptionCost),
-                TransDate = DateTime.Now,
+                TransDate = DateTime.Now.GetEgyptDateTime(),
                 TransDocument = "paySubscri",
                 TransReference = company.AccountId.ToString()
             };
@@ -101,7 +102,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
             {
                 AccountId = subscriptionsPetropayAccount.AccountId,
                 TransAmount = subscription.SubscriptionCost,
-                TransDate = DateTime.Now,
+                TransDate = DateTime.Now.GetEgyptDateTime(),
                 TransDocument = "paySubscri",
                 TransReference = company.AccountId.ToString()
             };

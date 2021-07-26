@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PetroPay.Core.Interfaces;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
 {
@@ -76,11 +77,12 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
 
         private async Task<SubscriptionCalculateResponse> calculateDiscount(string couponCode, SubscriptionCalculateResponse response)
         {
+            DateTime egyptNowDateTime = DateTime.Now.GetEgyptDateTime();
             var promotion = await _context.PromotionCoupons.FirstOrDefaultAsync(w =>
                 w.CouponCode.ToLower() == couponCode.ToLower()
                 && w.CouponActive.HasValue && w.CouponActive.Value && w.CouponActiveDate.HasValue
-                && w.CouponActiveDate.Value <= DateTime.Now && w.CouponEndDate.HasValue &&
-                w.CouponEndDate.Value >= DateTime.Now);
+                && w.CouponActiveDate.Value <= egyptNowDateTime && w.CouponEndDate.HasValue &&
+                w.CouponEndDate.Value >= egyptNowDateTime);
             if (promotion != null)
             {
                 response.CouponId = promotion.CouponId;

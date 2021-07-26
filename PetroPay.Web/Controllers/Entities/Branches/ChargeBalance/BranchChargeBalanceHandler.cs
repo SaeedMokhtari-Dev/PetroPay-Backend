@@ -9,6 +9,7 @@ using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Services;
 
 namespace PetroPay.Web.Controllers.Entities.Branches.ChargeBalance
@@ -57,7 +58,7 @@ namespace PetroPay.Web.Controllers.Entities.Branches.ChargeBalance
                     AccountId = company.AccountId,
                     TransAmount = -(request.IncreaseAmount),
                     TransDocument = "Transfer",
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransReference = branch.CompanyBranchId.ToString()
                 };
                 if (user.Item1)
@@ -73,7 +74,7 @@ namespace PetroPay.Web.Controllers.Entities.Branches.ChargeBalance
                     AccountId = branch.AccountId,
                     TransAmount = request.IncreaseAmount,
                     TransDocument = "Recharge",
-                    TransDate = DateTime.Now,
+                    TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransReference = company.CompanyId.ToString()
                 };
                 if (user.Item1)

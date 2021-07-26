@@ -11,6 +11,7 @@ using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Calculate;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 using PetroPay.Web.Services;
 
@@ -40,7 +41,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
 
         protected override async Task<ActionResult> Execute(SubscriptionAddRequest request)
         {
-            DateTime startDate = DateTime.Now;
+            DateTime startDate = DateTime.Now.GetEgyptDateTime();
             
             if (!string.IsNullOrEmpty(request.SubscriptionStartDate))
             {
@@ -103,7 +104,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
                     {
                         AccountId = company.AccountId,
                         TransAmount = -1 * (request.SubscriptionCost),
-                        TransDate = DateTime.Now,
+                        TransDate = DateTime.Now.GetEgyptDateTime(),
                         TransDocument = "paySubscri",
                         TransReference = company.AccountId.ToString()
                     };
@@ -125,7 +126,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Add
                     {
                         AccountId = petropayAccount.AccountId,
                         TransAmount = request.SubscriptionCost,
-                        TransDate = DateTime.Now,
+                        TransDate = DateTime.Now.GetEgyptDateTime(),
                         TransDocument = "paySubscri",
                         TransReference = company.AccountId.ToString()
                     };

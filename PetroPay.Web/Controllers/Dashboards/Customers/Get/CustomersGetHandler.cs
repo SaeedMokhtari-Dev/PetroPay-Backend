@@ -10,6 +10,7 @@ using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Dashboards.Customers.Get
@@ -59,8 +60,8 @@ namespace PetroPay.Web.Controllers.Dashboards.Customers.Get
                 .Select(w => new 
                 {
                     Key = w.SubscriptionId,
-                    StartDate = w.SubscriptionStartDate ?? DateTime.Now,
-                    EndDate = w.SubscriptionEndDate ?? DateTime.Now
+                    StartDate = w.SubscriptionStartDate ?? DateTime.Now.GetEgyptDateTime(),
+                    EndDate = w.SubscriptionEndDate ?? DateTime.Now.GetEgyptDateTime()
                 }).ToListAsync();
             foreach (var responseCompanySubscriptionItem in companySubscriptionItems)
             {
@@ -68,8 +69,8 @@ namespace PetroPay.Web.Controllers.Dashboards.Customers.Get
                 item.Key = responseCompanySubscriptionItem.Key;
                 item.StartDate = responseCompanySubscriptionItem.StartDate.ToString(DateTimeConstants.DateFormat);
                 item.EndDate = responseCompanySubscriptionItem.EndDate.ToString(DateTimeConstants.DateFormat);
-                if (responseCompanySubscriptionItem.EndDate >= DateTime.Now &&
-                    responseCompanySubscriptionItem.EndDate.AddDays(-7) <= DateTime.Now)
+                if (responseCompanySubscriptionItem.EndDate >= DateTime.Now.GetEgyptDateTime() &&
+                    responseCompanySubscriptionItem.EndDate.AddDays(-7) <= DateTime.Now.GetEgyptDateTime())
                 {
                     item.Alarm = true;
                 }

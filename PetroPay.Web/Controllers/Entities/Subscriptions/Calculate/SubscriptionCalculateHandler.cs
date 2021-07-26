@@ -6,6 +6,7 @@ using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
 using PetroPay.DataAccess.Contexts;
+using PetroPay.Web.Extensions;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
 {
@@ -25,8 +26,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
 
         protected override async Task<ActionResult> Execute(SubscriptionCalculateRequest request)
         {
-            DateTime startDate = DateTime.Now;
-            DateTime endDate = DateTime.Now;
+            DateTime startDate = DateTime.Now.GetEgyptDateTime();
+            DateTime endDate = DateTime.Now.GetEgyptDateTime();
             
             if (!string.IsNullOrEmpty(request.SubscriptionStartDate))
             {
