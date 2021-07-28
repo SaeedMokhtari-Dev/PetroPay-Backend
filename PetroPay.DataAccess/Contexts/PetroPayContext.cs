@@ -26,6 +26,8 @@ namespace PetroPay.DataAccess.Contexts
         public virtual DbSet<AppSetting> AppSettings { get; set; }
         public virtual DbSet<Bundle> Bundles { get; set; }
         public virtual DbSet<Car> Cars { get; set; }
+        public virtual DbSet<CarBrandMaster> CarBrandMasters { get; set; }
+        public virtual DbSet<CarModelMaster> CarModelMasters { get; set; }
         public virtual DbSet<CarSubscription> CarSubscriptions { get; set; }
         public virtual DbSet<CarTypeMaster> CarTypeMasters { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
@@ -243,36 +245,25 @@ namespace PetroPay.DataAccess.Contexts
             modelBuilder.Entity<Bundle>(entity =>
             {
                 entity.HasKey(e => e.BundlesId)
-                    .HasName("bundles$PrimaryKey");
+                    .HasName("PK__Bundles__57A462643D53CB72");
 
-                entity.HasIndex(e => e.BundlesId, "bundles$bundles_id");
-
-                entity.Property(e => e.BundlesId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("bundles_id");
+                entity.Property(e => e.BundlesId).HasColumnName("bundles_id");
 
                 entity.Property(e => e.BundlesFeesMonthly)
                     .HasColumnType("money")
-                    .HasColumnName("bundles_fees_monthly")
-                    .HasDefaultValueSql("((0))");
+                    .HasColumnName("bundles_fees_monthly");
 
                 entity.Property(e => e.BundlesFeesYearly)
                     .HasColumnType("money")
-                    .HasColumnName("bundles_fees_yearly")
-                    .HasDefaultValueSql("((0))");
+                    .HasColumnName("bundles_fees_yearly");
 
                 entity.Property(e => e.BundlesNfcCost)
                     .HasColumnType("money")
-                    .HasColumnName("bundles_nfc_cost")
-                    .HasDefaultValueSql("((0))");
+                    .HasColumnName("bundles_nfc_cost");
 
-                entity.Property(e => e.BundlesNumberFrom)
-                    .HasColumnName("bundles_number_from")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.BundlesNumberFrom).HasColumnName("bundles_number_from");
 
-                entity.Property(e => e.BundlesNumberTo)
-                    .HasColumnName("bundles_number_to")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.BundlesNumberTo).HasColumnName("bundles_number_to");
             });
 
             modelBuilder.Entity<Car>(entity =>
@@ -439,6 +430,47 @@ namespace PetroPay.DataAccess.Contexts
                     .HasForeignKey(d => d.CompanyBarnchId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("car$company_branchcar");
+            });
+
+            modelBuilder.Entity<CarBrandMaster>(entity =>
+            {
+                entity.HasKey(e => e.CarBrandId);
+
+                entity.ToTable("Car_brand_master");
+
+                entity.Property(e => e.CarBrandId).HasColumnName("car_brand_id");
+
+                entity.Property(e => e.CarBrandArName)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_brand_ar_name");
+
+                entity.Property(e => e.CarBrandEnName)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_brand_en_name");
+            });
+
+            modelBuilder.Entity<CarModelMaster>(entity =>
+            {
+                entity.HasKey(e => e.CarModelId);
+
+                entity.ToTable("Car_model_master");
+
+                entity.Property(e => e.CarModelId).HasColumnName("car_model_id");
+
+                entity.Property(e => e.CarBrandId).HasColumnName("car_brand_id");
+
+                entity.Property(e => e.CarModelArName)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_model_Ar_name");
+
+                entity.Property(e => e.CarModelEnName)
+                    .HasMaxLength(50)
+                    .HasColumnName("car_model_En_name");
+
+                entity.HasOne(d => d.CarBrand)
+                    .WithMany(p => p.CarModelMasters)
+                    .HasForeignKey(d => d.CarBrandId)
+                    .HasConstraintName("FK_Car_model_master_Car_brand_master");
             });
 
             modelBuilder.Entity<CarSubscription>(entity =>
@@ -669,11 +701,7 @@ namespace PetroPay.DataAccess.Contexts
 
                 entity.HasIndex(e => e.EmplyeeCode, "Emplyee$Emplyee_code");
 
-                entity.HasIndex(e => e.EmplyeeId, "Emplyee$Emplyee_id");
-
-                entity.Property(e => e.EmplyeeId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("Emplyee_id");
+                entity.Property(e => e.EmplyeeId).HasColumnName("Emplyee_id");
 
                 entity.Property(e => e.EmplyeeCode)
                     .HasMaxLength(255)
@@ -721,14 +749,6 @@ namespace PetroPay.DataAccess.Contexts
                 entity.HasIndex(e => e.InvoiceConfirmedCode, "invoice$invoice_confirmed_code");
 
                 entity.HasIndex(e => e.InvoiceId, "invoice$invoice_id");
-
-                entity.HasIndex(e => e.StationId, "invoice$petro_stationinvoice");
-
-                entity.HasIndex(e => e.StationId, "invoice$station_id");
-
-                entity.HasIndex(e => e.StationUserId, "invoice$station_user_id");
-
-                entity.HasIndex(e => e.StationUserId, "invoice$station_userinvoice");
 
                 entity.Property(e => e.InvoiceId).HasColumnName("invoice_id");
 
@@ -946,15 +966,11 @@ namespace PetroPay.DataAccess.Contexts
             modelBuilder.Entity<PetroStation>(entity =>
             {
                 entity.HasKey(e => e.StationId)
-                    .HasName("petro_station$PrimaryKey");
+                    .HasName("PK__Petro_st__44B370E9317863A5");
 
                 entity.ToTable("Petro_station");
 
-                entity.HasIndex(e => e.StationId, "petro_station$station_id");
-
-                entity.Property(e => e.StationId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("station_id");
+                entity.Property(e => e.StationId).HasColumnName("station_id");
 
                 entity.Property(e => e.AccountId).HasColumnName("Account_id");
 
@@ -992,13 +1008,9 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(50)
                     .HasColumnName("station_email");
 
-                entity.Property(e => e.StationLatitude)
-                    .HasColumnName("station_latitude")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.StationLatitude).HasColumnName("station_latitude");
 
-                entity.Property(e => e.StationLongitude)
-                    .HasColumnName("station_longitude")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.StationLongitude).HasColumnName("station_longitude");
 
                 entity.Property(e => e.StationLucationName)
                     .HasMaxLength(255)
@@ -1192,25 +1204,17 @@ namespace PetroPay.DataAccess.Contexts
             modelBuilder.Entity<StationUser>(entity =>
             {
                 entity.HasKey(e => e.StationWorkerId)
-                    .HasName("station_user$PrimaryKey");
+                    .HasName("PK__Station___84990047F60527EF");
 
                 entity.ToTable("Station_user");
-
-                entity.HasIndex(e => e.StationId, "station_user$petro_stationstation_user");
 
                 entity.HasIndex(e => e.StationId, "station_user$station_id");
 
                 entity.HasIndex(e => e.StationUserName, "station_user$station_user_code");
 
-                entity.HasIndex(e => e.StationWorkerId, "station_user$station_user_id");
+                entity.Property(e => e.StationWorkerId).HasColumnName("stationWorkerID");
 
-                entity.Property(e => e.StationWorkerId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("stationWorkerID");
-
-                entity.Property(e => e.StationId)
-                    .HasColumnName("station_id")
-                    .HasDefaultValueSql("((0))");
+                entity.Property(e => e.StationId).HasColumnName("station_id");
 
                 entity.Property(e => e.StationUserName)
                     .HasMaxLength(255)
@@ -1231,7 +1235,6 @@ namespace PetroPay.DataAccess.Contexts
                 entity.HasOne(d => d.Station)
                     .WithMany(p => p.StationUsers)
                     .HasForeignKey(d => d.StationId)
-                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("station_user$petro_stationstation_user");
             });
 

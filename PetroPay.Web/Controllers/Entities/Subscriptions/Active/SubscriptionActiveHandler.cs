@@ -92,7 +92,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
             deductFromCompany = (await _context.TransAccounts.AddAsync(deductFromCompany)).Entity;
             
             PetropayAccount subscriptionsPetropayAccount =
-                await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccName == "Subscriptions");
+                await _context.PetropayAccounts.FirstOrDefaultAsync(w => w.AccSubscriptionRequst.HasValue && w.AccSubscriptionRequst == true);
             if (subscriptionsPetropayAccount == null)
                 throw new Exception("PetropayAccount Subscriptions does not found.");
                     

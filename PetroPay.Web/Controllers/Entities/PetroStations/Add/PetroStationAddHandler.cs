@@ -48,9 +48,6 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Add
             {
                 PetroStation newPetroStation = _mapper.Map<PetroStation>(request);
 
-                int maxId = _context.PetroStations.Max(w => w.StationId);
-                newPetroStation.StationId = ++maxId;
-                
                 AccountMaster accountMaster = new AccountMaster();
                 accountMaster.AccountName = request.StationName;
                 accountMaster.AccountTaype = "station";

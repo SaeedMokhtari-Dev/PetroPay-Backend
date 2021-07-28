@@ -162,6 +162,8 @@ namespace PetroPay.Web.Configuration.Constants
         
         
         public const string ApiCarTypeMasterList = "/api/car-type-master/list";
+        public const string ApiCarBrandMasterList = "/api/car-brand-master/list";
+        public const string ApiCarModelMasterList = "/api/car-model-master/list";
         
         public const string ApiTransferBonusAdd = "/api/transfer-bonus/add";
         public const string ApiTransferBonusGet = "/api/transfer-bonus/get";

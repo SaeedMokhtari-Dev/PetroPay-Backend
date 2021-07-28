@@ -32,9 +32,7 @@ namespace PetroPay.Web.Controllers.Entities.Bundles.Add
         {
             Bundle bundle = await _context.ExecuteTransactionAsync(async () =>
             {
-                int maxId = await _context.Bundles.MaxAsync(w => w.BundlesId);
                 Bundle newBundle = _mapper.Map<Bundle>(request);
-                newBundle.BundlesId = ++maxId;
                 newBundle = (await _context.Bundles.AddAsync(newBundle)).Entity;
                 await _context.SaveChangesAsync();
 
