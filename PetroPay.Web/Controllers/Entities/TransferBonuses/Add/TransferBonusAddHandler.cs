@@ -73,7 +73,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
 
             var petroPayAccount =
                 await _context.PetropayAccounts.FirstOrDefaultAsync(
-                    w => w.AccountId.HasValue && w.AccountId.Value == 60);
+                    w => w.AccPetrolStationBonus.HasValue && w.AccPetrolStationBonus.Value);
             if(petroPayAccount == null)
                 return new Tuple<bool, string>(false, ApiMessages.ResourceNotFound);
             

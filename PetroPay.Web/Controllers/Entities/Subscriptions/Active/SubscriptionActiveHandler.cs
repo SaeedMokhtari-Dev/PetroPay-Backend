@@ -79,7 +79,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
                 AccountId = selectedPetropayAccount.AccountId,
                 TransAmount = -1 * (subscription.SubscriptionCost),
                 TransDate = DateTime.Now.GetEgyptDateTime(),
-                TransDocument = "paySubscri",
+                TransDocument = "pay subscription",
                 TransReference = company.AccountId.ToString()
             };
             
@@ -103,7 +103,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Active
                 AccountId = subscriptionsPetropayAccount.AccountId,
                 TransAmount = subscription.SubscriptionCost,
                 TransDate = DateTime.Now.GetEgyptDateTime(),
-                TransDocument = "paySubscri",
+                TransDocument = "pay subscription",
                 TransReference = company.AccountId.ToString()
             };
             

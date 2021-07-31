@@ -116,7 +116,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
                         AccountId = company.AccountId,
                         TransAmount = -1 * (request.SubscriptionCost),
                         TransDate = DateTime.Now.GetEgyptDateTime(),
-                        TransDocument = "paySubscri",
+                        TransDocument = "pay subscription",
                         TransReference = company.AccountId.ToString()
                     };
                     
@@ -128,7 +128,8 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
                     }
                     deductFromCompany = (await _context.TransAccounts.AddAsync(deductFromCompany)).Entity;
                     PetropayAccount petropayAccount =
-                        await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccName == "Subscriptions");
+                        await _context.PetropayAccounts.FirstOrDefaultAsync(w => w.AccSubscriptionRequst.HasValue 
+                            && w.AccSubscriptionRequst == true);
                     if (petropayAccount == null)
                         throw new Exception("PetropayAccount Subscriptions does not found.");
                     
@@ -139,7 +140,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Edit
                         AccountId = petropayAccount.AccountId,
                         TransAmount = request.SubscriptionCost,
                         TransDate = DateTime.Now.GetEgyptDateTime(),
-                        TransDocument = "paySubscri",
+                        TransDocument = "pay subscription",
                         TransReference = company.AccountId.ToString()
                     };
                     
