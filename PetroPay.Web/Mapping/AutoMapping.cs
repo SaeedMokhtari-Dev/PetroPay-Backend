@@ -40,6 +40,10 @@ using PetroPay.Web.Controllers.Entities.OdometerRecords.Add;
 using PetroPay.Web.Controllers.Entities.OdometerRecords.Detail;
 using PetroPay.Web.Controllers.Entities.OdometerRecords.Edit;
 using PetroPay.Web.Controllers.Entities.OdometerRecords.Get;
+using PetroPay.Web.Controllers.Entities.PetrolCompanies.Add;
+using PetroPay.Web.Controllers.Entities.PetrolCompanies.Detail;
+using PetroPay.Web.Controllers.Entities.PetrolCompanies.Edit;
+using PetroPay.Web.Controllers.Entities.PetrolCompanies.Get;
 using PetroPay.Web.Controllers.Entities.PetropayAccounts.Get;
 using PetroPay.Web.Controllers.Entities.PetroStations.Add;
 using PetroPay.Web.Controllers.Entities.PetroStations.Detail;
@@ -80,6 +84,7 @@ using PetroPay.Web.Controllers.Reports.StationReports.Get;
 using PetroPay.Web.Controllers.Reports.StationSales.Get;
 using PetroPay.Web.Controllers.Reports.StationStatements.Get;
 using PetroPay.Web.Extensions;
+using TestScaffold.Models;
 
 namespace PetroPay.Web.Mapping
 {
@@ -112,6 +117,31 @@ namespace PetroPay.Web.Mapping
                     opt => opt.MapFrom(e => e.CompanyVatPhoto.Remove(0, e.CompanyVatPhoto.IndexOf(',') + 1)))
                 .ForMember(w => w.CompanyTaxPhoto,
                     opt => opt.MapFrom(e => e.CompanyTaxPhoto.Remove(0, e.CompanyTaxPhoto.IndexOf(',') + 1)));
+            
+            #endregion
+            #region PetrolCompany
+            
+            CreateMap<PetrolCompany, PetrolCompanyGetResponseItem>()
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.PetrolCompanyId));
+            CreateMap<PetrolCompany, PetrolCompanyDetailResponse>()
+                .ForMember(w => w.PetrolCompanyCommercialPhoto, opt => opt.Ignore())
+                .ForMember(w => w.PetrolCompanyTaxPhoto,
+                    opt => opt.MapFrom(e => $"data:image/png;base64,{e.PetrolCompanyTaxPhoto}"))
+                .ForMember(w => w.PetrolCompanyVatPhoto,
+                    opt => opt.MapFrom(e => $"data:image/png;base64,{e.PetrolCompanyVatPhoto}"));
+            CreateMap<PetrolCompanyEditRequest, PetrolCompany>()
+                .ForMember(w => w.PetrolCompanyCommercialPhoto, opt => opt.Ignore())
+                .ForMember(w => w.PetrolCompanyId, opt => opt.Ignore())
+                .ForMember(w => w.PetrolCompanyVatPhoto,
+                    opt => opt.MapFrom(e => e.PetrolCompanyVatPhoto.Remove(0, e.PetrolCompanyVatPhoto.IndexOf(',') + 1)))
+                .ForMember(w => w.PetrolCompanyTaxPhoto,
+                    opt => opt.MapFrom(e => e.PetrolCompanyTaxPhoto.Remove(0, e.PetrolCompanyTaxPhoto.IndexOf(',') + 1)));
+            CreateMap<PetrolCompanyAddRequest, PetrolCompany>()
+                .ForMember(w => w.PetrolCompanyCommercialPhoto, opt => opt.Ignore())
+                .ForMember(w => w.PetrolCompanyVatPhoto,
+                    opt => opt.MapFrom(e => e.PetrolCompanyVatPhoto.Remove(0, e.PetrolCompanyVatPhoto.IndexOf(',') + 1)))
+                .ForMember(w => w.PetrolCompanyTaxPhoto,
+                    opt => opt.MapFrom(e => e.PetrolCompanyTaxPhoto.Remove(0, e.PetrolCompanyTaxPhoto.IndexOf(',') + 1)));
             
             #endregion
             #region Branch
@@ -252,8 +282,12 @@ namespace PetroPay.Web.Mapping
             #region PetroStation
             
             CreateMap<PetroStation, PetroStationGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.StationId));
-            CreateMap<PetroStation, PetroStationDetailResponse>();
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.StationId))
+                .ForMember(w => w.PetrolCompanyName, opt 
+                    => opt.MapFrom(e => e.PetrolCompanyId.HasValue ? e.PetrolCompany.PetrolCompanyName : string.Empty));
+            CreateMap<PetroStation, PetroStationDetailResponse>()
+                .ForMember(w => w.PetrolCompanyName, opt
+                    => opt.MapFrom(e => e.PetrolCompanyId.HasValue ? e.PetrolCompany.PetrolCompanyName : string.Empty));
             CreateMap<PetroStationEditRequest, PetroStation>()
                 .ForMember(w => w.StationId, opt => opt.Ignore());
             CreateMap<PetroStationAddRequest, PetroStation>();

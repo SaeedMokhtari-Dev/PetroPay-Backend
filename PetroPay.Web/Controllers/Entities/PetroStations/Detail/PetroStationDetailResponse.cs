@@ -22,5 +22,7 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Detail
         public bool StationChangeOilService { get; set; }
         public bool StationCarWashingService { get; set; }
         public bool StationChangeTireService { get; set; }
+        public int? PetrolCompanyId { get; set; }
+        public string PetrolCompanyName { get; set; }
     }
 }

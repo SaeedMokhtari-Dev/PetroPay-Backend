@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
@@ -23,7 +24,8 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Detail
         protected override async Task<ActionResult> Execute(PetroStationDetailRequest request)
         {
             PetroStation petroStation = await _context.PetroStations
-                .FindAsync(request.StationId);
+                .Include(w => w.PetrolCompany)
+                .FirstOrDefaultAsync(w => w.StationId == request.StationId);
 
             if (petroStation == null)
             {

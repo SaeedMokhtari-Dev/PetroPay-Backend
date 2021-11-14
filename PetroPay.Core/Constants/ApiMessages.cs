@@ -50,6 +50,22 @@ namespace PetroPay.Core.Constants
             public const string ArchiveEntityEditNotAllowed = "Api.Company.ArchivedEntityEdit.NotAllowed";
             
         }
+        public static class PetrolCompanyMessage
+        {
+            public const string IdRequired = "Api.PetrolCompany.Id.Required";
+            public const string NameRequired = "Api.PetrolCompany.Name.Required";
+            public const string EmailRequired = "Api.PetrolCompany.Email.Required";
+            public const string LogoRequired = "Api.PetrolCompany.Logo.Required";
+            public const string EmailIsWrong = "Api.PetrolCompany.Email.IsWrong";
+            
+            public const string AddedSuccessfully = "Api.PetrolCompany.Add.Successful";
+            public const string EditedSuccessfully = "Api.PetrolCompany.Edit.Successful";
+            public const string ArchivedSuccessfully = "Api.PetrolCompany.Archived.Successful";
+            public const string DeletedSuccessfully = "Api.PetrolCompany.Deleted.Successful";
+            
+            public const string ArchiveEntityEditNotAllowed = "Api.PetrolCompany.ArchivedEntityEdit.NotAllowed";
+            
+        }
         public static class BranchMessage
         {
             public const string CompanyIdRequired = "Api.Branch.CompanyId.Required";

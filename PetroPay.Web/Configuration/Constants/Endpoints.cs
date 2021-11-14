@@ -32,6 +32,14 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiCompanyDelete = "/api/company/delete";
         public const string ApiCompanyList = "/api/company/list";
         
+        /*PetrolCompany APIs*/
+        public const string ApiPetrolCompanyAdd = "/api/petrol-company/add";
+        public const string ApiPetrolCompanyEdit = "/api/petrol-company/edit";
+        public const string ApiPetrolCompanyGet = "/api/petrol-company/get";
+        public const string ApiPetrolCompanyDetail = "/api/petrol-company/detail";
+        public const string ApiPetrolCompanyDelete = "/api/petrol-company/delete";
+        public const string ApiPetrolCompanyList = "/api/petrol-company/list";
+        
         /*Branch APIs*/
         public const string ApiBranchAdd = "/api/branch/add";
         public const string ApiBranchEdit = "/api/branch/edit";

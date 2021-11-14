@@ -7,34 +7,32 @@ using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.DataAccess.Contexts;
 
-namespace PetroPay.Web.Controllers.Entities.PetroStations.Get
+namespace PetroPay.Web.Controllers.Entities.PetrolCompanies.Get
 {
-    public class PetroStationGetHandler : ApiRequestHandler<PetroStationGetRequest>
+    public class PetrolCompanyGetHandler : ApiRequestHandler<PetrolCompanyGetRequest>
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
 
-        public PetroStationGetHandler(
+        public PetrolCompanyGetHandler(
             PetroPayContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        protected override async Task<ActionResult> Execute(PetroStationGetRequest request)
+        protected override async Task<ActionResult> Execute(PetrolCompanyGetRequest request)
         {
-            var query = _context.PetroStations
-                .Include(w => w.PetrolCompany)
-                .OrderBy(w => w.StationId)
+            var query = _context.PetrolCompanies.OrderBy(w => w.PetrolCompanyId)
                 .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();
 
             var result = await query.ToListAsync();
 
-            var mappedResult = _mapper.Map<List<PetroStationGetResponseItem>>(result);
+            var mappedResult = _mapper.Map<List<PetrolCompanyGetResponseItem>>(result);
 
-            PetroStationGetResponse response = new PetroStationGetResponse();
-            response.TotalCount = await _context.PetroStations.CountAsync();
+            PetrolCompanyGetResponse response = new PetrolCompanyGetResponse();
+            response.TotalCount = await _context.PetrolCompanies.CountAsync();
             response.Items = mappedResult;
             return ActionResult.Ok(response);
         }

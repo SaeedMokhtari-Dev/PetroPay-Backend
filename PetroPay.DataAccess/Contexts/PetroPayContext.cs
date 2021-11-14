@@ -1139,7 +1139,8 @@ namespace PetroPay.DataAccess.Contexts
                     .HasMaxLength(255)
                     .HasColumnName("Petrol_Company_commercial_number");
 
-                entity.Property(e => e.PetrolCompanyCommercialPhoto).HasColumnName("Petrol_Company_commercial_photo");
+                entity.Property(e => e.PetrolCompanyCommercialPhoto)
+                    .HasColumnName("Petrol_Company_commercial_photo");
 
                 entity.Property(e => e.PetrolCompanyCountry)
                     .HasMaxLength(255)
@@ -1164,6 +1165,12 @@ namespace PetroPay.DataAccess.Contexts
                     .HasColumnName("Petrol_Company_VAT_Number");
 
                 entity.Property(e => e.PetrolCompanyVatPhoto).HasColumnName("Petrol_Company_VAT_photo");
+                
+                
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.PetrolCompanies)
+                    .HasForeignKey(d => d.AccountId)
+                    .HasConstraintName("FK_PetrolCompany_AccountMaster");
             });
 
             modelBuilder.Entity<PetrolPrice>(entity =>
