@@ -40,5 +40,6 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Edit
         public bool? CarApprovedOneTime { get; set; }
         public bool? WorkAllDays { get; set; }
         public bool CarOdometerRecordRequired { get; set; }
+        public int? CarFuelKmCap { get; set; }
     }
 }

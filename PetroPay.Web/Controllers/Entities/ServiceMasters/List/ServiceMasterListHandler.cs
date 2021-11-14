@@ -12,15 +12,11 @@ namespace PetroPay.Web.Controllers.Entities.ServiceMasters.List
     public class ServiceMasterListHandler : ApiRequestHandler<ServiceMasterListRequest>
     {
         private readonly PetroPayContext _context;
-        private readonly IMapper _mapper;
-        private readonly UserContext _userContext;
 
         public ServiceMasterListHandler(
-            PetroPayContext context, IMapper mapper, UserContext userContext)
+            PetroPayContext context)
         {
             _context = context;
-            _mapper = mapper;
-            _userContext = userContext;
         }
 
         protected override async Task<ActionResult> Execute(ServiceMasterListRequest request)

@@ -419,6 +419,8 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.Wednesday).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.WorkAllDays).HasColumnName("work_all_days");
+                
+                entity.Property(e => e.CarFuelKmCap).HasColumnName("car_fuel_km_cap");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Cars)

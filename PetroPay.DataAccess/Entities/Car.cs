@@ -57,6 +57,7 @@ namespace PetroPay.DataAccess.Entities
         public bool? CarChangeTyerApproval { get; set; }
         public bool? CarWashApproval { get; set; }
         public bool? CarOdometerRecordRequired { get; set; }
+        public int? CarFuelKmCap { get; set; }
 
         public virtual AccountMaster Account { get; set; }
         public virtual CompanyBranch CompanyBarnch { get; set; }

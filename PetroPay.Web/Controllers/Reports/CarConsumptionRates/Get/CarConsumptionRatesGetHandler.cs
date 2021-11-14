@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using PetroPay.Core.Constants;
 using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
@@ -37,6 +39,8 @@ namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
             var query = _context.ViewCarConsumptionRates
                 .AsQueryable();
             
+            int spResult = await runSP(request.DateFrom, request.DateTo);
+            
             query = createQuery(query, request);
             
             CarConsumptionRateGetResponse response = new CarConsumptionRateGetResponse();
@@ -52,7 +56,21 @@ namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
             response.Items = mappedResult;
             return ActionResult.Ok(response);
         }
-
+        private async Task<int> runSP(string requestDateTimeFrom, string requestDateTimeTo)
+        {
+            try
+            {
+                StringBuilder query = new StringBuilder("exec spView_odometer_between_date ");
+                if (!string.IsNullOrEmpty(requestDateTimeFrom) || !string.IsNullOrEmpty(requestDateTimeTo))
+                    query.Append($"'{requestDateTimeFrom?.ReverseDate().Replace('/', '-')}', '{requestDateTimeTo?.ReverseDate().Replace('/', '-')}'");
+                return await _context.Database.ExecuteSqlRawAsync(query.ToString());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return 0;
+            }
+        }
         private IQueryable<ViewCarConsumptionRate> createQuery(IQueryable<ViewCarConsumptionRate> query, CarConsumptionRateGetRequest request)
         {
             

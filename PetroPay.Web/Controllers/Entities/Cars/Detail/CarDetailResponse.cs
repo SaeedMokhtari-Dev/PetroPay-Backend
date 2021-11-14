@@ -43,5 +43,6 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Detail
         public int? AccountId { get; set; }
         public string CarNfcCode { get; set; }
         public bool CarOdometerRecordRequired { get; set; }
+        public int? CarFuelKmCap { get; set; }
     }
 }

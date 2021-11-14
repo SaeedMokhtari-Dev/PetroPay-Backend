@@ -6,6 +6,7 @@ namespace PetroPay.Web.Controllers.Reports.StationStatements.Get
     public class StationStatementGetResponse
     {
         public int TotalCount { get; set; }
+        public decimal SumTransAmount { get; set; }
         public List<StationStatementGetResponseItem> Items { get; set; }
     }
     public class StationStatementGetResponseItem

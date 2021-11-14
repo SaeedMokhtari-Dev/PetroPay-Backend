@@ -43,6 +43,7 @@ namespace PetroPay.Web.Controllers.Reports.StationStatements.Get
             
             StationStatementGetResponse response = new StationStatementGetResponse();
             response.TotalCount = await query.CountAsync();
+            response.SumTransAmount = await query.SumAsync(w => w.SumTransAmount ?? 0);
 
             if(!request.ExportToFile)
                 query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);

@@ -12,6 +12,7 @@ using PetroPay.Core.Constants;
 using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Extensions;
 using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Reports.StationSales.Get
@@ -32,7 +33,7 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
 
         protected override async Task<ActionResult> Execute(StationSaleGetRequest request)
         {
-            if(_userContext.Role == RoleType.Supplier && request.StationWorkerId == null)
+            if(_userContext.Role == RoleType.Supplier && request.StationId == null)
                 return ActionResult.Error(ApiMessages.PetroStationMessage.IdRequired);
             
             var query = _context.ViewStationSales.OrderByDescending(w => w.SumInvoiceDataTime)
@@ -42,6 +43,7 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
             
             StationSaleGetResponse response = new StationSaleGetResponse();
             response.TotalCount = await query.CountAsync();
+            response.SumInvoiceAmount = await query.SumAsync(w => w.SumInvoiceAmount ?? 0);
 
             if(!request.ExportToFile)
                 query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
@@ -56,9 +58,13 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
         private IQueryable<ViewStationSale> createQuery(IQueryable<ViewStationSale> query, StationSaleGetRequest request)
         {
             
+            if (request.StationId.HasValue)
+            {
+                query = query.Where(w => w.StationId == request.StationId);
+            }
             if (request.StationWorkerId.HasValue)
             {
-                query = query.Where(w => w.StationId == request.StationWorkerId);
+                query = query.Where(w => w.StationWorkerId == request.StationWorkerId);
             }
             if (!string.IsNullOrEmpty(request.StationWorkerFname))
             {
@@ -70,11 +76,11 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeFrom))
             {
-                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeFrom) >= 0);
+                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeFrom.ReverseDate()) >= 0);
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeTo))
             {
-                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeTo) <= 0);
+                query = query.Where(w => String.Compare(w.SumInvoiceDataTime, request.InvoiceDataTimeTo.ReverseDate()) <= 0);
             }
             
             return query;

@@ -30,7 +30,7 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
 
         protected override async Task<ActionResult> Execute(StationReportGetRequest request)
         {
-            if(_userContext.Role == RoleType.Supplier && request.StationWorkerId == null)
+            if(_userContext.Role == RoleType.Supplier && request.StationId == null)
                 return ActionResult.Error(ApiMessages.PetroStationMessage.IdRequired);
             
             var query = _context.ViewStationReports.OrderByDescending(w => w.InvoiceDataTime)
@@ -40,6 +40,7 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
             
             StationReportGetResponse response = new StationReportGetResponse();
             response.TotalCount = await query.CountAsync();
+            response.SumInvoiceAmount = await query.SumAsync(w => w.InvoiceAmount ?? 0);
 
             if(!request.ExportToFile)
                 query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
@@ -53,10 +54,13 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
 
         private IQueryable<ViewStationReport> createQuery(IQueryable<ViewStationReport> query, StationReportGetRequest request)
         {
-            
+            if (request.StationId.HasValue)
+            {
+                query = query.Where(w => w.StationId == request.StationId.Value);
+            }
             if (request.StationWorkerId.HasValue)
             {
-                query = query.Where(w => w.StationId == request.StationWorkerId.Value);
+                query = query.Where(w => w.StationWorkerId == request.StationWorkerId.Value);
             }
             if (request.InvoiceId.HasValue)
             {
@@ -65,6 +69,14 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
             if (!string.IsNullOrEmpty(request.StationWorkerFname))
             {
                 query = query.Where(w => w.StationWorkerFname.Contains(request.StationWorkerFname));
+            }
+            if (!string.IsNullOrEmpty(request.ServiceArDescription))
+            {
+                query = query.Where(w => w.ServiceArDescription.Contains(request.ServiceArDescription));
+            }
+            if (!string.IsNullOrEmpty(request.PaymentMethodName))
+            {
+                query = query.Where(w => w.PaymentMethodName.Contains(request.PaymentMethodName));
             }
             if (!string.IsNullOrEmpty(request.InvoiceDataTimeFrom))
             {
