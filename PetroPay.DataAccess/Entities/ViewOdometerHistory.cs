@@ -7,8 +7,8 @@ namespace PetroPay.DataAccess.Entities
     public partial class ViewOdometerHistory
     {
         public int CompanyId { get; set; }
-        public string CompanyName { get; set; }
         public int CompanyBranchId { get; set; }
+        public string CompanyName { get; set; }
         public string CompanyBranchName { get; set; }
         public int CarId { get; set; }
         public string CarIdNumber { get; set; }

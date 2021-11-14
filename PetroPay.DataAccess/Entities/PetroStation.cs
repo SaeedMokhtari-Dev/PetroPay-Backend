@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TestScaffold.Models;
 
 #nullable disable
 
@@ -13,7 +14,6 @@ namespace PetroPay.DataAccess.Entities
             StationUsers = new HashSet<StationUser>();
         }
 
-        public int StationId { get; set; }
         public string StationName { get; set; }
         public string StationAddress { get; set; }
         public string StationLucationName { get; set; }
@@ -36,8 +36,11 @@ namespace PetroPay.DataAccess.Entities
         public bool? StationCarWashingService { get; set; }
         public bool? StationChangeTireService { get; set; }
         public int? StationBonusBalance { get; set; }
+        public int StationId { get; set; }
+        public int? PetrolCompanyId { get; set; }
 
         public virtual AccountMaster Account { get; set; }
+        public virtual PetrolCompany PetrolCompany { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<StationUser> StationUsers { get; set; }
     }

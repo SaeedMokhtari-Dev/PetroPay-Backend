@@ -30,7 +30,7 @@ namespace PetroPay.DataAccess.Entities
         public int? InvoicePayTypeId { get; set; }
         public string InvoiceNot { get; set; }
         public int? ServiceId { get; set; }
-        public double? OilChangeInvoiceOdometer { get; set; }
+        public double? InvoiceOdometer { get; set; }
         public int? InvoiceBonusPoints { get; set; }
 
         public virtual Car Car { get; set; }

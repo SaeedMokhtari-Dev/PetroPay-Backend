@@ -11,5 +11,6 @@ namespace PetroPay.DataAccess.Entities
         public string InvoiceFuelType { get; set; }
         public string SumInvoiceDataTime { get; set; }
         public int? StationId { get; set; }
+        public int? SumInvoiceBonusPoints { get; set; }
     }
 }

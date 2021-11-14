@@ -17,5 +17,6 @@ namespace PetroPay.DataAccess.Entities
         public int CarId { get; set; }
         public DateTime? SubscriptionEndDate { get; set; }
         public DateTime? SubscriptionStartDate { get; set; }
+        public int? CarFuelKmCap { get; set; }
     }
 }

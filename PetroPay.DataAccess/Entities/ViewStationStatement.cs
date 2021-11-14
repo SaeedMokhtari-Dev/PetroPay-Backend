@@ -11,5 +11,6 @@ namespace PetroPay.DataAccess.Entities
         public decimal? SumTransAmount { get; set; }
         public string AccountName { get; set; }
         public int StationId { get; set; }
+        public string TransReference { get; set; }
     }
 }
