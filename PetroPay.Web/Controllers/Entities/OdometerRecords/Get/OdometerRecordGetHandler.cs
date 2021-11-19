@@ -29,6 +29,8 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Get
         {
             if (_userContext.Role == RoleType.Customer && !request.CompanyId.HasValue)
                 request.CompanyId = _userContext.Id;
+            if (_userContext.Role == RoleType.CustomerBranch && !request.BranchId.HasValue)
+                request.BranchId = _userContext.Id;
             var query = _context.ViewOdometerRecords
                 .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();
@@ -36,6 +38,10 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Get
             if (request.CompanyId.HasValue)
                 query = query.Where(w =>
                     w.CompanyId == request.CompanyId.Value);
+            
+            if (request.BranchId.HasValue)
+                query = query.Where(w =>
+                    w.CompanyBranchId == request.BranchId.Value);
             
             var result = await query.ToListAsync();
 

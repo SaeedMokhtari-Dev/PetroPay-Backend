@@ -43,49 +43,79 @@ namespace PetroPay.Web.Controllers.Auth.ChangePassword
 
             string roleType = passwordResetToken.UniqueId.Split("_")[0]; 
             int id = int.Parse(passwordResetToken.UniqueId.Split("_")[1]);
-            if (roleType == "Customer")
+            switch (roleType)
             {
-                var customer = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == id);
-             
-                if (customer == null)
+                case "Customer":
                 {
-                    return ActionResult.Error(ApiMessages.ResourceNotFound);
-                }
-                customer.CompanyAdminUserPassword = request.NewPassword;
-                await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
+                    var customer = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == id);
+             
+                    if (customer == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+                    customer.CompanyAdminUserPassword = request.NewPassword;
+                    await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
                 
-                return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
-            }
-            else if(roleType == "Supplier")
-            {
-                var supplier = await _context.PetroStations.SingleOrDefaultAsync(w => w.StationId == id);
-             
-                if (supplier == null)
-                {
-                    return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
                 }
+                case "CustomerBranch":
+                {
+                    var companyBranch = await _context.CompanyBranches.SingleOrDefaultAsync(w => w.CompanyBranchId == id);
+             
+                    if (companyBranch == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+                    companyBranch.CompanyBranchAdminUserPassword = request.NewPassword;
+                    await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
                 
-                supplier.StationPassword = request.NewPassword;
-                await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
-
-                return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
-            }
-            else if(roleType == "Admin")
-            {
-                var admin = await _context.Emplyees.SingleOrDefaultAsync(w => w.EmplyeeId == id);
-             
-                if (admin == null)
-                {
-                    return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
                 }
+                case "Supplier":
+                {
+                    var petrolCompany = await _context.PetrolCompanies.SingleOrDefaultAsync(w => w.PetrolCompanyId == id);
+             
+                    if (petrolCompany == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+                
+                    petrolCompany.PetrolCompanyAdminUserPassword = request.NewPassword;
+                    await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
 
-                admin.EmplyeePassword = request.NewPassword;
-                await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                }
+                case "SupplierBranch":
+                {
+                    var supplier = await _context.PetroStations.SingleOrDefaultAsync(w => w.StationId == id);
+             
+                    if (supplier == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+                
+                    supplier.StationPassword = request.NewPassword;
+                    await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
 
-                return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                }
+                case "Admin":
+                {
+                    var admin = await _context.Emplyees.SingleOrDefaultAsync(w => w.EmplyeeId == id);
+             
+                    if (admin == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+
+                    admin.EmplyeePassword = request.NewPassword;
+                    await ChangePasswordAndDeletePasswordResetToken(passwordResetToken);
+
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                }
+                default:
+                    return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
-            
-            return ActionResult.Error(ApiMessages.ResourceNotFound);
         }
         private async Task ChangePasswordAndDeletePasswordResetToken(PasswordResetToken passwordResetToken)
         {

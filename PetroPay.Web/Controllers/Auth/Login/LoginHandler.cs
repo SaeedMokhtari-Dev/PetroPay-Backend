@@ -29,46 +29,76 @@ namespace PetroPay.Web.Controllers.Auth.Login
 
         protected override async Task<ActionResult> Execute(LoginRequest request)
         {
-            if (request.RoleType == RoleType.Customer)
+            switch (request.RoleType)
             {
-                var customer = await _context.Companies.FirstOrDefaultAsync(x =>
-                    x.CompanyAdminUserName.ToLower() == request.Username.ToLower()
-                    && x.CompanyAdminUserPassword.ToLower() == request.Password.ToLower());
-             
-                if (customer == null)
+                case RoleType.Customer:
                 {
-                    return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
-                }
-
-                return await GetLoginResponse($"Customer_{customer.CompanyId}");
-            }
-            else if(request.RoleType == RoleType.Supplier)
-            {
-                var supplier = await _context.PetroStations.FirstOrDefaultAsync(x =>
-                    x.StationUserName.ToLower() == request.Username.ToLower()
-                    && x.StationPassword.ToLower() == request.Password.ToLower());
+                    var customer = await _context.Companies.FirstOrDefaultAsync(x =>
+                        x.CompanyAdminUserName.ToLower() == request.Username.ToLower()
+                        && x.CompanyAdminUserPassword.ToLower() == request.Password.ToLower());
              
-                if (supplier == null)
-                {
-                    return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
-                }
+                    if (customer == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
 
-                return await GetLoginResponse($"Supplier_{supplier.StationId}");
-            }
-            else if(request.RoleType == RoleType.Admin)
-            {
-                var admin = await _context.Emplyees.FirstOrDefaultAsync(x =>
-                    x.EmplyeeUserName.ToLower() == request.Username.ToLower()
-                    && x.EmplyeePassword.ToLower() == request.Password.ToLower());
+                    return await GetLoginResponse($"Customer_{customer.CompanyId}");
+                }
+                case RoleType.CustomerBranch:
+                {
+                    var customerBranch = await _context.CompanyBranches.FirstOrDefaultAsync(x =>
+                        x.CompanyBranchAdminUserName.ToLower() == request.Username.ToLower()
+                        && x.CompanyBranchAdminUserPassword.ToLower() == request.Password.ToLower());
              
-                if (admin == null)
-                {
-                    return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
-                }
+                    if (customerBranch == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
 
-                return await GetLoginResponse($"Admin_{admin.EmplyeeId}");
+                    return await GetLoginResponse($"CustomerBranch_{customerBranch.CompanyBranchId}");
+                }
+                case RoleType.Supplier:
+                {
+                    var petrolCompany = await _context.PetrolCompanies.FirstOrDefaultAsync(x =>
+                        x.PetrolCompanyAdminUserName.ToLower() == request.Username.ToLower()
+                        && x.PetrolCompanyAdminUserPassword.ToLower() == request.Password.ToLower());
+             
+                    if (petrolCompany == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
+
+                    return await GetLoginResponse($"Supplier_{petrolCompany.PetrolCompanyId}");
+                }
+                case RoleType.SupplierBranch:
+                {
+                    var supplier = await _context.PetroStations.FirstOrDefaultAsync(x =>
+                        x.StationUserName.ToLower() == request.Username.ToLower()
+                        && x.StationPassword.ToLower() == request.Password.ToLower());
+             
+                    if (supplier == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
+
+                    return await GetLoginResponse($"SupplierBranch_{supplier.StationId}");
+                }
+                case RoleType.Admin:
+                {
+                    var admin = await _context.Emplyees.FirstOrDefaultAsync(x =>
+                        x.EmplyeeUserName.ToLower() == request.Username.ToLower()
+                        && x.EmplyeePassword.ToLower() == request.Password.ToLower());
+             
+                    if (admin == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
+
+                    return await GetLoginResponse($"Admin_{admin.EmplyeeId}");
+                }
+                default:
+                    return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
-            return ActionResult.Error(ApiMessages.ResourceNotFound);
         }
 
         private async Task<ActionResult> GetLoginResponse(string uniqueId)

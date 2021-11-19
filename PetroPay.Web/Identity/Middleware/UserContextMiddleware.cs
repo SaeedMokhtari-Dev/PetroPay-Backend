@@ -46,7 +46,37 @@ namespace PetroPay.Web.Identity.Middleware
                                 }
 
                                 break;
+                            case "CustomerBranch":
+                                var companyBranch = await petroPayContext.CompanyBranches.FindAsync(id);
+                                if (companyBranch == null)
+                                    httpContext.Response.StatusCode = 401;
+                                else
+                                {
+                                    userContext.Id = companyBranch.CompanyBranchId;
+                                    userContext.UniqueId = uniqueId;
+                                    userContext.Role = RoleType.CustomerBranch;
+                                    userContext.IsActive = true;
+                                    userContext.IsAuthenticated = true;
+                                    userContext.Balance = companyBranch.CompanyBranchBalnce ?? 0;
+                                }
+
+                                break;
                             case "Supplier":
+                                var petrolCompany = await petroPayContext.PetrolCompanies.FindAsync(id);
+                                if (petrolCompany == null)
+                                    httpContext.Response.StatusCode = 401;
+                                else
+                                {
+                                    userContext.Id = petrolCompany.PetrolCompanyId;
+                                    userContext.UniqueId = uniqueId;
+                                    userContext.Role = RoleType.Supplier;
+                                    userContext.IsActive = true;
+                                    userContext.IsAuthenticated = true;
+                                    userContext.Balance = petrolCompany.PetrolCompanyBalnce ?? 0;
+                                }
+
+                                break;
+                            case "SupplierBranch":
                                 var supplier = await petroPayContext.PetroStations.FindAsync(id);
                                 if (supplier == null)
                                     httpContext.Response.StatusCode = 401;
@@ -54,7 +84,7 @@ namespace PetroPay.Web.Identity.Middleware
                                 {
                                     userContext.Id = supplier.StationId;
                                     userContext.UniqueId = uniqueId;
-                                    userContext.Role = RoleType.Supplier;
+                                    userContext.Role = RoleType.SupplierBranch;
                                     userContext.IsActive = true;
                                     userContext.IsAuthenticated = true;
                                     userContext.Balance = supplier.StationBalance ?? 0;

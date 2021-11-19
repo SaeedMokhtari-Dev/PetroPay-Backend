@@ -21,12 +21,19 @@ namespace PetroPay.Web.Controllers.Entities.StationUsers.List
 
         protected override async Task<ActionResult> Execute(StationUserListRequest request)
         {
-            var result = await _context.StationUsers
+            var query = _context.StationUsers.AsQueryable();
+            if (request.PetrolStationId.HasValue && request.PetrolStationId.Value > 0)
+            {
+                query = query.Where(w => w.StationId.HasValue && w.StationId.Value == request.PetrolStationId);
+            }
+
+            var result = await query
                 .Select(w => new StationUserListResponseItem()
                 {
                     Key = w.StationWorkerId,
                     Title = w.StationWorkerFname,
-                    StationId = w.StationId ?? 0
+                    StationId = w.StationId ?? 0,
+                    WorkerBonusBalance = w.WorkerBonusBalance ?? 0
                 })
                 .ToListAsync();
 

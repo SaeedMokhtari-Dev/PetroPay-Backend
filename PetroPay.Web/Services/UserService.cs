@@ -35,11 +35,29 @@ namespace PetroPay.Web.Services
                             Balance = customer.CompanyBalnce ?? 0
                         }, String.Empty);
                     break;
+                case  RoleType.CustomerBranch:
+                    var companyBranch = await _context.CompanyBranches.FindAsync(_userContext.Id);
+                    if (companyBranch != null)
+                        return new Tuple<bool, GetUserInfoResponse, string>(true, new GetUserInfoResponse()
+                        {
+                            Id = companyBranch.CompanyBranchId,
+                            Name = companyBranch.CompanyBranchName,
+                            Role = RoleType.CustomerBranch,
+                            Balance = companyBranch.CompanyBranchBalnce ?? 0
+                        }, String.Empty);
+                    break;
                 case RoleType.Supplier:
+                    var petrolCompany = await _context.PetrolCompanies.FindAsync(_userContext.Id);
+                    if(petrolCompany != null)
+                        return new Tuple<bool, GetUserInfoResponse, string>(true, 
+                            new GetUserInfoResponse(petrolCompany.PetrolCompanyId, RoleType.Supplier, petrolCompany.PetrolCompanyName, petrolCompany.PetrolCompanyBalnce ?? 0),
+                            String.Empty);
+                    break;
+                case RoleType.SupplierBranch:
                     var supplier = await _context.PetroStations.FindAsync(_userContext.Id);
                     if(supplier != null)
                         return new Tuple<bool, GetUserInfoResponse, string>(true, 
-                            new GetUserInfoResponse(supplier.StationId, RoleType.Supplier, supplier.StationName, supplier.StationBalance ?? 0),
+                            new GetUserInfoResponse(supplier.StationId, RoleType.SupplierBranch, supplier.StationName, supplier.StationBalance ?? 0),
                             String.Empty);
                     break;
                 case RoleType.Admin:

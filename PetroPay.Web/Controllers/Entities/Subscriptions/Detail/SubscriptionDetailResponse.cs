@@ -22,6 +22,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Detail
         public string SubscriptionPaymentDocPhoto { get; set; }
         public bool PayFromCompanyBalance { get; set; }
         public int? PetropayAccountId { get; set; }
+        public string CouponCode { get; set; }
         public List<SubscriptionCar> SubscriptionCars { get; set; }
     }
 }

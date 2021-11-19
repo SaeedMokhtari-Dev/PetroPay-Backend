@@ -5,6 +5,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
         public int BundlesId { get; set; }
         public decimal SubTotal { get; set; }
         public decimal Discount { get; set; }
+        public bool ValidDiscount { get; set; } = true;
         public decimal TaxRate { get; set; }
         public decimal Tax { get; set; }
         public decimal VatRate { get; set; }

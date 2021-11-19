@@ -5,5 +5,7 @@ namespace PetroPay.Web.Controllers.Entities.StationUsers.List
         public int Key { get; set; }
         public string Title { get; set; }
         public int StationId { get; set; }
+        public int WorkerBonusBalance { get; set; }
+        
     }
 }

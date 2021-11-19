@@ -7,15 +7,18 @@ using PetroPay.Core.Interfaces;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
 using PetroPay.Web.Extensions;
+using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
 {
     public class SubscriptionCalculator: ITransient
     {
         private readonly PetroPayContext _context;
-        public SubscriptionCalculator(PetroPayContext context)
+        private readonly UserContext _userContext;
+        public SubscriptionCalculator(PetroPayContext context, UserContext userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
         /*public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(SubscriptionCalculateRequest request)
         {
@@ -25,7 +28,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
             return response;
         }*/
         public async Task<SubscriptionCalculateResponse> CalculateSubscriptionCost(int bundlesId, int subscriptionCarNumbers, string subscriptionType,
-            DateTime subscriptionStartDate, int numberOf, string couponCode)
+            int numberOf, string couponCode)
         {
             Bundle bundle = await _context.Bundles.SingleOrDefaultAsync(w =>
                 w.BundlesId == bundlesId);
@@ -52,7 +55,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
 
             response.SubTotal = response.SubscriptionCost;
             if (!string.IsNullOrEmpty(couponCode))
-                response = await calculateDiscount(couponCode, response);
+                response = await calculateDiscount(couponCode, subscriptionType, numberOf, response);
 
             response = await appendTaxAndVat(response);
             return response;
@@ -75,22 +78,47 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Calculate
             return response;
         }
 
-        private async Task<SubscriptionCalculateResponse> calculateDiscount(string couponCode, SubscriptionCalculateResponse response)
+        private async Task<SubscriptionCalculateResponse> calculateDiscount(string couponCode, string subscriptionType, int numberOf, SubscriptionCalculateResponse response)
         {
             DateTime egyptNowDateTime = DateTime.Now.GetEgyptDateTime();
             var promotion = await _context.PromotionCoupons.FirstOrDefaultAsync(w =>
-                w.CouponCode.ToLower() == couponCode.ToLower()
+                w.CouponCode.ToLower().Trim() == couponCode.ToLower().Trim()
                 && w.CouponActive.HasValue && w.CouponActive.Value && w.CouponActiveDate.HasValue
                 && w.CouponActiveDate.Value <= egyptNowDateTime && w.CouponEndDate.HasValue &&
                 w.CouponEndDate.Value >= egyptNowDateTime);
-            if (promotion != null)
-            {
+            if (promotion != null && IsValidDiscount(promotion, subscriptionType, numberOf))
+            {   
                 response.CouponId = promotion.CouponId;
                 response.Discount = response.SubscriptionCost * ((promotion.CouponDiscountValue ?? 0) / 100);
                 response.SubscriptionCost -= response.Discount;
+                response.ValidDiscount = true;
+            }
+            else
+            {
+                response.ValidDiscount = false;    
             }
 
             return response;
+        }
+
+        private bool IsValidDiscount(PromotionCoupon promotion, string subscriptionType, int numberOf)
+        {
+            if (promotion.CouponForAllCustomer ?? false) return true;
+            if (promotion.CompanyId.HasValue)
+            {
+                return _userContext.Id == promotion.CompanyId;
+            }
+            switch (subscriptionType)
+            {
+                case "Monthly":
+                    if(numberOf >= 3)
+                        return promotion.CouponForQuarterly.HasValue && promotion.CouponForQuarterly.Value;
+                    return promotion.CouponForMonthly.HasValue && promotion.CouponForMonthly.Value;
+                case "Yearly":
+                    return promotion.CouponForYearly.HasValue && promotion.CouponForYearly.Value;
+            }
+
+            return false;
         }
     }
 }

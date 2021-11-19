@@ -62,6 +62,10 @@ namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
             {
                 query = query.Where(w => w.CompanyName.Contains(request.CompanyName));
             }
+            if (request.CompanyBranchId.HasValue)
+            {
+                query = query.Where(w => w.CompanyBranchId == request.CompanyBranchId);
+            }
             return query;
 
         }

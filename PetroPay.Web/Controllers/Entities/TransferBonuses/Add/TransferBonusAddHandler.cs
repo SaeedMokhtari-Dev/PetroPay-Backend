@@ -46,7 +46,8 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
             if (request.Amount <= 0)
                 return ActionResult.Error(ApiMessages.TransferBonusMessage.AmountRequired);
 
-            Tuple<bool, string> result = await TransferBonusToBalance(request.StationId.Value, request.Amount);
+            Tuple<bool, string> result = await TransferBonusToBalance(request.StationId.Value,
+                request.StationWorkerId ?? 0, request.Amount);
             
             if(!result.Item1)
                 return ActionResult.Error(result.Item2);
@@ -54,7 +55,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
             return ActionResult.Ok(result.Item2);
         }
 
-        private async Task<Tuple<bool, string>> TransferBonusToBalance(int stationId, int amount)
+        private async Task<Tuple<bool, string>> TransferBonusToBalance(int stationId, int stationWorkerId, int amount)
         {
             var station = await _context.PetroStations.SingleOrDefaultAsync(w => w.StationId == stationId);
             if (station == null)
@@ -75,6 +76,11 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                 await _context.PetropayAccounts.FirstOrDefaultAsync(
                     w => w.AccPetrolStationBonus.HasValue && w.AccPetrolStationBonus.Value);
             if(petroPayAccount == null)
+                return new Tuple<bool, string>(false, ApiMessages.ResourceNotFound);
+
+            var stationUser =
+                await _context.StationUsers.FirstOrDefaultAsync(w => w.StationWorkerId == stationWorkerId);
+            if(stationUser == null)
                 return new Tuple<bool, string>(false, ApiMessages.ResourceNotFound);
             
             await _context.ExecuteTransactionAsync(async () =>
@@ -116,6 +122,9 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                     addToStationAccount.UserType = user.Item2.Role.GetDisplayName();
                 }
                 addToStationAccount = (await _context.TransAccounts.AddAsync(addToStationAccount)).Entity;
+                
+
+                stationUser.WorkerBonusBalance += Convert.ToInt32(balance);
                 
                 await _context.SaveChangesAsync();
             });

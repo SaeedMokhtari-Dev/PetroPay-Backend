@@ -31,55 +31,89 @@ namespace PetroPay.Web.Controllers.Auth.ChangeUserPassword
                 return ActionResult.Error(ApiMessages.Auth.ChangePasswordNotEqualsPasswords);
             }
             
-            if (_userContext.Role == RoleType.Customer)
+            switch (_userContext.Role)
             {
-                var customer = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
-             
-                if (customer == null)
-                    return ActionResult.Error(ApiMessages.ResourceNotFound);
-                
-                if(customer.CompanyAdminUserPassword != request.CurrentPassword)
-                    return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
-                
-                customer.CompanyAdminUserPassword = request.NewPassword;
-                await _context.SaveChangesAsync();
-                
-                return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
-            }
-            if(_userContext.Role == RoleType.Supplier)
-            {
-                var supplier = await _context.PetroStations.SingleOrDefaultAsync(w => w.StationId == _userContext.Id);
-             
-                if (supplier == null)
+                case RoleType.Customer:
                 {
-                    return ActionResult.Error(ApiMessages.ResourceNotFound);
-                }
-                if(supplier.StationPassword != request.CurrentPassword)
-                    return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
-                
-                supplier.StationPassword = request.NewPassword;
-                await _context.SaveChangesAsync();
-
-                return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
-            }
-            if(_userContext.Role == RoleType.Admin)
-            {
-                var admin = await _context.Emplyees.SingleOrDefaultAsync(w => w.EmplyeeId == _userContext.Id);
+                    var customer = await _context.Companies.SingleOrDefaultAsync(w => w.CompanyId == _userContext.Id);
              
-                if (admin == null)
-                {
-                    return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    if (customer == null)
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                
+                    if(customer.CompanyAdminUserPassword != request.CurrentPassword)
+                        return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
+                
+                    customer.CompanyAdminUserPassword = request.NewPassword;
+                    await _context.SaveChangesAsync();
+                
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
                 }
-                if(admin.EmplyeePassword != request.CurrentPassword)
-                    return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
+                case RoleType.CustomerBranch:
+                {
+                    var companyBranch = await _context.CompanyBranches.SingleOrDefaultAsync(w => w.CompanyBranchId == _userContext.Id);
+             
+                    if (companyBranch == null)
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                
+                    if(companyBranch.CompanyBranchAdminUserPassword != request.CurrentPassword)
+                        return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
+                
+                    companyBranch.CompanyBranchAdminUserPassword = request.NewPassword;
+                    await _context.SaveChangesAsync();
+                
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                }
+                case RoleType.Supplier:
+                {
+                    var petrolCompany = await _context.PetrolCompanies.SingleOrDefaultAsync(w => w.PetrolCompanyId == _userContext.Id);
+             
+                    if (petrolCompany == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+                    if(petrolCompany.PetrolCompanyAdminUserPassword != request.CurrentPassword)
+                        return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
+                
+                    petrolCompany.PetrolCompanyAdminUserPassword = request.NewPassword;
+                    await _context.SaveChangesAsync();
 
-                admin.EmplyeePassword = request.NewPassword;
-                await _context.SaveChangesAsync();
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                }
+                case RoleType.SupplierBranch:
+                {
+                    var supplier = await _context.PetroStations.SingleOrDefaultAsync(w => w.StationId == _userContext.Id);
+             
+                    if (supplier == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+                    if(supplier.StationPassword != request.CurrentPassword)
+                        return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
+                
+                    supplier.StationPassword = request.NewPassword;
+                    await _context.SaveChangesAsync();
 
-                return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                }
+                case RoleType.Admin:
+                {
+                    var admin = await _context.Emplyees.SingleOrDefaultAsync(w => w.EmplyeeId == _userContext.Id);
+             
+                    if (admin == null)
+                    {
+                        return ActionResult.Error(ApiMessages.ResourceNotFound);
+                    }
+                    if(admin.EmplyeePassword != request.CurrentPassword)
+                        return ActionResult.Error(ApiMessages.Auth.ChangePasswordCurrentPasswordIsNotCorrect);
+
+                    admin.EmplyeePassword = request.NewPassword;
+                    await _context.SaveChangesAsync();
+
+                    return ActionResult.Ok(ApiMessages.Auth.ChangePasswordSuccessful);
+                }
+                default:
+                    return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
-            
-            return ActionResult.Error(ApiMessages.ResourceNotFound);
         }
     }
 }

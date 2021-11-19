@@ -26,53 +26,88 @@ namespace PetroPay.Web.Controllers.Auth.ResetPassword
 
         protected override async Task<ActionResult> Execute(ResetPasswordRequest request)
         {
-            if (request.RoleType == RoleType.Customer)
+            switch (request.RoleType)
             {
-                var customer = await _context.Companies.FirstOrDefaultAsync(x =>
-                    x.CompanyAdminEmail.ToLower() == request.Email.ToLower());
-             
-                if (customer == null)
+                case RoleType.Customer:
                 {
-                    return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
-                }
+                    var customer = await _context.Companies.FirstOrDefaultAsync(x =>
+                        x.CompanyAdminEmail.ToLower() == request.Email.ToLower());
+             
+                    if (customer == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
                 
-                Guid token = await GenerateANewTokenAndSave($"Customer_{customer.CompanyId}");
+                    Guid token = await GenerateANewTokenAndSave($"Customer_{customer.CompanyId}");
             
-                await _emailService.SendResetPasswordEmail(customer.CompanyAdminEmail, customer.CompanyAdminName ,token);
+                    await _emailService.SendResetPasswordEmail(customer.CompanyAdminEmail, customer.CompanyAdminName ,token);
 
-                return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
-            }
-            else if(request.RoleType == RoleType.Supplier)
-            {
-                var supplier = await _context.PetroStations.FirstOrDefaultAsync(x =>
-                    x.StationEmail.ToLower() == request.Email.ToLower());
-             
-                if (supplier == null)
-                {
-                    return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
                 }
-                Guid token = await GenerateANewTokenAndSave($"Supplier_{supplier.StationId}");
-            
-                await _emailService.SendResetPasswordEmail(supplier.StationEmail, supplier.StationOwnerName ,token);
-
-                return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
-            }
-            else if(request.RoleType == RoleType.Admin)
-            {
-                var admin = await _context.Emplyees.FirstOrDefaultAsync(x =>
-                    x.EmplyeeEmail.ToLower() == request.Email.ToLower());
-             
-                if (admin == null)
+                case RoleType.CustomerBranch:
                 {
-                    return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
-                }
-                Guid token = await GenerateANewTokenAndSave($"Admin_{admin.EmplyeeId}");
+                    var companyBranch = await _context.CompanyBranches.FirstOrDefaultAsync(x =>
+                        x.CompanyBranchAdminEmail.ToLower() == request.Email.ToLower());
+             
+                    if (companyBranch == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
+                
+                    Guid token = await GenerateANewTokenAndSave($"CustomerBranch_{companyBranch.CompanyBranchId}");
             
-                await _emailService.SendResetPasswordEmail(admin.EmplyeeEmail, admin.EmplyeeName ,token);
+                    await _emailService.SendResetPasswordEmail(companyBranch.CompanyBranchAdminEmail, companyBranch.CompanyBranchAdminName ,token);
 
-                return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
+                    return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
+                }
+                case RoleType.Supplier:
+                {
+                    var petrolCompany = await _context.PetrolCompanies.FirstOrDefaultAsync(x =>
+                        x.PetrolCompanyAdminEmail.ToLower() == request.Email.ToLower());
+             
+                    if (petrolCompany == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
+                    Guid token = await GenerateANewTokenAndSave($"Supplier_{petrolCompany.PetrolCompanyId}");
+            
+                    await _emailService.SendResetPasswordEmail(petrolCompany.PetrolCompanyAdminEmail, petrolCompany.PetrolCompanyAdminName ,token);
+
+                    return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
+                }
+                case RoleType.SupplierBranch:
+                {
+                    var supplier = await _context.PetroStations.FirstOrDefaultAsync(x =>
+                        x.StationEmail.ToLower() == request.Email.ToLower());
+             
+                    if (supplier == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
+                    Guid token = await GenerateANewTokenAndSave($"SupplierBranch_{supplier.StationId}");
+            
+                    await _emailService.SendResetPasswordEmail(supplier.StationEmail, supplier.StationOwnerName ,token);
+
+                    return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
+                }
+                case RoleType.Admin:
+                {
+                    var admin = await _context.Emplyees.FirstOrDefaultAsync(x =>
+                        x.EmplyeeEmail.ToLower() == request.Email.ToLower());
+             
+                    if (admin == null)
+                    {
+                        return ActionResult.Error(ApiMessages.Auth.InvalidCredentials);
+                    }
+                    Guid token = await GenerateANewTokenAndSave($"Admin_{admin.EmplyeeId}");
+            
+                    await _emailService.SendResetPasswordEmail(admin.EmplyeeEmail, admin.EmplyeeName ,token);
+
+                    return ActionResult.Ok(ApiMessages.Auth.ResetPasswordResponse);
+                }
+                default:
+                    return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
-            return ActionResult.Error(ApiMessages.ResourceNotFound);
         }
 
         
