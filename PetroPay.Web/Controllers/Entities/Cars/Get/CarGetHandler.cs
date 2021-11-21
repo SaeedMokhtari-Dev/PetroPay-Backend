@@ -34,8 +34,11 @@ namespace PetroPay.Web.Controllers.Entities.Cars.Get
 
         protected override async Task<ActionResult> Execute(CarGetRequest request)
         {
-            if (!request.CompanyId.HasValue && _userContext.Role != RoleType.Admin)
+            if (!request.CompanyId.HasValue && _userContext.Role == RoleType.Customer)
                 request.CompanyId = _userContext.Id;
+            
+            if (!request.CompanyBranchId.HasValue && _userContext.Role == RoleType.CustomerBranch)
+                request.CompanyBranchId = _userContext.Id;
             
             var query = _context.Cars.Include(w => w.CompanyBarnch)
                 .ThenInclude(w => w.Company)

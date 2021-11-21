@@ -113,6 +113,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiServiceMasterList = "/api/service-master/list";
         
         public const string ApiTransferBalance = "/api/transfer-balance";
+        public const string ApiTransferBalanceCarBatch = "/api/transfer-balance/car-batch";
         
         
         /*PromotionCoupon APIs*/
@@ -173,6 +174,7 @@ namespace PetroPay.Web.Configuration.Constants
         public const string ApiCarTypeMasterList = "/api/car-type-master/list";
         public const string ApiCarBrandMasterList = "/api/car-brand-master/list";
         public const string ApiCarModelMasterList = "/api/car-model-master/list";
+        public const string ApiPetrolPriceList = "/api/petrol-price/list";
         
         public const string ApiTransferBonusAdd = "/api/transfer-bonus/add";
         public const string ApiTransferBonusGet = "/api/transfer-bonus/get";

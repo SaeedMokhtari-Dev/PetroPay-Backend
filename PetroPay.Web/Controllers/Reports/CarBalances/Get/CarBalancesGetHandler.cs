@@ -33,6 +33,9 @@ namespace PetroPay.Web.Controllers.Reports.CarBalances.Get
             if(_userContext.Role == RoleType.Customer && request.CompanyId == null)
                 return ActionResult.Error(ApiMessages.BranchMessage.CompanyIdRequired);
             
+            if(_userContext.Role == RoleType.CustomerBranch && request.CompanyBranchId == null)
+                return ActionResult.Error(ApiMessages.BranchMessage.CompanyBranchIdRequired);
+
             var query = _context.ViewCarBalances.OrderByDescending(w => w.SubscriptionStartDate)
                 .AsQueryable();
             

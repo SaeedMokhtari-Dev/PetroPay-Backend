@@ -95,7 +95,7 @@ namespace PetroPay.Web.Controllers.Reports.InvoiceSummary.Get
             {
                 //DateTime dateTimeTo = Convert.ToDateTime(request.InvoiceDataTimeTo);
                 DateTime dateTimeTo = DateTime.ParseExact(request.InvoiceDataTimeTo, DateTimeConstants.DateFormat,
-                    CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture).AddDays(1);
                 query = query.Where(w => w.InvoiceDataTime <= dateTimeTo);
             }
             if (!string.IsNullOrEmpty(request.ServiceDescription))

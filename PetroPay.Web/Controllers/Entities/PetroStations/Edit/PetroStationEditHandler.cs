@@ -4,8 +4,10 @@ using AutoMapper;
 using PetroPay.Core.Api.Handlers;
 using PetroPay.Core.Api.Models;
 using PetroPay.Core.Constants;
+using PetroPay.Core.Enums;
 using PetroPay.DataAccess.Contexts;
 using PetroPay.DataAccess.Entities;
+using PetroPay.Web.Identity.Contexts;
 
 namespace PetroPay.Web.Controllers.Entities.PetroStations.Edit
 {
@@ -13,16 +15,20 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Edit
     {
         private readonly PetroPayContext _context;
         private readonly IMapper _mapper;
+        private readonly UserContext _userContext;
         
         public PetroStationEditHandler(
-            PetroPayContext context, IMapper mapper)
+            PetroPayContext context, IMapper mapper, UserContext userContext)
         {
             _context = context;
             _mapper = mapper;
+            _userContext = userContext;
         }
 
         protected override async Task<ActionResult> Execute(PetroStationEditRequest request)
         {
+            if (_userContext.Role == RoleType.Supplier && !request.PetrolCompanyId.HasValue)
+                request.PetrolCompanyId = _userContext.Id;
             PetroStation editPetroStation = await _context.PetroStations
                 .FindAsync(request.StationId);
 

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="07/16/2021 17:37:29" ReportInfo.Modified="07/20/2021 22:33:29" ReportInfo.CreatorVersion="2021.3.13.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/16/2021 17:37:29" ReportInfo.Modified="11/21/2021 15:34:01" ReportInfo.CreatorVersion="2021.3.13.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,7 +47,7 @@ namespace FastReport
       <LineObject Name="Line1" Left="9.45" Top="255.15" Width="699.3"/>
       <TextObject Name="Text20" Left="9.45" Top="264.6" Width="198.45" Height="18.9" Text="Petropay service" Font="Arial, 10pt"/>
       <TextObject Name="Text21" Left="160.65" Top="264.6" Width="160.65" Height="18.9" Text="[View_Invoice.UnitCost]" Font="Arial, 10pt"/>
-      <TextObject Name="Text22" Left="387.45" Top="264.6" Width="141.75" Height="18.9" Text="1" Font="Arial, 10pt"/>
+      <TextObject Name="Text22" Left="387.45" Top="264.6" Width="141.75" Height="18.9" Text="[View_Invoice.Quantity]" Font="Arial, 10pt"/>
       <TextObject Name="Text23" Left="491.4" Top="264.6" Width="141.75" Height="18.9" Text="[View_Invoice.Amount]" Font="Arial, 10pt"/>
       <LineObject Name="Line2" Left="9.45" Top="292.95" Width="699.3"/>
       <TextObject Name="Text24" Left="9.45" Top="302.4" Width="151.2" Height="18.9" Text="service Start Date" Font="Arial, 10pt"/>

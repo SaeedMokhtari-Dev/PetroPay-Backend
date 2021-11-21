@@ -73,7 +73,7 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Get
             if (!string.IsNullOrEmpty(request.DateTo))
             {
                 DateTime dateTimeTo = DateTime.ParseExact(request.DateTo, DateTimeConstants.DateFormat,
-                    CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture).AddDays(1);
                 query = query.Where(w => w.RechageDate.HasValue && w.RechageDate.Value <= dateTimeTo);
             }
             if (request.Status.HasValue)

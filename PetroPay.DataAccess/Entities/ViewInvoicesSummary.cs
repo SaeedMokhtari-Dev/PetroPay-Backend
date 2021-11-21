@@ -19,5 +19,6 @@ namespace PetroPay.DataAccess.Entities
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public int CarId { get; set; }
+        public double? InvoiceOdometer { get; set; }
     }
 }

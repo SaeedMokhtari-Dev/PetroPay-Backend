@@ -2008,6 +2008,10 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.ServiceEnDescription)
                     .HasMaxLength(50)
                     .HasColumnName("Service_En_Description");
+                
+                entity.Property(e => e.InvoiceOdometer)
+                    .HasColumnName("Invoice_odometer")
+                    .HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<ViewOdometerBetweenDate>(entity =>

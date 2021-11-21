@@ -9,6 +9,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.List
         public string BranchName { get; set; }
         public string CarNumber { get; set; }
         public decimal Balance { get; set; }
+        public decimal ConsumptionValue { get; set; }
         public bool CarOdometerRecordRequired { get; set; }
     }
 }

@@ -56,7 +56,7 @@ namespace PetroPay.Web.Controllers.Entities.NewCustomers.Get
             if (!string.IsNullOrEmpty(request.DateTo))
             {
                 DateTime dateTimeTo = DateTime.ParseExact(request.DateTo, DateTimeConstants.DateFormat,
-                    CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture).AddDays(1);
                 query = query.Where(w => w.CutReqDatetime.HasValue && w.CutReqDatetime.Value <= dateTimeTo);
             }
             if (request.Status.HasValue)

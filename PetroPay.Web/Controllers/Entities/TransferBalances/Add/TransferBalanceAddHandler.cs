@@ -19,15 +19,13 @@ namespace PetroPay.Web.Controllers.Entities.TransferBalances.Add
     public class TransferBalanceAddHandler : ApiRequestHandler<TransferBalanceAddRequest>
     {
         private readonly PetroPayContext _context;
-        private readonly IMapper _mapper;
         private readonly UserContext _userContext;
         private readonly UserService _userService;
 
         public TransferBalanceAddHandler(
-            PetroPayContext context, IMapper mapper, UserContext userContext, UserService userService)
+            PetroPayContext context, UserContext userContext, UserService userService)
         {
             _context = context;
-            _mapper = mapper;
             _userContext = userContext;
             _userService = userService;
         }

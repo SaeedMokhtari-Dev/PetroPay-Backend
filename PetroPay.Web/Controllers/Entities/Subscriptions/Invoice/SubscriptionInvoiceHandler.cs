@@ -28,15 +28,16 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Invoice
 
         protected override async Task<ActionResult> Execute(SubscriptionInvoiceRequest request)
         {
-            Subscription subscription = await _context.Subscriptions.Include(w => w.Company)
-                .FirstOrDefaultAsync(w => w.SubscriptionInvoiceNumber.HasValue && w.SubscriptionInvoiceNumber.Value == request.SubscriptionInvoiceId);
+            ViewInvoice invoice = await _context.ViewInvoices
+                .FirstOrDefaultAsync(w => w.InvoiceNumber.Trim() == request.SubscriptionInvoiceId.Trim());
 
-            if (subscription == null)
+            if (invoice == null)
             {
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
             }
 
-            var appSetting = await _context.AppSettings.FirstOrDefaultAsync();
+            var response = _mapper.Map<SubscriptionInvoiceResponse>(invoice);
+            /*var appSetting = await _context.AppSettings.FirstOrDefaultAsync();
             
             if(appSetting == null)
                 return ActionResult.Error(ApiMessages.ResourceNotFound);
@@ -73,7 +74,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Invoice
             response.Tax = subscription.SubscriptionTaxValue ?? 0;
             response.VatRate = appSetting.CompanyVatRate ?? 0;
             response.Vat = subscription.SubscriptionVatTaxValue ?? 0;
-            response.Total = subscription.SubscriptionCost ?? 0;
+            response.Total = subscription.SubscriptionCost ?? 0;*/
             
             return ActionResult.Ok(response);
         }

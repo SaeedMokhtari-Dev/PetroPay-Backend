@@ -30,13 +30,21 @@ namespace PetroPay.Web.Controllers.Entities.Cars.List
             if(_userContext.Role == RoleType.Customer && !request.CompanyId.HasValue)
                 request.CompanyId = _userContext.Id;
             
-            var query = _context.Cars.Include(w => w.CompanyBarnch).ThenInclude(w => w.Company)
+            if(_userContext.Role == RoleType.CustomerBranch && !request.BranchId.HasValue)
+                request.BranchId = _userContext.Id;
+            
+            var query = _context.Cars.Include(w => w.CompanyBarnch)
+                .ThenInclude(w => w.Company)
                 .OrderBy(w => w.CarId)
                 .AsQueryable();
 
             if (request.CompanyId.HasValue)
                 query = query.Where(w =>
                     w.CompanyBarnchId.HasValue && w.CompanyBarnch.CompanyId == request.CompanyId.Value);
+            
+            if (request.BranchId.HasValue)
+                query = query.Where(w =>
+                    w.CompanyBarnchId.HasValue && w.CompanyBarnchId == request.BranchId.Value);
             
             var result = await query.Select(w => new CarListResponse()
             {
@@ -47,6 +55,7 @@ namespace PetroPay.Web.Controllers.Entities.Cars.List
                 BranchId = w.CompanyBarnchId ?? 0,
                 BranchName = w.CompanyBarnchId.HasValue ? w.CompanyBarnch.CompanyBranchName : string.Empty,
                 Balance = w.CarBalnce ?? 0,
+                ConsumptionValue = w.ConsumptionValue ?? 0,
                 CarOdometerRecordRequired = w.CarOdometerRecordRequired ?? false,
                 
             }).ToListAsync();

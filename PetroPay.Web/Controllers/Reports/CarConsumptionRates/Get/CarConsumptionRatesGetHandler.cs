@@ -35,6 +35,9 @@ namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
         {
             if(_userContext.Role == RoleType.Customer && request.CompanyId == null)
                 return ActionResult.Error(ApiMessages.BranchMessage.CompanyIdRequired);
+                
+            if(_userContext.Role == RoleType.CustomerBranch && request.CompanyBranchId == null)
+                return ActionResult.Error(ApiMessages.BranchMessage.CompanyBranchIdRequired);
             
             var query = _context.ViewCarConsumptionRates
                 .AsQueryable();
@@ -103,7 +106,7 @@ namespace PetroPay.Web.Controllers.Reports.CarConsumptionRates.Get
             if (!string.IsNullOrEmpty(request.DateTo))
             {
                 DateTime dateTimeTo = DateTime.ParseExact(request.DateTo, DateTimeConstants.DateFormat,
-                    CultureInfo.InvariantCulture);
+                    CultureInfo.InvariantCulture).AddDays(1);
                 query = query.Where(w => w.DateMax <= dateTimeTo);
             }
             return query;

@@ -77,7 +77,7 @@ namespace PetroPay.Web.Controllers.Reports.OdometerBetweenDates.Get
             }
             if (!string.IsNullOrEmpty(request.DateTimeTo))
             {
-                DateTime dateTimeTo = DateTime.ParseExact(request.DateTimeTo, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture);
+                DateTime dateTimeTo = DateTime.ParseExact(request.DateTimeTo, DateTimeConstants.DateFormat, CultureInfo.InvariantCulture).AddDays(1);
                 query = query.Where(w => w.OdometerRecordDate.HasValue && w.OdometerRecordDate.Value <= dateTimeTo);
             }
             return query;

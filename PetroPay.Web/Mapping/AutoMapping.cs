@@ -65,6 +65,7 @@ using PetroPay.Web.Controllers.Entities.Subscriptions.Add;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Detail;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Edit;
 using PetroPay.Web.Controllers.Entities.Subscriptions.Get;
+using PetroPay.Web.Controllers.Entities.Subscriptions.Invoice;
 using PetroPay.Web.Controllers.Entities.TransferBonuses.Get;
 using PetroPay.Web.Controllers.Reports.AccountBalances.Get;
 using PetroPay.Web.Controllers.Reports.CarBalances.Get;
@@ -594,6 +595,8 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewCompanyBranchStatement, CompanyBranchStatementGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
+            
+            CreateMap<ViewInvoice, SubscriptionInvoiceResponse>();
 
 
             #endregion
