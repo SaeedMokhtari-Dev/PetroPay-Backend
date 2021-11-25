@@ -7,6 +7,7 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
     {
         public int TotalCount { get; set; }
         public double SumInvoiceAmount { get; set; }
+        public double SumInvoiceBonusPoints { get; set; }
         public List<StationSaleGetResponseItem> Items { get; set; }
     }
     public class StationSaleGetResponseItem
@@ -18,5 +19,6 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
         public double? SumInvoiceFuelConsumptionLiter { get; set; }
         public string InvoiceFuelType { get; set; }
         public string SumInvoiceDataTime { get; set; }
+        public int? SumInvoiceBonusPoints { get; set; }
     }
 }

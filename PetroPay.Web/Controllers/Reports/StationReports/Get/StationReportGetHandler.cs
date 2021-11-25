@@ -66,6 +66,10 @@ namespace PetroPay.Web.Controllers.Reports.StationReports.Get
             {
                 query = query.Where(w => w.InvoiceId == request.InvoiceId.Value);
             }
+            if (request.ServiceId.HasValue)
+            {
+                query = query.Where(w => w.ServiceId == request.ServiceId.Value);
+            }
             if (!string.IsNullOrEmpty(request.StationWorkerFname))
             {
                 query = query.Where(w => w.StationWorkerFname.Contains(request.StationWorkerFname));

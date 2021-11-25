@@ -44,6 +44,7 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
             StationSaleGetResponse response = new StationSaleGetResponse();
             response.TotalCount = await query.CountAsync();
             response.SumInvoiceAmount = await query.SumAsync(w => w.SumInvoiceAmount ?? 0);
+            response.SumInvoiceBonusPoints = await query.SumAsync(w => w.SumInvoiceBonusPoints ?? 0);
 
             if(!request.ExportToFile)
                 query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
