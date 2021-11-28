@@ -27,15 +27,24 @@ namespace PetroPay.Web.Controllers.Entities.StationUsers.Get
 
         protected override async Task<ActionResult> Execute(StationUserGetRequest request)
         {
-            if (!request.StationId.HasValue && _userContext.Role != RoleType.Admin)
+            if (!request.StationCompanyId.HasValue && _userContext.Role == RoleType.Supplier)
+                request.StationCompanyId = _userContext.Id;
+            
+            if (!request.StationId.HasValue && _userContext.Role == RoleType.SupplierBranch)
                 request.StationId = _userContext.Id;
             
-            var query = _context.StationUsers
-                .Where(e => e.StationId.HasValue && e.StationId.Value == request.StationId)
-                .OrderBy(w => w.StationWorkerId)
+            var query = _context.StationUsers.Include(w => w.Station)
+                .OrderByDescending(w => w.StationWorkerId)
                 .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();
 
+            if (request.StationCompanyId.HasValue)
+                query = query.Where(w =>
+                    w.StationId.HasValue && w.Station.PetrolCompanyId.HasValue &&
+                    w.Station.PetrolCompanyId.Value == request.StationCompanyId.Value);
+            if (request.StationId.HasValue)
+                query = query.Where(w => w.StationId.HasValue && w.StationId.Value == request.StationId.Value);
+            
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<StationUserGetResponseItem>>(result);

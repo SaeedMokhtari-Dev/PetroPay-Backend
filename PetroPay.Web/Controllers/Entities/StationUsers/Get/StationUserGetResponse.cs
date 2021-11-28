@@ -16,6 +16,7 @@ namespace PetroPay.Web.Controllers.Entities.StationUsers.Get
         public string StationUserName { get; set; }
         public string StationUserPassword { get; set; }
         public int? StationId { get; set; }
+        public string StationName { get; set; }
         public bool? AccessStationBalance { get; set; }
         public bool? AccessBonusTransfer { get; set; }
         public bool? AccessStationBonusBalance { get; set; }

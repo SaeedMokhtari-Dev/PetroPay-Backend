@@ -30,11 +30,25 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.List
         {
             if (_userContext.Role == RoleType.Customer)
                 return ActionResult.Error(ApiMessages.Forbidden);
+
+            if (!request.PetrolCompanyId.HasValue && _userContext.Role == RoleType.Supplier)
+                request.PetrolCompanyId = _userContext.Id;
+            
+            if (!request.PetrolStationId.HasValue && _userContext.Role == RoleType.SupplierBranch)
+                request.PetrolStationId = _userContext.Id;
             
             var query = _context.PetroStations
                 .OrderBy(w => w.StationId)
                 .AsQueryable();
 
+            if (request.PetrolCompanyId.HasValue)
+                query = query.Where(w =>
+                    w.PetrolCompanyId.HasValue && w.PetrolCompanyId.Value == request.PetrolCompanyId.Value);
+            
+            if (request.PetrolStationId.HasValue)
+                query = query.Where(w =>
+                    w.StationId == request.PetrolStationId.Value);
+            
             var response = await query.Select(w =>
             new PetroStationListResponseItem() {
                 Key = w.StationId, 

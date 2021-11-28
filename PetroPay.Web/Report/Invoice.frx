@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="07/16/2021 17:37:29" ReportInfo.Modified="11/21/2021 15:34:01" ReportInfo.CreatorVersion="2021.3.13.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/16/2021 17:37:29" ReportInfo.Modified="11/27/2021 10:58:11" ReportInfo.CreatorVersion="2021.3.13.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace FastReport
     <PageHeaderBand Name="PageHeader1" Top="50.11" Width="718.2" Height="463.05">
       <TextObject Name="Text1" Left="18.9" Width="141.75" Height="18.9" Text="INVOICE NUMBER" Font="Arial, 10pt, style=Bold"/>
       <TextObject Name="Text5" Left="245.7" Width="141.75" Height="18.9" Text="DATE OF ISSUE" Font="Arial, 10pt, style=Bold"/>
-      <TextObject Name="Text6" Left="245.7" Top="28.35" Width="141.75" Height="18.9" Text="[View_Invoice.DateOfIssue]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+      <TextObject Name="Text6" Left="245.7" Top="28.35" Width="141.75" Height="18.9" Text="[View_Invoice.DateOfIssue]" Format="Date" Format.Format="dd/MM/yyyy hh:mm:ss" Font="Arial, 10pt"/>
       <TextObject Name="Text7" Left="349.65" Top="94.5" Width="359.1" Height="18.9" Text="[View_Invoice.CompanyNameEn]" Font="Arial, 10pt"/>
       <TextObject Name="Text8" Left="349.65" Top="113.4" Width="359.1" Height="18.9" Text="[View_Invoice.CompanyAddress]" Font="Arial, 10pt"/>
       <TextObject Name="Text9" Left="491.4" Top="132.3" Width="217.35" Height="18.9" Text="[View_Invoice.CompanyTaxRecordNumber]" Font="Arial, 10pt"/>
@@ -51,9 +51,9 @@ namespace FastReport
       <TextObject Name="Text23" Left="491.4" Top="264.6" Width="141.75" Height="18.9" Text="[View_Invoice.Amount]" Font="Arial, 10pt"/>
       <LineObject Name="Line2" Left="9.45" Top="292.95" Width="699.3"/>
       <TextObject Name="Text24" Left="9.45" Top="302.4" Width="151.2" Height="18.9" Text="service Start Date" Font="Arial, 10pt"/>
-      <TextObject Name="Text25" Left="160.65" Top="302.4" Width="179.55" Height="18.9" Text="[View_Invoice.ServiceStartDate]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+      <TextObject Name="Text25" Left="160.65" Top="302.4" Width="179.55" Height="18.9" Text="[View_Invoice.ServiceStartDate]" Format="Date" Format.Format="dd/MM/yyyy" Font="Arial, 10pt"/>
       <TextObject Name="Text26" Left="9.45" Top="330.75" Width="151.2" Height="18.9" Text="service End Date" Font="Arial, 10pt"/>
-      <TextObject Name="Text27" Left="160.65" Top="330.75" Width="179.55" Height="18.9" Text="[View_Invoice.ServiceEndDate]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+      <TextObject Name="Text27" Left="160.65" Top="330.75" Width="179.55" Height="18.9" Text="[View_Invoice.ServiceEndDate]" Format="Date" Format.Format="dd/MM/yyyy" Font="Arial, 10pt"/>
       <TextObject Name="Text28" Left="425.25" Top="330.75" Width="94.5" Height="18.9" Text="Sub Total" Font="Arial, 10pt"/>
       <TextObject Name="Text29" Left="425.25" Top="349.65" Width="94.5" Height="18.9" Text="Discount" Font="Arial, 10pt"/>
       <TextObject Name="Text30" Left="425.25" Top="368.55" Width="94.5" Height="18.9" Text="Tax Rate" Font="Arial, 10pt"/>

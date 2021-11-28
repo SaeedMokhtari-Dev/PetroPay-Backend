@@ -295,9 +295,11 @@ namespace PetroPay.Web.Mapping
             
             #endregion
             #region StationUser
-            
+
             CreateMap<StationUser, StationUserGetResponseItem>()
-                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.StationWorkerId));
+                .ForMember(w => w.Key, opt => opt.MapFrom(e => e.StationWorkerId))
+                .ForMember(w => w.StationName, opt => 
+                    opt.MapFrom(e => e.StationId.HasValue ? e.Station.StationName : String.Empty));
             CreateMap<StationUser, StationUserDetailResponse>();
             CreateMap<StationUserEditRequest, StationUser>()
                 .ForMember(w => w.StationWorkerId, opt => opt.Ignore());
@@ -595,8 +597,23 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
             CreateMap<ViewCompanyBranchStatement, CompanyBranchStatementGetResponseItem>()
                 .ForMember(w => w.Key, opt => opt.MapFrom(e => Guid.NewGuid()));
-            
-            CreateMap<ViewInvoice, SubscriptionInvoiceResponse>();
+
+            CreateMap<ViewInvoice, SubscriptionInvoiceResponse>()
+                .ForMember(w => w.DateOfIssue,
+                    opt => opt.MapFrom(e =>
+                        e.DateOfIssue.HasValue
+                            ? e.DateOfIssue.Value.ToString(DateTimeConstants.DateTimeFormat)
+                            : string.Empty))
+                .ForMember(w => w.ServiceStartDate,
+                    opt => opt.MapFrom(e =>
+                        e.ServiceStartDate.HasValue
+                            ? e.ServiceStartDate.Value.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty))
+                .ForMember(w => w.ServiceEndDate,
+                    opt => opt.MapFrom(e =>
+                        e.ServiceEndDate.HasValue
+                            ? e.ServiceEndDate.Value.ToString(DateTimeConstants.DateFormat)
+                            : string.Empty));
 
 
             #endregion
