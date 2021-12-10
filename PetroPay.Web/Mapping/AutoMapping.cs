@@ -607,12 +607,12 @@ namespace PetroPay.Web.Mapping
                 .ForMember(w => w.ServiceStartDate,
                     opt => opt.MapFrom(e =>
                         e.ServiceStartDate.HasValue
-                            ? e.ServiceStartDate.Value.ToString(DateTimeConstants.DateFormat)
+                            ? e.ServiceStartDate.Value.ToString(DateTimeConstants.DateTimeFormat)
                             : string.Empty))
                 .ForMember(w => w.ServiceEndDate,
                     opt => opt.MapFrom(e =>
                         e.ServiceEndDate.HasValue
-                            ? e.ServiceEndDate.Value.ToString(DateTimeConstants.DateFormat)
+                            ? e.ServiceEndDate.Value.ToString(DateTimeConstants.DateTimeFormat)
                             : string.Empty));
 
 

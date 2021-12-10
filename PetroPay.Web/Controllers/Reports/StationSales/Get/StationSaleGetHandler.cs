@@ -33,13 +33,16 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
 
         protected override async Task<ActionResult> Execute(StationSaleGetRequest request)
         {
-            if(_userContext.Role == RoleType.Supplier && request.StationId == null)
-                return ActionResult.Error(ApiMessages.PetroStationMessage.IdRequired);
+            if (_userContext.Role == RoleType.Supplier && request.CompanyId == null)
+                request.CompanyId = _userContext.Id;
+            
+            if(_userContext.Role == RoleType.SupplierBranch && request.StationId == null)
+                request.StationId = _userContext.Id;
             
             var query = _context.ViewStationSales.OrderByDescending(w => w.SumInvoiceDataTime)
                 .AsQueryable();
             
-            query = createQuery(query, request);
+            query = await createQuery(query, request);
             
             StationSaleGetResponse response = new StationSaleGetResponse();
             response.TotalCount = await query.CountAsync();
@@ -56,9 +59,16 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
             return ActionResult.Ok(response);
         }
 
-        private IQueryable<ViewStationSale> createQuery(IQueryable<ViewStationSale> query, StationSaleGetRequest request)
+        private async Task<IQueryable<ViewStationSale>> createQuery(IQueryable<ViewStationSale> query, StationSaleGetRequest request)
         {
-            
+            if (request.CompanyId.HasValue)
+            {
+                List<int> stationIds = await _context.PetroStations.Where(w => w.PetrolCompanyId.HasValue
+                                                                               && w.PetrolCompanyId.Value ==
+                                                                               request.CompanyId.Value)
+                    .Select(w => w.StationId).ToListAsync();
+                query = query.Where(w => stationIds.Contains(request.StationId.Value));
+            }
             if (request.StationId.HasValue)
             {
                 query = query.Where(w => w.StationId == request.StationId);

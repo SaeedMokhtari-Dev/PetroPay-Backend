@@ -94,7 +94,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                     TransAmount = -1 * (balance),
                     TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "petrol station bonus transfer",
-                    TransReference = $"transfer bonus {amount} point from {station.StationName}"
+                    TransReference = $"transfer bonus {amount} point from {station.StationUserName}"
                 };
                 
                 if (user.Item1)
@@ -112,7 +112,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                     TransAmount = balance,
                     TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "petrol station bonus transfer",
-                    TransReference = $"transfer bonus {amount} point from {station.StationName}"
+                    TransReference = $"transfer bonus {amount} point from {station.StationUserName}"
                 };
                 
                 if (user.Item1)

@@ -230,6 +230,9 @@ namespace PetroPay.Web.Configuration.Constants
 
         #endregion
         
+        /*CurrentUserBalances APIs*/
+        public const string ApiCurrentUserBalanceGet = "/api/current-user-balance/get";
+        
         public const string ApiLog = "/api/log";
         public const string Swagger = "/swagger/v1/swagger.json";
     }

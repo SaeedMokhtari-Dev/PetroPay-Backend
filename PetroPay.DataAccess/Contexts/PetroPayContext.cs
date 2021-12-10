@@ -1876,6 +1876,7 @@ namespace PetroPay.DataAccess.Contexts
                 entity.Property(e => e.CustomerAddress).HasMaxLength(255);
 
                 entity.Property(e => e.CustomerName).HasMaxLength(255);
+                entity.Property(e => e.CustomerTaxNumber).HasMaxLength(255);
 
                 entity.Property(e => e.Discount)
                     .HasMaxLength(25)

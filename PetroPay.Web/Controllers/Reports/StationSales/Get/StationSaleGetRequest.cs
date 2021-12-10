@@ -2,6 +2,7 @@ namespace PetroPay.Web.Controllers.Reports.StationSales.Get
 {
     public class StationSaleGetRequest
     {
+        public int? CompanyId { get; set; }   
         public int? StationId { get; set; }   
         public int? StationWorkerId { get; set; }   
         public string StationWorkerFname { get; set; }

@@ -18,6 +18,7 @@ namespace PetroPay.DataAccess.Entities
         public string CompanyWebsite { get; set; }
         public string CustomerName { get; set; }
         public string CustomerAddress { get; set; }
+        public string CustomerTaxNumber { get; set; }
         public string UnitCost { get; set; }
         public int? Quantity { get; set; }
         public string Amount { get; set; }

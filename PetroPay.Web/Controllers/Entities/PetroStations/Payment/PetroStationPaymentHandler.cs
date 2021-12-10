@@ -43,7 +43,9 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Payment
             var station = await _context.PetroStations.SingleOrDefaultAsync(w => w.StationId == stationId);
             if (station == null)
                 return new Tuple<bool, string>(false, ApiMessages.ResourceNotFound);
-                
+            
+            var petroCompany = await _context.PetrolCompanies.SingleOrDefaultAsync(w => w.PetrolCompanyId == station.PetrolCompanyId);
+            
             var petropayAccount = await _context.PetropayAccounts.SingleOrDefaultAsync(w => w.AccId == petroPayAccountId);
             if (petropayAccount == null)
                 return new Tuple<bool, string>(false, ApiMessages.ResourceNotFound);
@@ -56,6 +58,8 @@ namespace PetroPay.Web.Controllers.Entities.PetroStations.Payment
                 var user = await _userService.GetCurrentUserInfo();
                 
                 station.StationBalance -= amount;
+                if (petroCompany != null)
+                    petroCompany.PetrolCompanyBalnce -= amount;
                 TransAccount deductFromStation = new TransAccount()
                 {
                     AccountId = station.AccountId,

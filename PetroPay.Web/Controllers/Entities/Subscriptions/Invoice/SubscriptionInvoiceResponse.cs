@@ -17,6 +17,7 @@ namespace PetroPay.Web.Controllers.Entities.Subscriptions.Invoice
         public string CompanyWebsite { get; set; }
         public string CustomerName { get; set; }
         public string CustomerAddress { get; set; }
+        public string CustomerTaxNumber { get; set; }
         public string ServiceDescription { get; set; }
         public decimal UnitCost { get; set; }
         public int Quantity { get; set; }

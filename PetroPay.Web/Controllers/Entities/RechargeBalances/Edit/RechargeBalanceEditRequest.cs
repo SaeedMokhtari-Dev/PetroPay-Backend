@@ -5,7 +5,6 @@ namespace PetroPay.Web.Controllers.Entities.RechargeBalances.Edit
     public class RechargeBalanceEditRequest
     {
         public int RechargeId { get; set; }
-        public DateTime? RechageDate { get; set; }
         public decimal? RechargeAmount { get; set; }
         public string RechargePaymentMethod { get; set; }
         public string BankName { get; set; }

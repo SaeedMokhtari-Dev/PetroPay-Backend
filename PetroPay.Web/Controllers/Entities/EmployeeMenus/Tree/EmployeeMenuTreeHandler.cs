@@ -32,18 +32,16 @@ namespace PetroPay.Web.Controllers.Entities.EmployeeMenus.Tree
                 .ToListAsync();
 
             var withParents = menus.Where(w => w.Menu.ParentId.HasValue).ToList();
-            foreach (var employeeMenu in withParents)
+            var parentIds = withParents.Where(w => w.Menu.ParentId.HasValue).Select(w => w.Menu.ParentId.Value).Distinct();
+            var parents = await _context.Menus.Where(w => w.IsActive && parentIds.Contains(w.Id)).ToListAsync();
+            foreach (var parent in parents)
             {
-                int parentId = employeeMenu.Menu.ParentId ?? 0;
-                if (menus.All(w => w.MenuId != parentId))
+                menus.Add(new EmployeeMenu()
                 {
-                    var parent = await _context.Menus.FirstAsync(w => w.Id == parentId);
-                    if (parent != null) menus.Add(new EmployeeMenu()
-                    {
-                        Id = (-1) * new Random(1000).Next(Int32.MaxValue),
-                        Menu = parent
-                    });
-                }
+                    Id = parent.Id,
+                    MenuId = parent.Id,//(-1) * new Random(1000).Next(Int32.MaxValue),
+                    Menu = parent
+                });
             }
             
             var result = menus.Where(w => !w.Menu.ParentId.HasValue).Select(w => new EmployeeMenuTreeResponse()
