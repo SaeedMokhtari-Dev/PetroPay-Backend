@@ -36,12 +36,15 @@ namespace PetroPay.Web.Controllers.Entities.EmployeeMenus.Tree
             var parents = await _context.Menus.Where(w => w.IsActive && parentIds.Contains(w.Id)).ToListAsync();
             foreach (var parent in parents)
             {
-                menus.Add(new EmployeeMenu()
+                if (menus.All(w => w.MenuId != parent.Id))
                 {
-                    Id = parent.Id,
-                    MenuId = parent.Id,//(-1) * new Random(1000).Next(Int32.MaxValue),
-                    Menu = parent
-                });
+                    menus.Add(new EmployeeMenu()
+                    {
+                        Id = parent.Id,
+                        MenuId = parent.Id, //(-1) * new Random(1000).Next(Int32.MaxValue),
+                        Menu = parent
+                    });
+                }
             }
             
             var result = menus.Where(w => !w.Menu.ParentId.HasValue).Select(w => new EmployeeMenuTreeResponse()

@@ -57,7 +57,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
 
         private async Task<Tuple<bool, string>> TransferBonusToBalance(int stationId, int stationWorkerId, int amount)
         {
-            var station = await _context.PetroStations.SingleOrDefaultAsync(w => w.StationId == stationId);
+            var station = await _context.PetroStations.Include(w => w.PetrolCompany).SingleOrDefaultAsync(w => w.StationId == stationId);
             if (station == null)
                 return new Tuple<bool, string>(false, ApiMessages.ResourceNotFound);
                 
@@ -94,7 +94,7 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                     TransAmount = -1 * (balance),
                     TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "petrol station bonus transfer",
-                    TransReference = $"transfer bonus {amount} point from {station.StationUserName}"
+                    TransReference = $"transfer bonus {amount} point from {station.StationName}"
                 };
                 
                 if (user.Item1)
@@ -106,13 +106,14 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Add
                 deductFromPetroPayAccount = (await _context.TransAccounts.AddAsync(deductFromPetroPayAccount)).Entity;
 
                 station.StationBalance += balance;
+                station.PetrolCompany.PetrolCompanyBalnce += balance;
                 TransAccount addToStationAccount = new TransAccount()
                 {
                     AccountId = station.AccountId,
                     TransAmount = balance,
                     TransDate = DateTime.Now.GetEgyptDateTime(),
                     TransDocument = "petrol station bonus transfer",
-                    TransReference = $"transfer bonus {amount} point from {station.StationUserName}"
+                    TransReference = $"transfer bonus {amount} point from {station.StationName}"
                 };
                 
                 if (user.Item1)
