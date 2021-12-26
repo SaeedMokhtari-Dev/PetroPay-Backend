@@ -40,6 +40,7 @@ namespace PetroPay.Web.Controllers.Entities.StationUsers.Add
             StationUser stationUser = await _context.ExecuteTransactionAsync(async () =>
             {
                 StationUser newStationUser = _mapper.Map<StationUser>(request);
+                newStationUser.WorkerBonusBalance = 0;
                 newStationUser = (await _context.StationUsers.AddAsync(newStationUser)).Entity;
                 await _context.SaveChangesAsync();
 

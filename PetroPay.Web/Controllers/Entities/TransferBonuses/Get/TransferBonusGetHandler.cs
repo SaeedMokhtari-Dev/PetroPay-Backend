@@ -32,24 +32,37 @@ namespace PetroPay.Web.Controllers.Entities.TransferBonuses.Get
 
         protected override async Task<ActionResult> Execute(TransferBonusGetRequest request)
         {
-            if(_userContext.Role == RoleType.Customer)
+            if(_userContext.Role == RoleType.Customer || _userContext.Role == RoleType.CustomerBranch)
                 return ActionResult.Error(ApiMessages.Forbidden);
-            if (!request.StationId.HasValue && _userContext.Role == RoleType.Supplier)
+            if (!request.CompanyId.HasValue && _userContext.Role == RoleType.Supplier)
+                request.CompanyId = _userContext.Id;
+            if (!request.StationId.HasValue && _userContext.Role == RoleType.SupplierBranch)
                 request.StationId = _userContext.Id;
             
             /*var transferBonuses = await _context.PetropayAccounts.Where(w => w.AccPetrolStationBonus.HasValue && w.AccPetrolStationBonus.Value)
                 .Select(w => w.AccountId).ToListAsync();*/
-            List<int?> accountIds = new List<int?>();
-            if (_userContext.Role == RoleType.Supplier)
+            List<int> accountIds = new List<int>();
+            switch (_userContext.Role)
             {
-                var user = await _context.PetroStations.FindAsync(_userContext.Id); 
-                accountIds.Add(user.AccountId);
+                case RoleType.Supplier:
+                {
+                    var stationAccountIds = await _context.PetroStations.Where(w => w.PetrolCompanyId.HasValue && w.PetrolCompanyId.Value == request.CompanyId.Value && w.AccountId.HasValue).Select(w => w.AccountId.Value).ToListAsync(); 
+                    accountIds.AddRange(stationAccountIds);
+                    break;
+                }
+                case RoleType.SupplierBranch:
+                {
+                    var user = await _context.PetroStations.FindAsync(request.StationId); 
+                    accountIds.Add(user.AccountId ?? 0);
+                    break;
+                }
+                case RoleType.Admin:
+                    accountIds.AddRange(await _context.PetroStations.Where(w => w.AccountId.HasValue).Select(w => w.AccountId.Value).ToListAsync());
+                    break;
             }
-            else
-                accountIds.AddRange(await _context.PetroStations.Where(w => w.AccountId.HasValue).Select(w => w.AccountId).ToListAsync());
             
             var query = _context.TransAccounts.Include(w => w.Account)
-                .Where(w => accountIds.Contains(w.AccountId) && w.TransDocument == "petrol station bonus transfer")
+                .Where(w => w.AccountId.HasValue && accountIds.Contains(w.AccountId.Value) && w.TransDocument == "petrol station bonus transfer")
                 .OrderByDescending(w => w.TransId)
                 .AsQueryable();
 

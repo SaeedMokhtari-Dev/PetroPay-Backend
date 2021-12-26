@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -78,18 +79,21 @@ namespace PetroPay.Web.Controllers.Reports.OdometerHistories.Get
             {
                 query = query.Where(w => w.CompanyBranchName.Contains(request.CompanyBranchName));
             }
-            /*if (!string.IsNullOrEmpty(request.TransDateFrom))
+            if (!string.IsNullOrEmpty(request.DateFrom))
             {
-                DateTime dateTimeFrom = Convert.ToDateTime(request.TransDateFrom);
-                query = query.Where(w => w.TransDate >= dateTimeFrom);
+                //DateTime dateTimeFrom = Convert.ToDateTime(request.DateFrom);
+                DateTime dateTimeFrom = DateTime.ParseExact(request.DateFrom, DateTimeConstants.DateFormat,
+                    CultureInfo.InvariantCulture);
+                query = query.Where(w => w.OdometerRecordDate.HasValue && w.OdometerRecordDate.Value >= dateTimeFrom);
             }
-            if (!string.IsNullOrEmpty(request.TransDateTo))
+            if (!string.IsNullOrEmpty(request.DateTo))
             {
-                DateTime dateTimeTo = Convert.ToDateTime(request.TransDateTo);
-                query = query.Where(w => w.TransDate <= dateTimeTo);
-            }*/
+                //DateTime dateTimeTo = Convert.ToDateTime(request.DateTo);
+                DateTime dateTimeTo = DateTime.ParseExact(request.DateTo, DateTimeConstants.DateFormat,
+                    CultureInfo.InvariantCulture);
+                query = query.Where(w => w.OdometerRecordDate.HasValue && w.OdometerRecordDate.Value <= dateTimeTo);
+            }
             return query;
-
         }
     }
 }

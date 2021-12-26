@@ -32,7 +32,6 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Get
             if (_userContext.Role == RoleType.CustomerBranch && !request.BranchId.HasValue)
                 request.BranchId = _userContext.Id;
             var query = _context.ViewOdometerRecords
-                .Skip(request.PageIndex * request.PageSize).Take(request.PageSize)
                 .AsQueryable();
 
             if (request.CompanyId.HasValue)
@@ -43,12 +42,16 @@ namespace PetroPay.Web.Controllers.Entities.OdometerRecords.Get
                 query = query.Where(w =>
                     w.CompanyBranchId == request.BranchId.Value);
             
+            OdometerRecordGetResponse response = new OdometerRecordGetResponse();
+            response.TotalCount = await query.CountAsync();
+            
+            if (!(request.ExportToFile.HasValue && request.ExportToFile.Value))
+                query = query.Skip(request.PageIndex * request.PageSize).Take(request.PageSize);
+            
             var result = await query.ToListAsync();
 
             var mappedResult = _mapper.Map<List<OdometerRecordGetResponseItem>>(result);
 
-            OdometerRecordGetResponse response = new OdometerRecordGetResponse();
-            response.TotalCount = await _context.OdometerRecords.CountAsync();
             response.Items = mappedResult;
             return ActionResult.Ok(response);
         }
